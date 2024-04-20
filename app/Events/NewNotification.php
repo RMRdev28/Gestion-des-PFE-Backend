@@ -9,8 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-
-class NewNotification
+use Illuminate\Support\Facades\Log;
+class NewNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,12 +26,13 @@ class NewNotification
 
     public function broadcastOn()
     {
-        return new Channel('notifications');
+
+        return ['gestion-pfe'];
     }
 
-    public function broadcastWith()
+    public function broadcastAs()
     {
-        return ['notification' => $this->notification];
+        return 'notification';
     }
 }
 //notifications:App\\Events\\NotificationSent

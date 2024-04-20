@@ -13,8 +13,9 @@ trait NotifyTrait
     {
         $notification = new Notification();
         $notification->type = $type;
-        $notification->type = $content;
+        $notification->content = $content;
         $notification->idUser = $user;
+        $notification->status = 0;
 
         $notification->save();
         event(new NewNotification($notification));
