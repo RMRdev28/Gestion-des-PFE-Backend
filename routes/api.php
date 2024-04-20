@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\BinomController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DemmandeController;
 use App\Http\Controllers\PfeController;
@@ -103,11 +104,11 @@ Route::middleware(['auth:sanctum', 'student'])->group(function () {
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']);// DISPLAY SINGL
 
     // Binoms
-    Route::get('/binoms', [UserController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
-    Route::post('/binoms/request', [UserController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
-    Route::get('/binoms/request/list', [UserController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
-    Route::post('/binoms/request/cancel/{id}', [UserController::class, 'cancelRequest']);// CANCLE A REQUEST
-    Route::post('/binoms/request/accref', [UserController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
-    Route::post('/binoms/demmande', [UserController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
-    Route::post('/binoms', [UserController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+    Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
+    Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
+    Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
+    Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
+    Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
+    Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
 });
