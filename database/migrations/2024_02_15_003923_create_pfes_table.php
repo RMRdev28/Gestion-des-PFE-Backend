@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('jury2');
             $table->string('title');
             $table->string('pfe');
+            $table->int('need_suivis')->default(0);
             $table->enum('level',['l3','m2']);
             $table->enum('status',['valide','termine','revu','pasencore'])->default('pasencore');
             $table->enum('branch',['isil','acad','gtr']);

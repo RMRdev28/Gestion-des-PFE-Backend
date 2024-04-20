@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pfe;
+use App\Models\Prof;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,52 @@ class PfeController extends Controller
         ]);
 
 
+    }
+
+    public function selectionerPfePourCommissionSuivis(Request $request){
+        $message = "All pfe have commission de suivis";
+        $status = "good";
+        $pfes = [];
+        foreach ($request->pfes as $idPfe) {
+            $pfe = Pfe::find($idPfe);
+            $pfe->need_suivis = 1;
+            $pfe->save();
+            if(!$this->assignComissionDeSuivis($pfe)){
+                $pfes[] = $pfe;
+                $status = "bed";
+                $message  = "They are problem in some pfe";
+            }
+        }
+        return response()->json([
+            'message'=> $message,
+            'status' => $status,
+            'pfes' => $pfes
+        ]);
+    }
+
+    private function assignComissionDeSuivis(Pfe $pfe){
+        $validators = Prof::with(['categories'])->where('isValidator', 1)->get();
+        $pfeCategories = $pfe->categories->pluck('id')->toArray();
+        $validatingProf = null;
+        foreach ($validators as $validator) {
+            $validatorCategories = $validator->categories->pluck('id')->toArray();
+
+            if ((count(array_intersect($pfeCategories, $validatorCategories)) > 0) && ($pfe->idEns != $validator->id)) {
+                $validatingProf = $validator;
+                if ($validatingProf != null) {
+                    break;
+                }
+            }
+        }
+        if ($validatingProf == null) {
+            $validatingProf = $validators->random(1);
+            while($validatingProf->id == $pfe->idEns){
+                $validatingProf = $validators->random(1);
+            }
+        }
+        $pfe->jury1 = $validatingProf->id;
+        if($pfe->save()) return true;
+        return false;
     }
 
     /**
