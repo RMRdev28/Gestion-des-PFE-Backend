@@ -36,7 +36,7 @@ class FindJury extends Command
             foreach ($validators as $validator) {
                 $validatorCategories = $validator->categories->pluck('id')->toArray();
 
-                if ((count(array_intersect($pfeCategories, $validatorCategories)) > 0) && ($pfe->idEns != $validator->id)&&($pfe->jury1 != $validator->id)) {
+                if ((count(array_intersect($pfeCategories, $validatorCategories)) > 0) && ($pfe->idEns != $validator->id) && ($pfe->jury1 != $validator->id) && ($validator->juryForPfe <= 4)) {
                     $validatingProfs[] = $validator;
                     if (count($validatingProfs) == 2) {
                         break;
@@ -46,7 +46,7 @@ class FindJury extends Command
             if (count($validatingProfs) == 0) {
                 $validatingProfs = $validators->random(2);
             }
-            if($pfe->jury1 == null){
+            if ($pfe->jury1 == null) {
                 $pfe->jury1 = $validatingProfs[0]->id;
             }
 

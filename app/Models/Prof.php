@@ -50,6 +50,10 @@ class Prof extends User
         return $this->jury1ForPfe->concat($this->jury2ForPfe);
     }
 
+    public function getNumberPJY():int{
+        return $this->juryForPfe()->count();
+    }
+
 
     public function specialites():BelongsToMany
     {
