@@ -38,36 +38,4 @@ class ValidationPfeController extends Controller
         ]);
 
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ValidationPfe $validationPfe)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ValidationPfe $validationPfe)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ValidationPfe $validationPfe)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ValidationPfe $validationPfe)
-    {
-        //
-    }
 }

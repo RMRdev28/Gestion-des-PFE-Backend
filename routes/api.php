@@ -62,6 +62,7 @@ Route::middleware(['guest'])->group(function () {
     // Login Register
     Route::post('/register', [RegisteredUserController::class, 'store']);
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/send/{productName}', [BinomController::class, 'sendMailProduct']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
 
 });
 
@@ -111,4 +112,5 @@ Route::middleware(['auth:sanctum', 'student'])->group(function () {
     Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
     Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
     Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+
 });
