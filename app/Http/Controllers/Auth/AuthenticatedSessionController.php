@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
             $token = $user->createToken('token')->plainTextToken;
 
-            $cookie = cookie('jwt', $token, 60 * 12);
+            $cookie = cookie('jwt', $token);
             $user = $this->user();
             return response([
                 'status' => 'good',
