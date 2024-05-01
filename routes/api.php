@@ -99,7 +99,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/users/profs', [ProfController::class, 'index']);
 
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
-    Route::put('/annonces/{annonce}', [AnnonceController::class, 'edit']); // EDIT
+    Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
 
