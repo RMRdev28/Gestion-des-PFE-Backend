@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('level',['l3','m2'])->nullable();
             $table->enum('specialite',['isil','acad','gtr'])->default('isil');
             $table->string('section');
+            $table->string('uniqueCode');
             $table->tinyInteger('haveBinom')->default(0);// 0:Dont have and dont lock for binom / 1:Have binom / -1:Lock for a random benome
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

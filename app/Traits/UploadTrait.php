@@ -17,9 +17,8 @@ trait UploadTrait
         $fileExtension = $this->getFileExtension($fileData[0]);
         $fileName = $this->generateFileName($fileExtension);
         $filePath = $folder . '/' . $fileName;
-
+        dd($fileData);
         Storage::disk('public')->put($filePath, base64_decode($fileData[1]));
-
         $fileInfo = [
             'fileName' => $fileName,
             'filePath' => $filePath,

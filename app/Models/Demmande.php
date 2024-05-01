@@ -13,7 +13,8 @@ class Demmande extends Model
     protected $fillable = [
         'idProp',
         'idBinom',
-        'releverNote'
+        'releverNote',
+        'idBinom'
     ];
 
 

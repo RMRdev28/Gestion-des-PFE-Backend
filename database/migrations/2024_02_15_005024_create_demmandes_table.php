@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('demmandes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idProp');
-            $table->unsignedBigInteger('idUser');
+            $table->unsignedBigInteger('idBinom');
             $table->string('releverNote')->nullable();
-            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('idBinom')->references('id')->on('binoms')->onDelete('cascade');
             $table->foreign('idProp')->references('id')->on('propositions')->onDelete('cascade');
             $table->timestamps();
         });

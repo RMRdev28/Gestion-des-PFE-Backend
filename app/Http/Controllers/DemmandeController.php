@@ -27,10 +27,12 @@ class DemmandeController extends Controller
     {
         $message = "";
         $status = "bad";
-        $user = User::where('id',Auth::user()->id)->with(['userDetail','userDetail.binom'])->first();
-        $request->request->add(['idUser',$user->userDetail->binom->id]);
-        $data = $request->all();
 
+
+
+        $user = User::where('id',Auth::user()->id)->with(['userDetail','userDetail.binom'])->first();
+        $request->merge(['idBinom' => $user->userDetail->binom->id]);
+        $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
             if ($request->hasFile('releverNote')) {
