@@ -74,13 +74,15 @@ class User extends Authenticatable
      */
     public function userDetail(): HasOne
     {
-        if ($this->typeUser == 0)
+        if ($this->typeUser == 0) {
             return $this->hasOne(Student::class, 'idUser', 'id');
-        else{if($this->typeUser == 1){return $this->hasOne(Prof::class, 'idUser', 'id');}else{
-            return $this->hasOne(Admin::class, 'idUser', 'id');
-        }}
-
-
+        } else {
+            if ($this->typeUser == 1) {
+                return $this->hasOne(Prof::class, 'idUser', 'id');
+            } else {
+                return $this->hasOne(Admin::class, 'idUser', 'id');
+            }
+        }
     }
 
     /**
