@@ -33,7 +33,10 @@ class AnnonceController extends Controller
         $annonce = Annonce::create($data);
         if ($annonce) {
             if ($request->hasFile('background')) {
-                $fileUploaded = $this->upload($request->background, 'annonce');
+                $file = $request->file('background');
+                $base64File = 'data:' . $file->getClientMimeType() . ';base64,' . base64_encode(file_get_contents($file));
+
+                $fileUploaded = $this->upload($base64File, 'annonce');
                 if ($fileUploaded) {
                     $annonce->background = $fileUploaded['fileName'];
                     $annonce->save();
