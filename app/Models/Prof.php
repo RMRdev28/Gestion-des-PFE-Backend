@@ -11,7 +11,8 @@ class Prof extends User
 {
     use HasFactory;
     protected $fillable = [
-        'idUser'
+        'idUser',
+        'isValidator'
     ];
 
     public function pfeEncadre(): HasMany

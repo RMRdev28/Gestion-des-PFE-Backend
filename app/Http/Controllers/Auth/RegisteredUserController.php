@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Prof;
 use App\Models\Student;
 use App\Models\User;
@@ -52,9 +53,18 @@ class RegisteredUserController extends Controller
                 'section' => $request->section,
             ]);
         }else{
-            Prof::create([
-                'idUser' => $user->id
-            ]);
+            if($user->typeUser == 1){
+                Prof::create([
+                    'idUser' => $user->id,
+                    'isValidator' => $request->isValidator
+                ]);
+            }else{
+                Admin::create([
+                    'idUser' => $user->id,
+                    'typeAdmin' => $request->typeAdmin
+                ]);
+            }
+
         }
 
         event(new Registered($user));

@@ -1,30 +1,47 @@
 <?php
 
+
+
+
 namespace App\Traits;
+use Illuminate\Support\Facades\Storage;
 
 trait UploadTrait
 {
-    public function upload($file, $type)
+
+
+
+    public function upload($base64File, $folder)
     {
-        if ($file && $file->isValid()) {
-            $originalFileName = $file->getClientOriginalName();
+        $fileData = explode(',', $base64File);
+        $fileExtension = $this->getFileExtension($fileData[0]);
+        $fileName = $this->generateFileName($fileExtension);
+        $filePath = $folder . '/' . $fileName;
 
-            $cleanFileName = str_replace(' ', '', $originalFileName);
-            $newFileName = date('his') . $cleanFileName;
+        Storage::disk('public')->put($filePath, base64_decode($fileData[1]));
 
-            $file->storeAs($type . '/', $newFileName, 'public');
+        $fileInfo = [
+            'fileName' => $fileName,
+            'filePath' => $filePath,
+            'fileExtension' => $fileExtension,
+        ];
 
-            $fileInfo = [
-                'originalName' => $originalFileName,
-                'type' => $file->getMimeType(),
-                'size' => $file->getSize(),
-            ];
-
-            return $fileInfo;
-        }
-
-        return null;
+        return $fileInfo;
     }
+
+    private function getFileExtension($fileData)
+    {
+        $mime = explode(';', $fileData)[0];
+        $mimeParts = explode('/', $mime);
+        return end($mimeParts);
+    }
+
+    private function generateFileName($fileExtension)
+    {
+        return date('YmdHis') . '_' . uniqid() . '.' . $fileExtension;
+    }
+
+
     public function deleteFileFromStorage($fileName, $type)
     {
         $storagePath = storage_path('app/public/' . $type . '/' . $fileName);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Demmande;
+use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,31 +14,40 @@ class DemmandeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+    public function  getDemandeProp($idProp){
+        $demandes = Demmande::where('idProp',$idProp)->get();
+        return response()->json($demandes);
+    }
+
+
+
     public function store(Request $request)
     {
         $message = "";
         $status = "bad";
-        $user = Auth::user()->with(['userDetail','userDetail.binom']);
+        $user = User::where('id',Auth::user()->id)->with(['userDetail','userDetail.binom'])->first();
         $request->request->add(['idUser',$user->userDetail->binom->id]);
         $data = $request->all();
 
         $demmande = Demmande::create($data);
         if ($demmande) {
-            // if ($request->hasFile('releverNote')) {
-            //     $fileUploade = $this->upload($request->releverNote, "relever");
-            //     if ($fileUploade) {
-            //         $demmande->releverNote = $fileUploade['originalName'];
-            //         $demmande->save();
-            //         $message = "The demmande is saved";
-            //         $status = "good";
-            //     } else {
-            //         $message = "Problem uploading file";
-            //     }
-            // } else {
-            //
-            // }
-            $message = "The demmande is saved without file";
-            $status = "good";
+            if ($request->hasFile('releverNote')) {
+                $fileUploade = $this->upload($request->releverNote, "relever");
+                if ($fileUploade) {
+                    $demmande->releverNote = $fileUploade['fileName'];
+                    $demmande->save();
+                    $message = "The demmande is saved";
+                    $status = "good";
+                } else {
+                    $message = "Problem uploading file";
+                }
+            }else{
+                $message = "The demmande is saved without file";
+                $status = "good";
+            }
+
         } else {
             $message = "Error saving file";
         }

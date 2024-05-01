@@ -39,13 +39,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/propositions/{id}', [PropositionController::class, 'destroy']); // DELETE
     Route::put('/propositions/{id}', [PropositionController::class, 'edit']); // EDIT
 
-    //Demmandes
-    Route::get('/demmandes', [DemmandeController::class, 'index']); //DISPLAY ALL
-    Route::get('/demmandes/{demmande}', [DemmandeController::class, 'show']); // DISPLAY SINGL
+    //demandes
+    Route::get('/demandes', [DemmandeController::class, 'index']); //DISPLAY ALL
+    Route::get('/demandes/{demmande}', [DemmandeController::class, 'show']); // DISPLAY SINGL
 
-    // Categories
-    Route::get('/categories', [CategoryController::class, 'index']); // DISPLAY ALL
-    Route::get('/categories/{id}', [CategoryController::class, 'show']); // DISPLAY SINGL
+    // category
+    Route::get('/category', [CategoryController::class, 'index']); // DISPLAY ALL
+    Route::get('/category/{id}', [CategoryController::class, 'show']); // DISPLAY SINGL
 
 
     // Pfes
@@ -71,9 +71,9 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     //Category Routes
-    Route::post('/categories', [CategoryController::class, 'store']); // ADD
-    Route::put('/categories/{id}', [CategoryController::class, 'edit']);// EDIT
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);// DELETE
+    Route::post('/category', [CategoryController::class, 'store']); // ADD
+    Route::put('/category/{id}', [CategoryController::class, 'edit']);// EDIT
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy']);// DELETE
 
     // Pfe Route
     Route::post('/pfes', [PfeController::class, 'store']); // ADD
@@ -94,10 +94,10 @@ Route::middleware(['auth:sanctum', 'prof'])->group(function () {
 
 // STUDENT CAN DO:
 Route::middleware(['auth:sanctum', 'student'])->group(function () {
-    // Demmandes
-    Route::post('/demmandes', [DemmandeController::class, 'store']); // ADD
-    Route::delete('/demmandes/{demmande}', [DemmandeController::class, 'destroy']); // DELETE
-    Route::put('/demmandes/{demmande}', [DemmandeController::class, 'edit']); // EDIT
+    // demandes
+    Route::post('/demandes', [DemmandeController::class, 'store']); // ADD
+    Route::delete('/demandes/{demmande}', [DemmandeController::class, 'destroy']); // DELETE
+    Route::put('/demandes/{demmande}', [DemmandeController::class, 'edit']); // EDIT
 
     //Suivis
     Route::get('/suivis', [SuiviPfeController::class, 'mesSuivis']); // DISPLAY SUIVIS
@@ -114,3 +114,4 @@ Route::middleware(['auth:sanctum', 'student'])->group(function () {
     Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
 
 });
+
