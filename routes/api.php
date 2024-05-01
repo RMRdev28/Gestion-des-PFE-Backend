@@ -34,6 +34,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
     // Logout
 
+    Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
+    Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
+    Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
+    Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
+    Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
+    Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
     // Logged User
@@ -80,14 +88,7 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 
-    Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
-    Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
-    Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
-    Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
-    Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
-    Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
-    Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
-    Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+
 
     //Category Routes
     Route::post('/category', [CategoryController::class, 'store']); // ADD
@@ -143,15 +144,15 @@ Route::middleware(['auth:sanctum', 'student'])->group(function () {
     Route::post('/suivis', [SuiviPfeController::class, 'store']); // ADD
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']);// DISPLAY SINGL
 
-    // Binoms
-    Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
-    Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
-    Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
-    Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
-    Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
-    Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
-    Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
-    Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+    // Binoms////
+   // Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    //Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    //Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
+   // Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
+   // Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
+   // Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
+   // Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
+   // Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
 
 });
 
