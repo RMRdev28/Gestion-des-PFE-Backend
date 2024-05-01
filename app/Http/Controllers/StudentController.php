@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,7 +13,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = User::where('typeUser',0)->with(['userDetail'])->get();
+        return response()->json($students);
     }
 
     /**

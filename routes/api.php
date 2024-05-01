@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -7,7 +8,9 @@ use App\Http\Controllers\BinomController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DemmandeController;
 use App\Http\Controllers\PfeController;
+use App\Http\Controllers\ProfController;
 use App\Http\Controllers\PropositionController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SuiviPfeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -27,7 +30,10 @@ use Illuminate\Support\Facades\Route;
 
 // AUTHENTIFIED USER CAN DO :
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
+    Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
     // Logout
+
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
     // Logged User
@@ -85,12 +91,19 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     // Annonces
     Route::post('/annonces', [AnnonceController::class, 'store']); //ADD
-    Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
-    Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
+
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/admins', [AdminController::class, 'index']);
+    Route::get('/users/students', [StudentController::class, 'index']);
+    Route::get('/users/profs', [ProfController::class, 'index']);
+
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'edit']); // EDIT
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
+
+
 
 
 });

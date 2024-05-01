@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -12,7 +13,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admins = User::where('typeUser',-1)->with(['userDetail'])->get();
+        return response()->json($admins);
     }
 
     /**

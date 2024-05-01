@@ -16,8 +16,9 @@ class DemmandeController extends Controller
      */
 
 
-    public function  getDemandeProp($idProp){
-        $demandes = Demmande::where('idProp',$idProp)->get();
+    public function getDemandeProp($idProp)
+    {
+        $demandes = Demmande::where('idProp', $idProp)->get();
         return response()->json($demandes);
     }
 
@@ -29,14 +30,16 @@ class DemmandeController extends Controller
         $status = "bad";
 
 
-
-        $user = User::where('id',Auth::user()->id)->with(['userDetail','userDetail.binom'])->first();
+        $user = User::where('id', Auth::user()->id)->with(['userDetail', 'userDetail.binom'])->first();
         $request->merge(['idBinom' => $user->userDetail->binom->id]);
         $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
             if ($request->hasFile('releverNote')) {
-                $fileUploade = $this->upload($request->releverNote, "relever");
+                $file = $request->file('releverNote');
+                $base64File = 'data:' . $file->getClientMimeType() . ';base64,' . base64_encode(file_get_contents($file));
+
+                $fileUploade = $this->upload($base64File, "relever");
                 if ($fileUploade) {
                     $demmande->releverNote = $fileUploade['fileName'];
                     $demmande->save();
@@ -45,7 +48,7 @@ class DemmandeController extends Controller
                 } else {
                     $message = "Problem uploading file";
                 }
-            }else{
+            } else {
                 $message = "The demmande is saved without file";
                 $status = "good";
             }
@@ -77,8 +80,8 @@ class DemmandeController extends Controller
     {
         $message = "";
         $status = "bad";
-        $user = Auth::user()->with(['userDetail','userDetail.binom']);
-        $request->request->add(['idUser',$user->userDetail->binom->id]);
+        $user = Auth::user()->with(['userDetail', 'userDetail.binom']);
+        $request->request->add(['idUser', $user->userDetail->binom->id]);
         $data = $request->all();
         if ($demmande->update($data)) {
             if ($request->hasFile('releverNote')) {
@@ -97,7 +100,7 @@ class DemmandeController extends Controller
                     $message = "Erro deliting file";
                 }
 
-            }else{
+            } else {
                 $message = "The demmande is updated seccessfully";
                 $status = "good";
             }
@@ -119,12 +122,12 @@ class DemmandeController extends Controller
     {
         $message = "";
         $status = "bad";
-        $fileDeleted = $this->deleteFileFromStorage($demmande->releverNote,'relever');
-        if($fileDeleted){
+        $fileDeleted = $this->deleteFileFromStorage($demmande->releverNote, 'relever');
+        if ($fileDeleted) {
             $demmande->delete();
             $message = "The demmande is delted secssfully";
             $status = "good";
-        }else{
+        } else {
             $message = "Error deleting file";
         }
         return response()->json([
