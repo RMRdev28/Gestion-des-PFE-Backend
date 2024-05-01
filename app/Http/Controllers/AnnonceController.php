@@ -116,8 +116,9 @@ class AnnonceController extends Controller
     {
         $message = "";
         $status = "bad";
+        $annonce->delete();
         if($this->deleteFileFromStorage($annonce->background,'annonce')){
-            $annonce->delete();
+
             $message = "The annonce is delted secssfully";
             $status = "good";
         }else{
