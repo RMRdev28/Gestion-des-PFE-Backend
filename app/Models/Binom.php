@@ -22,6 +22,27 @@ class Binom extends Model
         return $this->belongsTo(User::class, 'idEns','id');
     }
 
+
+    /**
+     * Get the first student associated with the Binom
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function student1(): HasOne
+    {
+        return $this->hasOne(Student::class, 'id', 'idEtu1');
+    }
+
+    /**
+     * Get the second student associated with the Binom
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function student2(): HasOne
+    {
+        return $this->hasOne(Student::class, 'id', 'idEtu2');
+    }
+
     /**
      * Get all of the demmades for the Binom
      *

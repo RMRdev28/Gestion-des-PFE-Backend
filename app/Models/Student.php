@@ -30,7 +30,15 @@ class Student extends User
         return $this->hasMany(Binom::class, 'idEtu1', 'id');
     }
 
-
+    /**
+     * Get the user associated with the Student
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'idUser', 'id');
+    }
     /**
      * Get all of the binomDemandes for the Student
      *

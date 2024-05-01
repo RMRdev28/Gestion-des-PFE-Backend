@@ -90,7 +90,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'edit']); // EDIT
 
-    Route::post('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
+    Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
 
 
 });
@@ -102,7 +102,7 @@ Route::middleware(['auth:sanctum', 'prof'])->group(function () {
     Route::post('/suivis/note', [SuiviPfeController::class, 'noteEssaie']); // ADD NOTE
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']); // DISPLAY SINGL
 
-    Route::post('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']); // ADD
+    Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']); // ADD
 
 
 
@@ -121,6 +121,7 @@ Route::middleware(['auth:sanctum', 'student'])->group(function () {
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']);// DISPLAY SINGL
 
     // Binoms
+    Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
     Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
     Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
     Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST

@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Auth;
 class BinomController extends Controller
 {
     use SendEmailTrait, NotifyTrait;
+
+
+    public function getListBinomTwoByTwo(){
+        $binoms = Binom::with(['student1','student2','student2.user','student2.user'])->where('type','valid')->get();
+        return response()->json($binoms);
+    }
     public function getListBinoms()
     {
         $users = Student::where('id', '<>', Auth::user()->userDetail->id)->where('haveBinom', -1)->where('level', Auth::user()->userDetail->level)->where('specialite', Auth::user()->specialite)->get();
