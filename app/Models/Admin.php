@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Admin extends Model
 {
@@ -13,4 +14,9 @@ class Admin extends Model
         'idUser',
         'typeAdmin'
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'idUser', 'id');
+    }
 }
