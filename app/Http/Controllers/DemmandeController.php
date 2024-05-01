@@ -18,7 +18,7 @@ class DemmandeController extends Controller
 
     public function getDemandeProp($idProp)
     {
-        $demandes = Demmande::where('idProp', $idProp)->get();
+        $demandes = Demmande::where('idProp', $idProp)->with(['binom','binom.student1','binom.student2','binom.student1.user','binom.student2.user'])->get();
         return response()->json($demandes);
     }
 
