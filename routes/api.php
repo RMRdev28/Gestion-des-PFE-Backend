@@ -79,6 +79,8 @@ Route::middleware(['guest'])->group(function () {
 // ADMIN CAN DO:
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
+
+    Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
     //Category Routes
     Route::post('/category', [CategoryController::class, 'store']); // ADD
     Route::put('/category/{id}', [CategoryController::class, 'edit']);// EDIT
