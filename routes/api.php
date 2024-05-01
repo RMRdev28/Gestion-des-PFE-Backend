@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BinomController;
@@ -38,6 +39,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/propositions/{id}', [PropositionController::class, 'show']);// DISPLAY SINGLE
     Route::delete('/propositions/{id}', [PropositionController::class, 'destroy']); // DELETE
     Route::put('/propositions/{id}', [PropositionController::class, 'edit']); // EDIT
+
+    // Annonces
+    Route::post('/annonces', [AnnonceController::class, 'store']); //ADD
+    Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
+    Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
+    Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
+    Route::put('/annonces/{annonce}', [AnnonceController::class, 'edit']); // EDIT
 
     //demandes
     Route::get('/demandes', [DemmandeController::class, 'index']); //DISPLAY ALL

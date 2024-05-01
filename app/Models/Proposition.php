@@ -22,6 +22,7 @@ class Proposition extends Model
         'description',
         'type',
         'status',
+        'level',
     ];
 
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->enum('type',['entreprise','prof','student']);
+            $table->enum('level',['l3','m2']);
             $table->tinyInteger('status')->default(0); // 1 accepted 0 not yet // -1 rejected
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

@@ -32,20 +32,20 @@ class AnnonceController extends Controller
         $data = $request->all();
         $annonce = Annonce::create($data);
         if ($annonce) {
-            // if ($request->hasFile('background')) {
-            //     $fileUploaded = $this->upload($request->background, 'annonce');
-            //     if ($fileUploaded) {
-            //         $annonce->background = $fileUploaded['originalName'];
-            //         $annonce->save();
-            //         if ($request->notify == true) {
-            //             $mail = new newAnnonce($annonce);
-            //             $users = User::where('typeUser', $annonce->type)->get();
-            //             foreach ($users as $user) {
-            //                 $this->sendEmail($user->email, $mail);
-            //             }
-            //         }
-            //     }
-            // }
+            if ($request->hasFile('background')) {
+                $fileUploaded = $this->upload($request->background, 'annonce');
+                if ($fileUploaded) {
+                    $annonce->background = $fileUploaded['fileName'];
+                    $annonce->save();
+                    if ($request->notify == true) {
+                        $mail = new newAnnonce($annonce);
+                        $users = User::where('typeUser', $annonce->type)->get();
+                        foreach ($users as $user) {
+                            $this->sendEmail($user->email, $mail);
+                        }
+                    }
+                }
+            }
             $message = "The annonce is uploaded secssfully";
             $status = "good";
         } else {
@@ -75,25 +75,25 @@ class AnnonceController extends Controller
         $message = "";
         $status = "bad";
         $data = $request->all();
-        if ($annonce->update()) {
-            // if ($request->hasFile('background')) {
-            //     $fileUploaded = $this->upload($request->background, 'annonce');
-            //     if ($fileUploaded) {
-            //         $fileDelted = $this->deleteFileFromStorage($annonce->background, 'annonce');
-            //         if ($fileDelted) {
-            //             $annonce->background = $fileUploaded['originalName'];
-            //             $annonce->save();
-            //             if ($request->notify == true) {
-            //                 $mail = new newAnnonce($annonce);
-            //                 $users = User::where('typeUser', $annonce->type)->get();
-            //                 foreach ($users as $user) {
-            //                     $this->sendEmail($user->email, $mail);
-            //                 }
-            //             }
-            //         }
+        if ($annonce->update($data)) {
+            if ($request->hasFile('background')) {
+                $fileUploaded = $this->upload($request->background, 'annonce');
+                if ($fileUploaded) {
+                    $fileDelted = $this->deleteFileFromStorage($annonce->background, 'annonce');
+                    if ($fileDelted) {
+                        $annonce->background = $fileUploaded['fileName'];
+                        $annonce->save();
+                        if ($request->notify == true) {
+                            $mail = new newAnnonce($annonce);
+                            $users = User::where('typeUser', $annonce->type)->get();
+                            foreach ($users as $user) {
+                                $this->sendEmail($user->email, $mail);
+                            }
+                        }
+                    }
 
-            //     }
-            // }
+                }
+            }
             $message = "The anonce is edited secessfuly";
             $status = "good";
         }else{
@@ -113,7 +113,7 @@ class AnnonceController extends Controller
     {
         $message = "";
         $status = "bad";
-        if(true || $this->deleteFileFromStorage($annonce->background,'annonce')){
+        if($this->deleteFileFromStorage($annonce->background,'annonce')){
             $annonce->delete();
             $message = "The annonce is delted secssfully";
             $status = "good";
