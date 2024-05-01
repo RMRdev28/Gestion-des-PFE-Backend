@@ -81,6 +81,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 
     Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM
+    Route::post('/binoms/request', [BinomController::class, 'sendBinomRequest']);// SEND BINOM REQUEST
+    Route::get('/binoms/request/list', [BinomController::class, 'allBinomRequest']);// DISPLAY LIST OF REQUEST
+    Route::post('/binoms/request/cancel/{id}', [BinomController::class, 'cancelRequest']);// CANCLE A REQUEST
+    Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
+    Route::post('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
+    Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+
     //Category Routes
     Route::post('/category', [CategoryController::class, 'store']); // ADD
     Route::put('/category/{id}', [CategoryController::class, 'edit']);// EDIT
