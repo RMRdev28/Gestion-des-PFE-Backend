@@ -13,6 +13,7 @@ use App\Http\Controllers\PropositionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SuiviPfeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ValidationPfeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -99,6 +100,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/pfes', [PfeController::class, 'store']); // ADD
     Route::put('/pfes/{pfe}', [CategoryController::class, 'edit']); // EDIT
     Route::delete('/pfes/{pfe}', [CategoryController::class, 'destroy']); //DELETE
+
+    Route::post('/pfes/validators', [ValidationPfeController::class, 'store']); // ADD
+    Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']); // ADD
+
 
     // Annonces
     Route::post('/annonces', [AnnonceController::class, 'store']); //ADD

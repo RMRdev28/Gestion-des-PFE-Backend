@@ -24,18 +24,29 @@ class ValidationPfeController extends Controller
      */
     public function store(Request $request)
     {
-        $prof = Prof::find($request->idProf);
-        $prof->isValidator == 1;
-        if($prof->save()){
-            return response()->json([
-                'message'=> "The prof is a valdator now",
-                'status' => "good"
-            ]);
+
+        $errors = [];
+        foreach($request->profs as $prof){
+
+            $prof = Prof::find($request->idProf);
+            $prof->isValidator == 1;
+            if(!$prof->save()){
+                $errors[] = $prof->name;
+            }
+        }
+        if(count($errors) > 0){
+            $message = "Not all selected prof are validated";
+            $status = "bad";
+        }else{
+            $message = "good";
+            $status = "good";
         }
         return response()->json([
-            'message'=> "Problem in valiating prof",
-            'status' => "bed"
+            'message'=> $message,
+            'status' => $status,
+            'errors' => $errors
         ]);
+
 
     }
 }
