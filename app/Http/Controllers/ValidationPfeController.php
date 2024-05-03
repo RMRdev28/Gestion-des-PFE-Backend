@@ -13,7 +13,7 @@ class ValidationPfeController extends Controller
      */
     public function index()
     {
-        $validateursPfe  = Prof::where('isValidator',1)->get();
+        $validateursPfe  = Prof::where('isValidator',1)->with(['user'])->get();
         return response()->json($validateursPfe);
     }
 

@@ -22,7 +22,15 @@ class Prof extends User
     }
 
 
-
+   /**
+     * Get the user associated with the Prof
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'idUser', 'id');
+    }
 
     public function binomsEncadre()
     {
@@ -66,8 +74,4 @@ class Prof extends User
     }
 
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'idUser', 'id');
-    }
 }
