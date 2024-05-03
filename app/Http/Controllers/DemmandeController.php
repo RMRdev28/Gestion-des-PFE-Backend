@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RejectDemande;
 use App\Models\Demmande;
 use App\Models\Pfe;
 use App\Models\Proposition;
 use App\Models\User;
+use App\Traits\SendEmailTrait;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DemmandeController extends Controller
 {
-    use UploadTrait;
+    use UploadTrait,SendEmailTrait;
     /**
      * Store a newly created resource in storage.
      */
@@ -65,12 +67,32 @@ class DemmandeController extends Controller
 
     }
 
-    public function acceptDemande(Request $request){
+    // ki l binom yb3t demande bach yrfdha l prof wla y9blha
+    public function acceptOrRejectDemande(Request $request){
         $message = "";
         $status = "bad";
-        $demmande = Demmande::find($request->idDemmande);
+        $demmande = Demmande::where('id',$request->idDemmande)->with(['binom','binom.student1','binom.student2','binom.student1.user','binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
-        $pfe  = new Pfe();
+        $user = User::find($proposition->idUser);
+        $student1 = $demmande->binom->student1->user;
+        $student2 = $demmande->binom->student2->user;
+        if($request->status == 0){
+            if($demmande->delete()){
+                $mailAbleClass = new RejectDemande($user, $student1, $proposition);
+                $this->sendEmail($student1->email, $mailAbleClass);
+                $mailAbleClass = new RejectDemande($user, $student2, $proposition);
+                $this->sendEmail($student2->email, $mailAbleClass);
+                $message = "The demmande is rejected";
+                $status = "good";
+            }else{
+                $message = "Error rejecting demmande";
+            }
+            return response()->json([
+                'message' => $message,
+                'status' => $status
+            ]);
+        }else{
+            $pfe  = new Pfe();
         $pfe->title = $proposition->title;
         $pfe->idBinom = $proposition;
         if($proposition->type == "extrne"){
@@ -95,6 +117,11 @@ class DemmandeController extends Controller
             'message' => $message,
             'status' => $status
         ]);
+        }
+
+
+
+
     }
 
     /**
