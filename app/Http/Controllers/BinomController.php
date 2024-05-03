@@ -25,7 +25,8 @@ class BinomController extends Controller
     }
     public function getListBinoms()
     {
-        $users = Student::where('idUser', '<>', Auth::user()->id)->where('haveBinom', -1)->where('level', Auth::user()->userDetail->level)->where('specialite', Auth::user()->specialite)->get();
+        $student = Student::where('idUser',Auth::user()->id)->first();
+        $users = Student::where('idUser', '<>', Auth::user()->id)->where('haveBinom', -1)->where('level',$student->level)->where('specialite', $student->specialite)->get();
         return response()->json($users);
     }
 
