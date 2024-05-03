@@ -127,7 +127,7 @@ class BinomController extends Controller
         $binom = Binom::find($id);
         $requester = User::find($binom->idEtu1);
         $binomUser = User::find($binom->idEtu2);
-        if ($request->type == -1) {
+        if ($request->type == 0) {
             if ($binom->delete()) {
                 $mailToUser = new BinomRequestRejected($binomUser, $requester);
                 if ($this->sendEmail($requester->email, $mailToUser)) {
