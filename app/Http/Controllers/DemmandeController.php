@@ -77,7 +77,7 @@ class DemmandeController extends Controller
         $demmande = Demmande::where('id', $request->idDemmande)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
         $user = User::find($proposition->idUser);
-        $prof = Prof::where('idUser', $user->id);
+        $prof = Prof::where('idUser', $user->id)->first();
         $student1 = $demmande->binom->student1->user;
         $student2 = $demmande->binom->student2->user;
         if ($request->status == 0) {
