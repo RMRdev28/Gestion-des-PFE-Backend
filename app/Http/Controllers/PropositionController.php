@@ -21,7 +21,7 @@ class PropositionController extends Controller
         if($id == null){
             return Proposition::with(['demmandes','categories','details'])->get();
         }else{
-            return Proposition::where('id',$id)->with(['demmandes','categories','details','demmandes.binom','demmandes.binom.student1','demmandes.binom.student2','demmandes.binom.student1.user','demmandes.binom.student2.user'])->get();
+            return Proposition::where('id',$id)->with(['demmandes','categories','details','demmandes.binom','demmandes.binom.student1','demmandes.binom.student2','demmandes.binom.student1.user','demmandes.binom.student2.user'])->first();
         }
      }
 
