@@ -121,7 +121,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
-    Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
+    Route::post('/demandes/decision', [DemmandeController::class, 'acceptOrRejectDemande']);
 
 
 
