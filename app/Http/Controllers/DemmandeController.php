@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AcceptDemande;
 use App\Mail\RejectDemande;
 use App\Models\Demmande;
 use App\Models\Pfe;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DemmandeController extends Controller
 {
-    use UploadTrait,SendEmailTrait;
+    use UploadTrait, SendEmailTrait;
     /**
      * Store a newly created resource in storage.
      */
@@ -23,7 +24,7 @@ class DemmandeController extends Controller
 
     public function getDemandeProp($idProp)
     {
-        $demandes = Demmande::where('idProp', $idProp)->with(['binom','binom.student1','binom.student2','binom.student1.user','binom.student2.user'])->get();
+        $demandes = Demmande::where('idProp', $idProp)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->get();
         return response()->json($demandes);
     }
 
@@ -69,58 +70,63 @@ class DemmandeController extends Controller
     }
 
     // ki l binom yb3t demande bach yrfdha l prof wla y9blha
-    public function acceptOrRejectDemande(Request $request){
+    public function acceptOrRejectDemande(Request $request)
+    {
         $message = "";
         $status = "bad";
-        $demmande = Demmande::where('id',$request->idDemmande)->with(['binom','binom.student1','binom.student2','binom.student1.user','binom.student2.user'])->first();
+        $demmande = Demmande::where('id', $request->idDemmande)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
         $user = User::find($proposition->idUser);
-        $prof = Prof::where('idUser',$user->id);
+        $prof = Prof::where('idUser', $user->id);
         $student1 = $demmande->binom->student1->user;
         $student2 = $demmande->binom->student2->user;
-        if($request->status == 0){
-            if($demmande->delete()){
+        if ($request->status == 0) {
+            if ($demmande->delete()) {
                 $mailAbleClass = new RejectDemande($user, $student1, $proposition);
                 $this->sendEmail($student1->email, $mailAbleClass);
                 $mailAbleClass = new RejectDemande($user, $student2, $proposition);
                 $this->sendEmail($student2->email, $mailAbleClass);
                 $message = "The demmande is rejected";
                 $status = "good";
-            }else{
+            } else {
                 $message = "Error rejecting demmande";
             }
             return response()->json([
                 'message' => $message,
                 'status' => $status
             ]);
-        }else{
-            $pfe  = new Pfe();
+        } else {
+            $pfe = new Pfe();
             $pfe->title = $proposition->title;
             $pfe->idBinom = $demmande->binom->id;
-        if($proposition->type == "extrne"){
-            $pfe->need_suivis = 1;
-        }else{
-            $pfe->need_suivis = 0;
-        }
-        $pfe->description = $proposition->description;
-        $pfe->year = 2024;
-        $pfe->idEns = $prof->id;
-        $pfe->level = $proposition->level;
-        $pfe->branch = $proposition->branch;
-        $pfe->note = 0;
-        $pfe->branch = $student1->$demmande->binom->student1->specialite;
+            if ($proposition->type == "externe") {
+                $pfe->need_suivis = 1;
+            } else {
+                $pfe->need_suivis = 0;
+            }
+            $pfe->description = $proposition->description;
+            $pfe->year = 2024;
+            $pfe->idEns = $prof->id;
+            $pfe->level = $proposition->level;
+            $pfe->note = 0;
+            $pfe->branch = $student1->$demmande->binom->student1->specialite;
+            if ($pfe->save()) {
+                if ($demmande->delete()) {
+                    $mailAbleClass = new AcceptDemande($user, $student1, $proposition);
+                    $this->sendEmail($student1->email, $mailAbleClass);
+                    $mailAbleClass = new AcceptDemande($user, $student2, $proposition);
+                    $this->sendEmail($student2->email, $mailAbleClass);
+                    $message = "The demmande is accepted";
+                    $status = "good";
+                } else {
+                    $message = "Error accepting demmande";
+                }
+                return response()->json([
+                    'message' => $message,
+                    'status' => $status
+                ]);
+            }
 
-        $demmande->status = 1;
-        if($demmande->save()){
-            $message = "The demmande is accepted";
-            $status = "good";
-        }else{
-            $message = "Error accepting demmande";
-        }
-        return response()->json([
-            'message' => $message,
-            'status' => $status
-        ]);
         }
 
 
