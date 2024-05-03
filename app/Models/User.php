@@ -72,16 +72,19 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
+    /**
+     * Get the user detail associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function userDetail(): HasOne
     {
         if ($this->typeUser == 0) {
             return $this->hasOne(Student::class, 'idUser', 'id');
+        } else if ($this->typeUser == 1) {
+            return $this->hasOne(Prof::class, 'idUser', 'id');
         } else {
-            if ($this->typeUser == 1) {
-                return $this->hasOne(Prof::class, 'idUser', 'id');
-            } else {
-                return $this->hasOne(Admin::class, 'idUser', 'id');
-            }
+            return $this->hasOne(Admin::class, 'idUser', 'id');
         }
     }
 
