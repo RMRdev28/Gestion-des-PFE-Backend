@@ -38,7 +38,8 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        //
+        $prof= User::where('id',$prof->idUser)->with(['userDetail','userDetail.getNumberPEY'])->get();
+        return response()->json($prof);
     }
 
     /**

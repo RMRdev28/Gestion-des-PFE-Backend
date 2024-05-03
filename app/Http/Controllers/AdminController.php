@@ -38,7 +38,8 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        //
+        $admin= User::where('id',$admin->idUser)->with(['userDetail'])->get();
+        return response()->json($admin);
     }
 
     /**

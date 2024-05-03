@@ -111,8 +111,11 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/admins', [AdminController::class, 'index']);
+    Route::get('/users/admins/{admin}', [AdminController::class, 'show']);
     Route::get('/users/students', [StudentController::class, 'index']);
+    Route::get('/users/students/{student}', [StudentController::class, 'show']);
     Route::get('/users/profs', [ProfController::class, 'index']);
+    Route::get('/users/profs/{prof}', [ProfController::class, 'show']);
 
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT

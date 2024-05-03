@@ -38,7 +38,8 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        $student= User::where('id',$student->idUser)->with(['userDetail'])->get();
+        return response()->json($student);
     }
 
     /**
