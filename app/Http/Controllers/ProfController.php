@@ -14,7 +14,7 @@ class ProfController extends Controller
 
     public function index()
     {
-        $profs = User::with(['profDetail','profDetail.pfeEncadre'])->where('typeUser',1)->get();
+        $profs = User::where('typeUser',1)->with(['profDetail','profDetail.pfeEncadre'])->get();
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->profDetail->pfeEncadre);
         }

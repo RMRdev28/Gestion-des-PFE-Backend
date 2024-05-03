@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Demmande;
+use App\Models\Pfe;
+use App\Models\Proposition;
 use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -61,6 +63,38 @@ class DemmandeController extends Controller
             'status' => $status
         ]);
 
+    }
+
+    public function acceptDemande(Request $request){
+        $message = "";
+        $status = "bad";
+        $demmande = Demmande::find($request->idDemmande);
+        $proposition = Proposition::find($demmande->idProp);
+        $pfe  = new Pfe();
+        $pfe->title = $proposition->title;
+        $pfe->idBinom = $proposition;
+        if($proposition->type == "extrne"){
+            $pfe->need_suivis = 1;
+        }else{
+            $pfe->need_suivis = 0;
+        }
+        $pfe->description = $proposition->description;
+        $pfe->year = 2024;
+        $pfe->level = $proposition->level;
+        $pfe->branch = $proposition->branch;
+        $pfe->note = 0;
+
+        $demmande->status = 1;
+        if($demmande->save()){
+            $message = "The demmande is accepted";
+            $status = "good";
+        }else{
+            $message = "Error accepting demmande";
+        }
+        return response()->json([
+            'message' => $message,
+            'status' => $status
+        ]);
     }
 
     /**
