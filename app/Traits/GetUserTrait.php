@@ -11,22 +11,33 @@ trait GetUserTrait{
         $user = User::where('id', Auth::user()->id)->first();
 
         if ($user) {
-            $user->load([
-                'propositions',
-                'userDetail',
-                'userDetail.binomRequest' => function ($query) {
-                    $query->where('type', 'request');
-                },
-                'userDetail.binomDemandes' => function ($query) {
-                    $query->where('type', 'request');
-                },
-                'userDetail.binom' => function ($query){
-                    $query->where('type', 'valid');
-                },
-                // 'userDetail.binom2' => function ($query){
-                //     $query->where('type', 'valid');
-                // }
-            ]);
+            if($user->typeUser == 0){
+                $user->load([
+                    'propositions',
+                    'studentDetail',
+                    'studentDetail.binomRequest' => function ($query) {
+                        $query->where('type', 'request');
+                    },
+                    'studentDetail.binomDemandes' => function ($query) {
+                        $query->where('type', 'request');
+                    },
+                    'studentDetail.binom' => function ($query){
+                        $query->where('type', 'valid');
+                    },
+
+                ]);
+            }else if($user->typeUser == 0){
+                $user->load([
+                    'propositions',
+                    'profDetail',
+                ]);
+            }else{
+                $user->load([
+                    'propositions',
+                    'adminDetail',
+                ]);
+            }
+
 
 
         }
