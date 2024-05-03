@@ -109,7 +109,7 @@ class DemmandeController extends Controller
             $pfe->idEns = $prof->id;
             $pfe->level = $proposition->level;
             $pfe->note = 0;
-            $pfe->branch = $student1->$demmande->binom->student1->specialite;
+            $pfe->branch = $demmande->binom->student1->specialite;
             if ($pfe->save()) {
                 if ($demmande->delete()) {
                     $mailAbleClass = new AcceptDemande($user, $student1, $proposition);
