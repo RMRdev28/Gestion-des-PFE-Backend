@@ -13,7 +13,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = User::where('typeUser',0)->with(['userDetail'])->get();
+        $students = User::where('typeUser',0)->with(['studentDetail'])->get();
         return response()->json($students);
     }
 
@@ -38,7 +38,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $student= User::where('id',$student->idUser)->with(['userDetail'])->get();
+        $student= User::where('id',$student->idUser)->with(['studentDetail'])->get();
         return response()->json($student);
     }
 

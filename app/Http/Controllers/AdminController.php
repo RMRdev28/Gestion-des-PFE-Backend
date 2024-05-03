@@ -13,7 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = User::where('typeUser',-1)->with(['userDetail'])->get();
+        $admins = User::where('typeUser',-1)->with(['studentDetail'])->get();
         return response()->json($admins);
     }
 
@@ -38,7 +38,7 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        $admin= User::where('id',$admin->idUser)->with(['userDetail'])->get();
+        $admin= User::where('id',$admin->idUser)->with(['adminDetail'])->get();
         return response()->json($admin);
     }
 

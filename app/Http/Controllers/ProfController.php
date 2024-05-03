@@ -11,9 +11,13 @@ class ProfController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        $profs = User::with(['userDetail','userDetail.getNumberPEY'])->where('typeUser',1)->get();
+        $profs = User::with(['profDetail','profDetail.pfeEncadre'])->where('typeUser',1)->get();
+        foreach ($profs as $prof) {
+            $prof->nbrPfeEncadre = count($prof->profDetail->pfeEncadre);
+        }
         return response()->json($profs);
     }
 
@@ -38,7 +42,7 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        $prof= User::where('id',$prof->idUser)->with(['userDetail','userDetail.getNumberPEY'])->get();
+        $prof= User::where('id',$prof->idUser)->with(['profDetail'])->get();
         return response()->json($prof);
     }
 

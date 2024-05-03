@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Binom;
 use App\Models\Proposition;
@@ -34,15 +35,7 @@ class User extends Authenticatable
         'typeUser',
 
     ];
-    /**
-     * Get all of the binoms for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    // public function binoms():HasMany
-    // {
-    //     return $this->hasMany(Binom::class, 'idEns', 'id');
-    // }
+
 
     /**
      * Get all of the propostions for the User
@@ -79,14 +72,34 @@ class User extends Authenticatable
      */
     public function userDetail(): HasOne
     {
-        if ($this->typeUser == 0) {
+        // dd(Auth::user()->fname);
+        if (Auth::user()->typeUser == 0) {
+            // dd("students");
             return $this->hasOne(Student::class, 'idUser', 'id');
-        } else if ($this->typeUser == 1) {
+        } else if (Auth::user()->typeUser == 0) {
+            // dd("hello ");
             return $this->hasOne(Prof::class, 'idUser', 'id');
         } else {
+            // dd("admin ");
             return $this->hasOne(Admin::class, 'idUser', 'id');
         }
     }
+
+
+    public function profDetail():HasOne{
+
+            return $this->hasOne(Prof::class, 'idUser', 'id');
+    }
+
+    public function studentDetail():HasOne{
+
+        return $this->hasOne(Student::class, 'idUser', 'id');
+}
+public function adminDetail():HasOne{
+
+    return $this->hasOne(Admin::class, 'idUser', 'id');
+}
+
 
     /**
      * Get all of the messages for the User

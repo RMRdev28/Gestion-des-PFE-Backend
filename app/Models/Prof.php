@@ -21,9 +21,7 @@ class Prof extends User
         return $this->hasMany(Pfe::class, 'idEns', 'id');
     }
 
-    public function getNumberPEY():int{
-        return $this->pfeEncadre()->count();
-    }
+
 
 
     public function binomsEncadre()
