@@ -35,7 +35,7 @@ class DemmandeController extends Controller
 
 
         $user = User::where('id', Auth::user()->id)->with(['userDetail', 'userDetail.binom'])->first();
-        $request->merge(['idBinom' => $user->userDetail->binom->id]);
+        $request->merge(['idBinom' => $user->studentDetail->binom->id]);
         $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
