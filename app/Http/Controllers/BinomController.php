@@ -9,6 +9,7 @@ use App\Mail\NewBinomRequest;
 use App\Models\Binom;
 use App\Models\Student;
 use App\Models\User;
+use App\Traits\GetUserTrait;
 use App\Traits\NotifyTrait;
 use App\Traits\SendEmailTrait;
 use Illuminate\Http\Request;
