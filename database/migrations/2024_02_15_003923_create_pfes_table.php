@@ -14,10 +14,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idBinom');
             $table->unsignedBigInteger('idEns');
-            $table->unsignedBigInteger('jury1');
-            $table->unsignedBigInteger('jury2');
+            $table->unsignedBigInteger('jury1')->nullable();
+            $table->unsignedBigInteger('jury2')->nullable();
             $table->string('title');
-            $table->string('pfe');
             $table->integer('need_suivis')->default(0);
             $table->enum('level',['l3','m2']);
             $table->enum('status',['valide','termine','revu','pasencore'])->default('pasencore');
@@ -25,10 +24,10 @@ return new class extends Migration
             $table->text('description');
             $table->integer('year');
             $table->double('note');
-            $table->foreign('idBinom')->references('id')->on('binoms')->onDelete('cascade');
-            $table->foreign('jury1')->references('id')->on('profs')->onDelete('cascade');
-            $table->foreign('jury2')->references('id')->on('profs')->onDelete('cascade');
-            $table->foreign('idEns')->references('id')->on('profs')->onDelete('cascade');
+            $table->foreign('idBinom')->references('id')->on('binoms');
+            $table->foreign('jury1')->references('id')->on('profs');
+            $table->foreign('jury2')->references('id')->on('profs');
+            $table->foreign('idEns')->references('id')->on('profs');
 
             $table->timestamps();
         });

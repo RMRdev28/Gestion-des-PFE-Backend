@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\RejectDemande;
 use App\Models\Demmande;
 use App\Models\Pfe;
+use App\Models\Prof;
 use App\Models\Proposition;
 use App\Models\User;
 use App\Traits\SendEmailTrait;
@@ -74,6 +75,7 @@ class DemmandeController extends Controller
         $demmande = Demmande::where('id',$request->idDemmande)->with(['binom','binom.student1','binom.student2','binom.student1.user','binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
         $user = User::find($proposition->idUser);
+        $prof = Prof::where('idUser',$user->id);
         $student1 = $demmande->binom->student1->user;
         $student2 = $demmande->binom->student2->user;
         if($request->status == 0){
@@ -93,8 +95,8 @@ class DemmandeController extends Controller
             ]);
         }else{
             $pfe  = new Pfe();
-        $pfe->title = $proposition->title;
-        $pfe->idBinom = $proposition;
+            $pfe->title = $proposition->title;
+            $pfe->idBinom = $demmande->binom->id;
         if($proposition->type == "extrne"){
             $pfe->need_suivis = 1;
         }else{
@@ -102,9 +104,11 @@ class DemmandeController extends Controller
         }
         $pfe->description = $proposition->description;
         $pfe->year = 2024;
+        $pfe->idEns = $prof->id;
         $pfe->level = $proposition->level;
         $pfe->branch = $proposition->branch;
         $pfe->note = 0;
+        $pfe->branch = $student1->$demmande->binom->student1->specialite;
 
         $demmande->status = 1;
         if($demmande->save()){
