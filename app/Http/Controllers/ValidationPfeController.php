@@ -28,7 +28,7 @@ class ValidationPfeController extends Controller
         $errors = [];
         foreach($request->profs as $prof){
 
-            $prof = Prof::find($request->idProf);
+            $prof = Prof::find($prof);
             $prof->isValidator == 1;
             if(!$prof->save()){
                 $errors[] = $prof->name;
