@@ -13,7 +13,7 @@ class ProfController extends Controller
      */
     public function index()
     {
-        $profs = User::where('typeUser',1)->with(['userDetail','userDetail.getNumberPEY'])->get();
+        $profs = User::with(['userDetail','userDetail.getNumberPEY'])->where('typeUser',1)->get();
         return response()->json($profs);
     }
 
