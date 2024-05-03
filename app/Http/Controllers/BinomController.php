@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BinomController extends Controller
 {
-    use SendEmailTrait, NotifyTrait;
+    use SendEmailTrait, NotifyTrait, GetUserTrait;
 
 
     public function getListBinomTwoByTwo(){
@@ -59,24 +59,31 @@ class BinomController extends Controller
         $idBinom = $request->idBinom;
         $student = Student::find($idBinom);
         $binomUser = User::find($student->idUser);
-        $binom = new Binom();
-        // convention que l user 1 c lutilisateur qui envoi la demmande
-        $binom->idEtu1 = Auth::user()->userDetail->id;
-        $binom->idEtu2 = $idBinom;
-        $binom->type = "request";
+        $binom = Binom::where('idEtu1',$this->user()->studentDetail->id)->where('type','request')->where('idEtu2',$idBinom)->first();
+        if($binom){
+           $message = "You alrady sent a demande";
+           $status = "bad";
+        }else{
+            $binom = new Binom();
 
-        if ($binom->save()) {
-            $mailToBinom = new NewBinomRequest($binomUser, Auth::user());
-            if ($this->sendEmail($binomUser->email, $mailToBinom)) {
-                $this->notify($binomUser->id,"New Binom request","You have new binom request from :".Auth::user()->fname."-".Auth::user()->lname);
-                $message = "Request send secssfully";
-                $status = "good";
+            $binom->idEtu1 = $this->user()->studentDetail->id;
+            $binom->idEtu2 = $idBinom;
+            $binom->type = "request";
+
+            if ($binom->save()) {
+                $mailToBinom = new NewBinomRequest($binomUser, Auth::user());
+                if ($this->sendEmail($binomUser->email, $mailToBinom)) {
+                    $this->notify($binomUser->id,"New Binom request","You have new binom request from :".Auth::user()->fname."-".Auth::user()->lname);
+                    $message = "Request send secssfully";
+                    $status = "good";
+                } else {
+                    $message = "They are problem sending message";
+                }
             } else {
-                $message = "They are problem sending message";
+                $message = "They are problem save request";
             }
-        } else {
-            $message = "They are problem save request";
         }
+
         return response()->json([
             'message' => $message,
             'status' => $status
