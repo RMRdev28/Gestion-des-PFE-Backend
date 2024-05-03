@@ -94,7 +94,7 @@ class BinomController extends Controller
 
     public function allBinomRequest()
     {
-        $binomRequests = Binom::where('type', "request")->where('idEtu2', Auth::user()->userDetail->id)->with(['student2','student2.user'])->get();
+        $binomRequests = Binom::where('type', "request")->where('idEtu2', Auth::user()->userDetail->id)->with(['student1','student1.user','student2','student2.user'])->get();
         return response()->json($binomRequests);
     }
 
@@ -123,7 +123,7 @@ class BinomController extends Controller
 
     public function allBinomDemmande()
     {
-        $binomDemmandes = Binom::where('type', "request")->where('idEtu1', Auth::user()->userDetail->id)->with(['student1','student1.user'])->get();
+        $binomDemmandes = Binom::where('type', "request")->where('idEtu1', Auth::user()->userDetail->id)->with(['student1','student1.user','student1','student1.user'])->get();
         return response()->json($binomDemmandes);
     }
 
