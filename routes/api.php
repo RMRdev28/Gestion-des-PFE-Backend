@@ -121,6 +121,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
+    Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
 
 
 
@@ -135,7 +136,7 @@ Route::middleware(['auth:sanctum', 'prof'])->group(function () {
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']); // DISPLAY SINGL
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']); // ADD
-
+    Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
 
 
 });
