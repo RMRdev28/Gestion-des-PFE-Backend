@@ -28,7 +28,7 @@ trait GetUserTrait{
                 $student = Student::where('idUser',$user->id)->first();
                 // dd($student);
                 $binom = Binom::where('idEtu1',$student->id)->orWhere('idEtu2',$student->id)->where('type', 'valid')->first();
-                dd($binom);
+                // dd($binom);
                 if($binom){
                     $user->binom = $binom;
                     if($binom->idEtu1 != $student->id){
