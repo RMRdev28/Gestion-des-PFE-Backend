@@ -152,11 +152,11 @@ class BinomController extends Controller
         } else {
             $binom->type = "valid";
             if ($binom->save()) {
-                $student1 = Student::where('idUser',$binom->idEtu1)->first();
-                dd($student1);
+                $student1 = Student::find($binom->idEtu1);
+                // dd($student1);
                 $student1->haveBinom = 1;
                 $student1->save();
-                $student2 = Student::where('idUser',$binom->idEtu2)->first();
+                $student2 =Student::find($binom->idEtu2);
                 $student2->haveBinom = 1;
                 $student2->save();
                 //$mailToUser = new BinomRequestAccepted($binomUser, $requester);
