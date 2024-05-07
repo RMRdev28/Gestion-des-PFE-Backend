@@ -153,6 +153,7 @@ class BinomController extends Controller
             $binom->type = "valid";
             if ($binom->save()) {
                 $student1 = Student::where('idUser',$binom->idEtu1)->first();
+                dd($student1);
                 $student1->haveBinom = 1;
                 $student1->save();
                 $student2 = Student::where('idUser',$binom->idEtu2)->first();
