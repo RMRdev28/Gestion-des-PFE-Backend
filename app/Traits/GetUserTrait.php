@@ -12,6 +12,7 @@ trait GetUserTrait{
 
         if ($user) {
             if($user->typeUser == 0){
+
                 $user->load([
                     'propositions',
                     'studentDetail',

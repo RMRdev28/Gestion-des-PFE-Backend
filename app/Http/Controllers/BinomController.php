@@ -185,7 +185,14 @@ class BinomController extends Controller
     private function deleteAllOtherRequest($id,$idEtu1, $idEtu2)
     {
 
-        if (Binom::where('id', '!=', $id)->where('idEtu1',$idEtu1)->orWhere('idEtu1',$idEtu2)->orWhere('idEtu2',$idEtu1)->orWhere('idEtu2',$idEtu2)->delete())
+        if (Binom::where('id', '!=', $id)
+        ->where(function ($query) use ($idEtu1, $idEtu2) {
+            $query->where('idEtu1', $idEtu1)
+                  ->orWhere('idEtu1', $idEtu2)
+                  ->orWhere('idEtu2', $idEtu1)
+                  ->orWhere('idEtu2', $idEtu2);
+        })->delete())
+
             return true;
         return false;
 
