@@ -138,8 +138,9 @@ class BinomController extends Controller
         $binomUser = User::find($binom->idEtu2);
         if ($request->type == 0) {
             if ($binom->delete()) {
-                $mailToUser = new BinomRequestRejected($binomUser, $requester);
-                if ($this->sendEmail($requester->email, $mailToUser)) {
+
+                // $mailToUser = new BinomRequestRejected($binomUser, $requester);
+                if (true ) {
                     $message = "The request is rejected";
                     $status = "good";
                 } else {
@@ -151,8 +152,14 @@ class BinomController extends Controller
         } else {
             $binom->type = "valid";
             if ($binom->save()) {
-                $mailToUser = new BinomRequestAccepted($binomUser, $requester);
-                if ($this->sendEmail($requester->email, $mailToUser)) {
+                $student1 = Student::where('idUser',$requester->id)->first();
+                $student1->haveBinom= 1;
+                $student1->save();
+                $student2 = Student::where('idUser',$binomUser->id)->first();
+                $student2->haveBinom= 1;
+                $student2->save();
+                //$mailToUser = new BinomRequestAccepted($binomUser, $requester);
+                if (true) {
                     if ($this->deleteAllOtherRequest($id)) {
                         $message = "The request is accepted";
                         $status = "good";
