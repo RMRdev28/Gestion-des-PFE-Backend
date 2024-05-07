@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Traits;
+use App\Models\Binom;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,12 +24,23 @@ trait GetUserTrait{
                     'studentDetail.binomDemandes' => function ($query) {
                         $query->where('type', 'request');
                     },
-                    'studentDetail.binom' => function ($query){
-                        $query->where('type', 'valid');
-                    },
-
                 ]);
-            }else if($user->typeUser == 0){
+                $binom = Binom::where('idEtu1',$user->id)->orWhere('idEtu2',$user->id)->where('type', 'valid')->first();
+                if($binom){
+                    $user->binom = $binom;
+                    if($binom->idEtu1 != $user->id){
+                        $student = Student::find($binom->idEtu1);
+                        $binomDetail = User::find($student->idUser);
+                        $user->binomName = $binomDetail->fname;
+                        $user->binomLname = $binomDetail->lname;
+                    }else{
+                        $student = Student::find($binom->idEtu2);
+                        $binomDetail = User::find($student->idUser);
+                        $user->binomName = $binomDetail->fname;
+                        $user->binomLname = $binomDetail->lname;
+                    }
+                }
+            }else if($user->typeUser == 1){
                 $user->load([
                     'propositions',
                     'profDetail',
