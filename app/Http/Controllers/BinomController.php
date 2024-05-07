@@ -161,7 +161,7 @@ class BinomController extends Controller
                 $student2->save();
                 //$mailToUser = new BinomRequestAccepted($binomUser, $requester);
                 if (true) {
-                    if ($this->deleteAllOtherRequest($id)) {
+                    if ($this->deleteAllOtherRequest($id,$binom->idEtu1,$binom->idEtu2)) {
                         $message = "The request is accepted";
                         $status = "good";
                     } else {
@@ -182,10 +182,10 @@ class BinomController extends Controller
         ]);
     }
 
-    private function deleteAllOtherRequest($id)
+    private function deleteAllOtherRequest($id,$idEtu1, $idEtu2)
     {
 
-        if (Binom::where('id', '!=', $id)->delete())
+        if (Binom::where('id', '!=', $id)->where('idEtu1',$idEtu1)->orWhere('idEtu1',$idEtu2)->orWhere('idEtu2',$idEtu1)->orWhere('idEtu2',$idEtu2)->delete())
             return true;
         return false;
 
