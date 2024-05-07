@@ -26,6 +26,7 @@ trait GetUserTrait{
                     },
                 ]);
                 $binom = Binom::where('idEtu1',$user->id)->orWhere('idEtu2',$user->id)->where('type', 'valid')->first();
+                dd($binom);
                 if($binom){
                     $user->binom = $binom;
                     if($binom->idEtu1 != $user->id){
