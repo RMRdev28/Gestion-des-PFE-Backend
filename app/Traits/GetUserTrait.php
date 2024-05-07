@@ -25,11 +25,12 @@ trait GetUserTrait{
                         $query->where('type', 'request');
                     },
                 ]);
-                $binom = Binom::where('idEtu1',$user->id)->orWhere('idEtu2',$user->id)->where('type', 'valid')->first();
+                $student = Student::find($user->id);
+                $binom = Binom::where('idEtu1',$student->id)->orWhere('idEtu2',$student->id)->where('type', 'valid')->first();
                 dd($binom);
                 if($binom){
                     $user->binom = $binom;
-                    if($binom->idEtu1 != $user->id){
+                    if($binom->idEtu1 != $student->id){
                         $student = Student::find($binom->idEtu1);
                         $binomDetail = User::find($student->idUser);
                         $user->binomName = $binomDetail->fname;
