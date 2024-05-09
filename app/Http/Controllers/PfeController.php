@@ -24,9 +24,9 @@ class PfeController extends Controller
     public function recomandationSjtPfes(Request $request){
         $categories = "(";
         foreach ($request->categories as $category) {
-            $categories += $category." ,";
+            $categories .= $category." ,";
         }
-        $categories = ")";
+        $categories .= ")";
         $level = "2eme ane master";
         $specialite = $this->user()->studentDetail->specialite;
         if($this->user()->studentDetail->level == "l3"){
