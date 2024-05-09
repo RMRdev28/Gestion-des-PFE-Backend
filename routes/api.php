@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BinomController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DemmandeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PfeController;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\PropositionController;
@@ -33,7 +34,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
     Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
-    // Logout
+
+
+    Route::get('/notifications', [NotificationController::class, 'index']);// DISPLAY ALL NOTIFICATIONS
+    Route::post('/notifications', [NotificationController::class, 'store']);// DISPLAY ALL NOTIFICATIONS
+    Route::delete('/notifications', [NotificationController::class, 'destroy']);// DISPLAY ALL NOTIFICATIONS
+
 
     Route::get('/binoms/all', [BinomController::class, 'getListBinomTwoByTwo']); // DISPLAY LIST STUDEN HAVE NOT BINOM
     Route::get('/binoms', [BinomController::class, 'getListBinoms']); // DISPLAY LIST STUDEN HAVE NOT BINOM

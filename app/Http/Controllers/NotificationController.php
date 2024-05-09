@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $notifications = Notification::where('idUser',Auth::user()->id)->get();
+        return response()->json($notifications);
     }
 
     /**
@@ -28,15 +32,15 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->notify(Auth::user()->id,"test","notification Test");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Notification $notification)
+    public function read()
     {
-        //
+        // $this->markNotificationAsRead()
     }
 
     /**
@@ -58,8 +62,8 @@ class NotificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notification $notification)
+    public function destroy()
     {
-        //
+        $this->deleteNotification(Auth::user()->id);
     }
 }
