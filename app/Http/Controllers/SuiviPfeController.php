@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BinomAskForRdv;
+use App\Mail\ProfAccRdv;
+use App\Models\Binom;
+use App\Models\Pfe;
+use App\Models\Prof;
 use App\Models\RendezVous;
+use App\Models\Student;
 use App\Models\SuiviPfe;
+use App\Models\User;
+use App\Traits\NotifyTrait;
+use App\Traits\SendEmailTrait;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SuiviPfeController extends Controller
 {
-    use UploadTrait;
+    use UploadTrait, SendEmailTrait, NotifyTrait;
 
 
 
@@ -89,6 +98,49 @@ class SuiviPfeController extends Controller
             'pfeS' => $pfeS
         ]);
 
+    }
+
+    public function askForRdv(Request $request){
+        $rdv = new RendezVous();
+        $rdv->idBinom = $this->user()->binom->id;
+        $rdv->save();
+        $pfe = Pfe::where('idBinom', $rdv->idBinom)->first();
+        $prof = Prof::find($pfe->idEns);
+        $profUser = User::find($prof->idUser);
+        $mailAbleClass = new BinomAskForRdv($pfe->title);
+        $this->sendEmail($profUser->email,$mailAbleClass);
+        $this->notify($profUser->id, "Ask for RDV","The binom of $pfe->title Ask For RDV");
+        return response()->json([
+            'status' => 'good',
+        ]);
+
+
+    }
+
+    public function acceptRdv(Request $request){
+
+        $rdv = RendezVous::find($request->idRdv);
+        $rdv->date = $request->date;
+        $rdv->status = 1;
+        $rdv->save();
+
+        $binom = Binom::find($rdv->idBinom);
+
+        $student = Student::find($binom->idEtu1);
+        $studentUser = User::find($student->idUser);
+        $mailAbleClass = new ProfAccRdv($rdv);
+        $this->sendEmail($studentUser->email,$mailAbleClass);
+        $this->notify($studentUser->id, "Accept RDV","The Prof  Fix RDV  at  $rdv->date");
+
+        $student = Student::find($binom->idEtu2);
+        $studentUser = User::find($student->idUser);
+        $mailAbleClass = new ProfAccRdv($rdv);
+        $this->sendEmail($studentUser->email,$mailAbleClass);
+        $this->notify($studentUser->id, "Accept RDV","The Prof  Fix RDV  at  $rdv->date");
+
+        return response()->json([
+            'status' => 'good',
+        ]);
     }
 
 

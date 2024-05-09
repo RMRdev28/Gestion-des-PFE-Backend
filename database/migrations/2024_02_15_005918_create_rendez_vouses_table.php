@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rendez_vouses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idBinom');
-            $table->dateTime('date');
+            $table->dateTime('date')->nullable();
             $table->text('resume')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->foreign('idBinom')->references('id')->on('binoms')->onDelete('cascade');

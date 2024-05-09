@@ -65,6 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
+
     //demandes
     Route::get('/demandes', [DemmandeController::class, 'index']); //DISPLAY ALL
     Route::get('/demandes/{demmande}', [DemmandeController::class, 'show']); // DISPLAY SINGL
@@ -88,6 +89,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // UNAUTHNTIFIED USER CAN DO
 Route::middleware(['guest'])->group(function () {
     // Login Register
+    Route::get('/semantic', [PfeController::class, 'semanticSearchFunction']); // EDIT
     Route::post('/register', [RegisteredUserController::class, 'store']);
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
     Route::get('/send/{productName}', [BinomController::class, 'sendMailProduct']); // CHOSE BINOM FOR PERSON WHO HAVE CODE

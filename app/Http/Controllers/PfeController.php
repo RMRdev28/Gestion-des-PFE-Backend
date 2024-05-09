@@ -6,12 +6,14 @@ use App\Models\Pfe;
 use App\Models\Prof;
 use App\Traits\GetUserTrait;
 use App\Traits\UploadTrait;
+use App\Traits\SemanticSearchTrait;
 use Gemini;
 use Illuminate\Http\Request;
 
+
 class PfeController extends Controller
 {
-    use UploadTrait, GetUserTrait;
+    use UploadTrait, GetUserTrait, SemanticSearchTrait;
     /**
      * Display a listing of the resource.
      */
@@ -39,6 +41,14 @@ class PfeController extends Controller
             'data' => $result->text(),
         ]);
     }
+
+    public function semanticSearchFunction(){
+        $pdf = $this->pdfToText("pdf.pdf");
+        $data = $this->performSemanticSearch($pdf,"samsoum");
+        response()->json($data);
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
