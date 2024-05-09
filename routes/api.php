@@ -81,6 +81,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Pfes
     Route::get('/pfes', [PfeController::class, 'index']); // DISPLAY ALL
 
+    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']); // STATUS
+
     Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
 
 
@@ -118,7 +120,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     Route::post('/pfes/validators', [ValidationPfeController::class, 'store']); // ADD
     Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']); // ADD
-    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']); // STATUS
+
 
 
     // Annonces
