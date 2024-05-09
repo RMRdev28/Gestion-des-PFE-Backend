@@ -48,7 +48,7 @@ class PfeController extends Controller
     {
         $status = "";
         // dd($this->user());
-        $pfe = Pfe::where('idBinom', $this->user()->binom->id);
+        $pfe = Pfe::where('idBinom', $this->user()->binom->id)->first();
         switch ($pfe->status) {
             case 'valide':
                 $status = "Valide";
