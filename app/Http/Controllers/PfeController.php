@@ -23,15 +23,39 @@ class PfeController extends Controller
         return response()->json($pfes);
     }
 
-    public function recomandationSjtPfes(Request $request){
+
+    public function pfeStatus()
+    {
+        $status = "";
+        $pfe = Pfe::where('idBinom', $this->user()->binom->id);
+        switch ($pfe->status) {
+            case 'valide':
+                $status = "Valide";
+                break;
+            case 'termine':
+                $status = "Termine";
+                break;
+            case 'revu':
+                $status = "Demmande de modification";
+                break;
+            default:
+                $status = "Pas encore valide";
+                break;
+        }
+
+        return response()->json($status);
+    }
+
+    public function recomandationSjtPfes(Request $request)
+    {
         $categories = "(";
         foreach ($request->categories as $category) {
-            $categories .= $category." ,";
+            $categories .= $category . " ,";
         }
         $categories .= ")";
         $level = "2eme ane master";
         $specialite = $this->user()->studentDetail->specialite;
-        if($this->user()->studentDetail->level == "l3"){
+        if ($this->user()->studentDetail->level == "l3") {
             $level = "3eme anne licence";
         }
 
@@ -42,9 +66,10 @@ class PfeController extends Controller
         ]);
     }
 
-    public function semanticSearchFunction(){
+    public function semanticSearchFunction()
+    {
         $pdf = $this->pdfToText("pdf.pdf");
-        $data = $this->performSemanticSearch($pdf,"samsoum");
+        $data = $this->performSemanticSearch($pdf, "samsoum");
         response()->json($data);
     }
 
@@ -80,7 +105,8 @@ class PfeController extends Controller
 
     }
 
-    public function selectionerPfePourCommissionSuivis(Request $request){
+    public function selectionerPfePourCommissionSuivis(Request $request)
+    {
         $message = "All pfe have commission de suivis";
         $status = "good";
         $pfes = [];
@@ -88,20 +114,21 @@ class PfeController extends Controller
             $pfe = Pfe::find($idPfe);
             $pfe->need_suivis = 1;
             $pfe->save();
-            if(!$this->assignComissionDeSuivis($pfe)){
+            if (!$this->assignComissionDeSuivis($pfe)) {
                 $pfes[] = $pfe;
                 $status = "bed";
-                $message  = "They are problem in some pfe";
+                $message = "They are problem in some pfe";
             }
         }
         return response()->json([
-            'message'=> $message,
+            'message' => $message,
             'status' => $status,
             'pfes' => $pfes
         ]);
     }
 
-    private function assignComissionDeSuivis(Pfe $pfe){
+    private function assignComissionDeSuivis(Pfe $pfe)
+    {
         $validators = Prof::with(['categories'])->where('isValidator', 1)->get();
         $pfeCategories = $pfe->categories->pluck('id')->toArray();
         $validatingProf = null;
@@ -117,12 +144,13 @@ class PfeController extends Controller
         }
         if ($validatingProf == null) {
             $validatingProf = $validators->random(1);
-            while($validatingProf->id == $pfe->idEns){
+            while ($validatingProf->id == $pfe->idEns) {
                 $validatingProf = $validators->random(1);
             }
         }
         $pfe->jury1 = $validatingProf->id;
-        if($pfe->save()) return true;
+        if ($pfe->save())
+            return true;
         return false;
     }
 

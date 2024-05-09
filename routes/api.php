@@ -118,6 +118,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
     Route::post('/pfes/validators', [ValidationPfeController::class, 'store']); // ADD
     Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']); // ADD
+    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']); // STATUS
 
 
     // Annonces
