@@ -47,6 +47,7 @@ class PfeController extends Controller
     public function pfeStatus()
     {
         $status = "";
+        dd($this->user());
         $pfe = Pfe::where('idBinom', $this->user()->binom->id);
         switch ($pfe->status) {
             case 'valide':
