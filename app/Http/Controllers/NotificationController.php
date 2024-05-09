@@ -32,7 +32,9 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->notify(Auth::user()->id,"test","notification Test");
+        if($this->notify(Auth::user()->id,"test","notification Test"))
+            return response()->json(['status'=>"good"]);
+        return response()->json(['status'=>"bad"]);
     }
 
     /**
@@ -64,6 +66,8 @@ class NotificationController extends Controller
      */
     public function destroy()
     {
-        $this->deleteNotification(Auth::user()->id);
+        if($this->deleteNotification(Auth::user()->id))
+            return response()->json(['status'=>"good"]);
+        return response()->json(['status'=>"bad"]);
     }
 }
