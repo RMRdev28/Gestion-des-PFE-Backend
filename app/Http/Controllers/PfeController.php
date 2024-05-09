@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Pfe;
 use App\Models\Prof;
+use App\Traits\GetUserTrait;
 use App\Traits\UploadTrait;
+use Gemini;
 use Illuminate\Http\Request;
 
 class PfeController extends Controller
 {
-    use UploadTrait;
+    use UploadTrait, GetUserTrait;
     /**
      * Display a listing of the resource.
      */
@@ -19,7 +21,24 @@ class PfeController extends Controller
         return response()->json($pfes);
     }
 
+    public function recomandationSjtPfes(Request $request){
+        $categories = "(";
+        foreach ($request->categories as $category) {
+            $categories += $category." ,";
+        }
+        $categories = ")";
+        $level = "2eme ane master";
+        $specialite = $this->user()->studentDetail->specialite;
+        if($this->user()->studentDetail->level == "l3"){
+            $level = "3eme anne licence";
+        }
 
+        $client = Gemini::client(env('GOOGLE_API_KEY'));
+        $result = $client->geminiPro()->generateContent("Pourriez-vous me recommander des sujets de PFE dans les category de $categories ? Je suis étudiant en $level à l'USHTB, spécialité $specialite . S'il vous plaît, donnez les sujets de manière concise sous format de html.");
+        return response()->json([
+            'data' => $result->text(),
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
