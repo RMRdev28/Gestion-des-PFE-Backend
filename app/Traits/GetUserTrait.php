@@ -21,6 +21,7 @@ trait GetUserTrait{
                 $user->load([
                     'propositions',
                     'studentDetail',
+
                     'studentDetail.binomRequest' => function ($query) {
                         $query->where('type', 'request');
                     },
@@ -31,7 +32,6 @@ trait GetUserTrait{
                 $student = Student::where('idUser',$user->id)->first();
                 // dd($student);
                 $binom = Binom::where('idEtu1',$student->id)->orWhere('idEtu2',$student->id)->where('type', 'valid')->first();
-
                 $pfe = Pfe::where('idBinom',$binom->id)->first();
                 if($pfe){
                     $user->pfeTitle = $pfe->title;

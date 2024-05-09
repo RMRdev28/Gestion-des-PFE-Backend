@@ -6,6 +6,7 @@ use App\Mail\FindBinomForYou;
 use App\Mail\NoBinomFound;
 use App\Mail\sendRecomandation;
 use App\Models\Binom;
+use App\Models\Student;
 use App\Models\User;
 use App\Traits\SendEmailTrait;
 use Gemini;
@@ -35,7 +36,7 @@ class FindBinoms extends Command
     {
         $bool = false;
         while (!$bool) {
-            $users = User::where('haveBinom', -1)->where('typeUser', 0)->get();
+            $users = Student::where('haveBinom', -1)->join('users','users.id','=','students.id')->where('typeUser', 0)->get();
             $groupedUsers = $users->groupBy(function ($item, $key) {
                 return $item['level'] . '-' . $item['specialite'];
             });
