@@ -32,19 +32,21 @@ trait GetUserTrait{
                 $student = Student::where('idUser',$user->id)->first();
                 // dd($student);
                 $binom = Binom::where('idEtu1',$student->id)->orWhere('idEtu2',$student->id)->where('type', 'valid')->first();
-                $pfe = Pfe::where('idBinom',$binom->id)->first();
-                if($pfe){
-                    $user->pfeTitle = $pfe->title;
-                    $prof = Prof::find($pfe->idEns)->first();
-                    $profUser = User::find($prof->idUser);
-                    $user->encadreurFname = $profUser->fname;
-                    $user->encadreurLname = $profUser->lname;
-                }else{
-                    $user->propositionTitle = null;
-                }
+
+
 
                 // dd($binom);
                 if($binom){
+                    $pfe = Pfe::where('idBinom',$binom->id)->first();
+                    if($pfe){
+                        $user->pfeTitle = $pfe->title;
+                        $prof = Prof::find($pfe->idEns)->first();
+                        $profUser = User::find($prof->idUser);
+                        $user->encadreurFname = $profUser->fname;
+                        $user->encadreurLname = $profUser->lname;
+                    }else{
+                        $user->propositionTitle = null;
+                    }
                     $user->binom = $binom;
                     if($binom->idEtu1 != $student->id){
                         $student = Student::find($binom->idEtu1);
