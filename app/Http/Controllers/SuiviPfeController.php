@@ -11,6 +11,7 @@ use App\Models\RendezVous;
 use App\Models\Student;
 use App\Models\SuiviPfe;
 use App\Models\User;
+use App\Traits\GetUserTrait;
 use App\Traits\NotifyTrait;
 use App\Traits\SendEmailTrait;
 use App\Traits\UploadTrait;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SuiviPfeController extends Controller
 {
-    use UploadTrait, SendEmailTrait, NotifyTrait;
+    use UploadTrait, SendEmailTrait, NotifyTrait, GetUserTrait;
 
 
 
