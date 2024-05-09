@@ -36,7 +36,7 @@ class PfeController extends Controller
         }
 
         $client = Gemini::client(env('GOOGLE_API_KEY'));
-        $result = $client->geminiPro()->generateContent("Pourriez-vous me recommander des sujets de PFE dans les category de $categories ? Je suis étudiant en $level à l'USHTB, spécialité $specialite . S'il vous plaît, donnez les sujets de manière concise sous format de html.");
+        $result = $client->geminiPro()->generateContent("Pourriez-vous me recommander des sujets de PFE dans les category de $categories ? Je suis étudiant en $level à l'USHTB, spécialité $specialite . S'il vous plaît, donnez les sujets de manière concise sous format de reactNative.");
         return response()->json([
             'data' => $result->text(),
         ]);
