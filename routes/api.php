@@ -36,8 +36,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
 
 
-    Route::post('/rdv', [SuiviPfeController::class, 'askForRdv']);
-    Route::post('/rdv/decision', [SuiviPfeController::class, 'acceptRdv']);//{date:dateTime}
+    Route::post('/rdvs', [SuiviPfeController::class, 'askForRdv']);
+    Route::get('/rdvs', [SuiviPfeController::class, 'askForRdv']);
+    Route::post('/rdvs/resume', [SuiviPfeController::class, 'askForRdv']);
+    Route::get('/rdvs/next', [SuiviPfeController::class, 'askForRdv']);
+    Route::post('/rdvs/decision', [SuiviPfeController::class, 'acceptRdv']);//{date:dateTime}
 
     Route::get('/notifications', [NotificationController::class, 'index']);// DISPLAY ALL NOTIFICATIONS
     Route::post('/notifications', [NotificationController::class, 'store']);// DISPLAY ALL NOTIFICATIONS
