@@ -102,21 +102,53 @@ class SuiviPfeController extends Controller
     }
 
     public function askForRdv(Request $request){
-        $rdv = new RendezVous();
-        $rdv->idBinom = $this->user()->binom->id;
-        $rdv->save();
-        $pfe = Pfe::where('idBinom', $rdv->idBinom)->first();
-        $prof = Prof::find($pfe->idEns);
-        $profUser = User::find($prof->idUser);
-        $mailAbleClass = new BinomAskForRdv($pfe->title);
-        $this->sendEmail($profUser->email,$mailAbleClass);
-        $this->notify($profUser->id, "Ask for RDV","The binom of $pfe->title Ask For RDV");
-        return response()->json([
-            'status' => 'good',
-        ]);
+        $isAlradySent = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',0)->first();
+        if($isAlradySent){
+            return response()->json([
+                'status' => 'bad',
+                'message' => 'You have already sent a request'
+            ]);
+        }else{
+            $rdv = new RendezVous();
+            $rdv->idBinom = $this->user()->binom->id;
+            $rdv->save();
+            $pfe = Pfe::where('idBinom', $rdv->idBinom)->first();
+            $prof = Prof::find($pfe->idEns);
+            $profUser = User::find($prof->idUser);
+            $mailAbleClass = new BinomAskForRdv($pfe->title);
+            $this->sendEmail($profUser->email,$mailAbleClass);
+            $this->notify($profUser->id, "Ask for RDV","The binom of $pfe->title Ask For RDV");
+            return response()->json([
+                'status' => 'good',
+                'message' => "The request is sent secssfully"
+            ]);
+        }
+
 
 
     }
+
+    public function sendResume(Request $request){
+        $rdv = RendezVous::find($request->idRdv);
+        $rdv->resume = $request->resume;
+        $rdv->status = 2;
+        $rdv->save();
+        return response()->json([
+            'status'   => 'good',
+        ]);
+    }
+
+
+    public function getAllRdv(Request $request){
+        $rdv = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',2)->get();
+        $nextRdv = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',1)->first();
+        return response()->json([
+            'rdv' => $rdv,
+            'next' => $nextRdv
+        ]);
+    }
+
+
 
     public function acceptRdv(Request $request){
 
