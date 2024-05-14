@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\Message;
+use App\Models\Pfe;
+use App\Traits\GetUserTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+
+    use GetUserTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $chats = [];
+        if(Auth::user()->typeUser == 1){
+            $pfes = Pfe::where('idEns',$this->user()->profDetail->id)->where('status','valide')->get();
+            foreach ($pfes as $pfe) {
+                $chat = Chat::where('idPfe',$pfe->id)->first();
+                $chat->title = $pfe->title;
+                $chats[] = $chat;
+            }
+        }
+        return response()->json($chats);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function sendMessage(Request $request){
+        $status = "bad";
+        $message = new Message();
+        $message->idChat = $request->idChat;
+        $message->idSender = Auth::user()->id;
+        $message->typeMessage = "1";
+        $message->content = $request->content;
+        if($message->save()){
+            $status = "good";
+
+        }
+        return response()->json([
+            'status' => $status,
+        ]);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
     public function show(Chat $chat)
     {
-        //
+        $messages = Message::where('idChat',$chat->id)->get();
+        return response()->json($messages);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Chat $chat)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Chat $chat)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Chat $chat)
-    {
-        //
-    }
 }
