@@ -153,9 +153,11 @@ class SuiviPfeController extends Controller
         $binoms = Pfe::where('idEns', $this->user()->profDetail->id)->pluck('idBinom');
         $rdv = RendezVous::whereIn('idBinom',$binoms)->where('status',2)->get();
         $nextRdv = RendezVous::whereIn('idBinom',$binoms)->where('status',1)->get();
+        $demande = RendezVous::whereIn('idBinom',$binoms)->where('status',0)->get();
         return response()->json([
             'rdv' => $rdv,
             'next' => $nextRdv
+            'demande' => $demaande
         ]);
     }
 
