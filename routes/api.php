@@ -83,7 +83,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Pfes
     Route::get('/pfes', [PfeController::class, 'index']); // DISPLAY ALL
 
-    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']); // STATUS
+    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
+
+
+    Route::get('/pfes/recommande/validators', [PfeController::class, 'getRecomandedProf']); // STATUS
+
+
 
     Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
 

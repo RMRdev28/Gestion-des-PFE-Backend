@@ -11,6 +11,7 @@ use App\Traits\UploadTrait;
 use App\Traits\SemanticSearchTrait;
 use Gemini;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class PfeController extends Controller
@@ -34,9 +35,7 @@ class PfeController extends Controller
                     $prof = Prof::find($validationPfe[1]->idProf);
                     $profUser = User::find($prof->idUser);
                     $pfe->validator2 = $profUser;
-
                 }
-
             }
         }
         return response()->json($pfes);
@@ -174,16 +173,25 @@ class PfeController extends Controller
         return false;
     }
 
+    public function getRecomandedProf(Pfe $pfe)
+    {
+        $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->select('idCategory')->get();
+        $profIds = DB::table('prof_categories')->whereIn('idCategory', $categoryIds)->select('idProf')->get();
+        $prof = Prof::whereIn('id', $profIds)->join('users', 'users.id', '=', 'prof.idUser')->select("users.fname", "users.lname", "profs.*")->get();
+        return response()->json($prof);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Pfe $pfe)
     {
         $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
-        if ($validationPfe) {
+        $pfe->validator1 = null;
+        $pfe->validator2 = null;
+        if (count($validationPfe) > 0) {
 
-            $pfe->validator1 = null;
-            $pfe->validator2 = null;
+
             $prof = Prof::find($validationPfe[0]->idProf);
             $profUser = User::find($prof->idUser);
             $pfe->validator1 = $profUser;
