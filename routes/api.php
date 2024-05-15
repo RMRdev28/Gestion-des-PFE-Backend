@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/rdvs/profs', [SuiviPfeController::class, 'getAllRdvProf']);
     Route::post('/rdvs/resume', [SuiviPfeController::class, 'sendResume']);
     Route::post('/rdvs/decision', [SuiviPfeController::class, 'acceptRdv']);//{date:dateTime}
+    Route::post('/rdvs/done', [SuiviPfeController::class, 'rdvDone']);//{date:dateTime}
 
     Route::get('/notifications', [NotificationController::class, 'index']);// DISPLAY ALL NOTIFICATIONS
     Route::post('/notifications', [NotificationController::class, 'store']);// DISPLAY ALL NOTIFICATIONS

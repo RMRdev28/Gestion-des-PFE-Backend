@@ -207,5 +207,14 @@ class SuiviPfeController extends Controller
         ]);
     }
 
+    public function rdvDone(Request $request){
+        $rdv = RendezVous::find($request->idRdv);
+        $rdv->status = 2;
+        $rdv->save();
+        return response([
+            'status' => "good"
+        ]);
+    }
+
 
 }
