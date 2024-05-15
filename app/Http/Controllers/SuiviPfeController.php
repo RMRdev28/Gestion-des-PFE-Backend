@@ -148,6 +148,17 @@ class SuiviPfeController extends Controller
         ]);
     }
 
+    public function getAllRdvProf(){
+
+        $binoms = Pfe::where('idEns',$this->user()->profDetail->id)->select('idBinom')->get();
+        $rdv = RendezVous::whereIn('idBinom',$binoms)->where('status',2)->get();
+        $nextRdv = RendezVous::where('idBinom',$binoms)->where('status',1)->first();
+        return response()->json([
+            'rdv' => $rdv,
+            'next' => $nextRdv
+        ]);
+    }
+
 
 
     public function acceptRdv(Request $request){
