@@ -150,14 +150,32 @@ class SuiviPfeController extends Controller
 
     public function getAllRdvProf(){
 
+        $rdvs= [];
+        $demandes= [];
+        $nexts= [];
         $binoms = Pfe::where('idEns', $this->user()->profDetail->id)->pluck('idBinom');
         $rdv = RendezVous::whereIn('idBinom',$binoms)->where('status',2)->get();
+        foreach($rdv as $el){
+            $pfe = Pfe::where('idBinom',$el->idBinom)->first();
+            $el->pfe = $pfe->title;
+            $rdvs[] = $el;
+        }
         $nextRdv = RendezVous::whereIn('idBinom',$binoms)->where('status',1)->get();
+        foreach($nextRdv as $el){
+            $pfe = Pfe::where('idBinom',$el->idBinom)->first();
+            $el->pfe = $pfe->title;
+            $nexts[] = $el;
+        }
         $demande = RendezVous::whereIn('idBinom',$binoms)->where('status',0)->get();
+        foreach($demande as $el){
+            $pfe = Pfe::where('idBinom',$el->idBinom)->first();
+            $el->pfe = $pfe->title;
+            $demandes[] = $el;
+        }
         return response()->json([
-            'rdv' => $rdv,
-            'next' => $nextRdv,
-            'demande' => $demande
+            'rdv' => $rdvs,
+            'next' => $nexts,
+            'demande' => $demandes
         ]);
     }
 
