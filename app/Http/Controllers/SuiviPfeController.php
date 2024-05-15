@@ -210,7 +210,7 @@ class SuiviPfeController extends Controller
     public function rdvDone(Request $request){
         $rdv = RendezVous::find($request->idRdv);
         $rdv->status = 2;
-        $rdv->resume = $request->resume
+        $rdv->resume = $request->resume;
         $rdv->save();
         return response([
             'status' => "good"
