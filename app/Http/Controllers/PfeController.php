@@ -24,7 +24,7 @@ class PfeController extends Controller
         $pfes = Pfe::all();
         foreach ($pfes as $pfe) {
             $validationPfe = ValidationPfe::where('idPfe',$pfe->id)->get();
-            if($validationPfe){
+            if(count($validationPfe) >= 1){
 
                 $pfe->validator1 = null;
                 $pfe->validator2 =null;
