@@ -23,15 +23,14 @@ class PfeController extends Controller
     {
         $pfes = Pfe::all();
         foreach ($pfes as $pfe) {
-            $validationPfe = ValidationPfe::where('idPfe',$pfe->id)->get();
-            if(count($validationPfe) >= 1){
-
-                $pfe->validator1 = null;
-                $pfe->validator2 =null;
+            $pfe->validator1 = null;
+            $pfe->validator2 = null;
+            $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
+            if (count($validationPfe) >= 1) {
                 $prof = Prof::find($validationPfe[0]->idProf);
                 $profUser = User::find($prof->idUser);
                 $pfe->validator1 = $profUser;
-                if(count($validationPfe) > 1){
+                if (count($validationPfe) > 1) {
                     $prof = Prof::find($validationPfe[1]->idProf);
                     $profUser = User::find($prof->idUser);
                     $pfe->validator2 = $profUser;
@@ -180,15 +179,15 @@ class PfeController extends Controller
      */
     public function show(Pfe $pfe)
     {
-        $validationPfe = ValidationPfe::where('idPfe',$pfe->id)->get();
-        if($validationPfe){
+        $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
+        if ($validationPfe) {
 
             $pfe->validator1 = null;
-            $pfe->validator2 =null;
+            $pfe->validator2 = null;
             $prof = Prof::find($validationPfe[0]->idProf);
             $profUser = User::find($prof->idUser);
             $pfe->validator1 = $profUser;
-            if(count($validationPfe) > 1){
+            if (count($validationPfe) > 1) {
                 $prof = Prof::find($validationPfe[1]->idProf);
                 $profUser = User::find($prof->idUser);
                 $pfe->validator2 = $profUser;
@@ -259,7 +258,8 @@ class PfeController extends Controller
         ]);
     }
 
-    public function chooseValidatorsManually(Request $request){
+    public function chooseValidatorsManually(Request $request)
+    {
         $pfe = Pfe::find($request->idPfe);
 
     }
