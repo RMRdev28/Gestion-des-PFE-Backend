@@ -150,7 +150,7 @@ class SuiviPfeController extends Controller
 
     public function getAllRdvProf(){
 
-        $binoms = Pfe::where('idEns',$this->user()->profDetail->id)->select('idBinom')->get();
+        $binoms = Pfe::where('idEns', $this->user()->profDetail->id)->pluck('idBinom');
         $rdv = RendezVous::whereIn('idBinom',$binoms)->where('status',2)->get();
         $nextRdv = RendezVous::where('idBinom',$binoms)->where('status',1)->first();
         return response()->json([
