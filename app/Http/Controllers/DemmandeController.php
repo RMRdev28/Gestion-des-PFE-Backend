@@ -8,11 +8,13 @@ use App\Models\Demmande;
 use App\Models\Pfe;
 use App\Models\Prof;
 use App\Models\Proposition;
+use App\Models\propositionCategory;
 use App\Models\User;
 use App\Traits\SendEmailTrait;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DemmandeController extends Controller
 {
@@ -76,6 +78,7 @@ class DemmandeController extends Controller
         $status = "bad";
         $demmande = Demmande::where('id', $request->idDemmande)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
+        $propositionCategories = propositionCategory::where('idProp',$proposition->id)->select('idCategory')->get();
         $user = User::find($proposition->idUser);
         $prof = Prof::where('idUser', $user->id)->first();
         $student1 = $demmande->binom->student1->user;
@@ -111,6 +114,9 @@ class DemmandeController extends Controller
             $pfe->note = 0;
             $pfe->branch = $demmande->binom->student1->specialite;
             if ($pfe->save()) {
+                foreach ($propositionCategories as $cat) {
+                    $query = DB::insert('INSERT INTO pfe_categories (idPfe, idCategory) VALUES (?, ?)', [$pfe->id, $cat]);
+                }
                 if ($demmande->delete()) {
                     $mailAbleClass = new AcceptDemande($user, $student1, $proposition);
                     $this->sendEmail($student1->email, $mailAbleClass);
