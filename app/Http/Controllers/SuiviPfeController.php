@@ -156,8 +156,8 @@ class SuiviPfeController extends Controller
         $demande = RendezVous::whereIn('idBinom',$binoms)->where('status',0)->get();
         return response()->json([
             'rdv' => $rdv,
-            'next' => $nextRdv
-            'demande' => $demaande
+            'next' => $nextRdv,
+            'demande' => $demande
         ]);
     }
 
