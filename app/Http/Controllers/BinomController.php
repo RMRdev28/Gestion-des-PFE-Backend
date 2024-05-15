@@ -21,7 +21,7 @@ class BinomController extends Controller
 
 
     public function getListBinomTwoByTwo(){
-        $binoms = Binom::with(['student1','student2','student2.user','student2.user'])->where('type','valid')->get();
+        $binoms = Binom::with(['student1','student2','student1.user','student2.user'])->where('type','valid')->get();
         return response()->json($binoms);
     }
     public function getListBinoms()
