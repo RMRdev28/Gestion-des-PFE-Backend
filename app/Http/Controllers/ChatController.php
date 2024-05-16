@@ -20,9 +20,8 @@ class ChatController extends Controller
     {
         $chats = [];
         if(Auth::user()->typeUser == 1){
-
             $pfes = Pfe::where('idEns',$this->user()->profDetail->id)->get();
-            dd($this->user()->profDetail->id);
+            dd($pfes);
             foreach ($pfes as $pfe) {
                 $chat = Chat::where('idPfe',$pfe->id)->first();
                 $chat->title = $pfe->title;
