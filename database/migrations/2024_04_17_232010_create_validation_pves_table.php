@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idProf');
             $table->tinyInteger('decision')->default(0);
             $table->String('comment')->nullable();
-            $table->foreign('idPfe')->references('id')->on('pfes')->onDelete('cascade');
+            $table->foreign('idProf')->references('id')->on('profs')->onDelete('cascade');
             $table->foreign('idPfe')->references('id')->on('pfes')->onDelete('cascade');
             $table->timestamps();
         });
