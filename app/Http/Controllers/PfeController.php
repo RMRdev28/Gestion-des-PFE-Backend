@@ -42,6 +42,11 @@ class PfeController extends Controller
     }
 
 
+    public function mesPfes(){
+        $pfes =Pfe::where('idEns',$this->user()->profDetail->id)->get();
+        return response()->json($pfes);
+    }
+
     public function pfeStatus()
     {
         $status = "";

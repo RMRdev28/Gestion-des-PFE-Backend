@@ -89,6 +89,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
 
+    Route::get('/pfes/mes', [PfeController::class, 'mesPfes']);
+
 
     Route::get('/pfes/recommande/validators/{pfe}', [PfeController::class, 'getRecomandedProf']); // STATUS
 
