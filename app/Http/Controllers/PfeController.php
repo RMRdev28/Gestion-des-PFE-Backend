@@ -273,7 +273,13 @@ class PfeController extends Controller
 
     public function chooseValidatorsManually(Request $request)
     {
-        $pfe = Pfe::find($request->idPfe);
+        $profs = $request->profs;
+        foreach($profs as $prof){
+            $validationPfe = new ValidationPfe();
+            $validationPfe->idPfe = $request->idPfe;
+            $validationPfe->idProf = $prof;
+            $validationPfe->save();
+        }
 
     }
 }
