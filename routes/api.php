@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\BinomController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DemmandeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PfeController;
@@ -35,6 +36,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
     Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
 
+
+    Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
+    Route::get('/chats/{chat}', [ChatController::class, 'show']); //DISPLAY ALL
 
     Route::post('/rdvs', [SuiviPfeController::class, 'askForRdv']);
     Route::get('/rdvs', [SuiviPfeController::class, 'getAllRdv']);
