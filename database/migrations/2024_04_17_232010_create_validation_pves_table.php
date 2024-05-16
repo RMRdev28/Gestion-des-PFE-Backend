@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('validation_pves', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idPfe');
+            $table->unsignedBigInteger('idProp');
             $table->unsignedBigInteger('idProf');
             $table->tinyInteger('decision')->default(0);
             $table->String('comment')->nullable();
             $table->foreign('idProf')->references('id')->on('profs')->onDelete('cascade');
-            $table->foreign('idPfe')->references('id')->on('pfes')->onDelete('cascade');
+            $table->foreign('idProp')->references('id')->on('propositions')->onDelete('cascade');
             $table->timestamps();
         });
     }

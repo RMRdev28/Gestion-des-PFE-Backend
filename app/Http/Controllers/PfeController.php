@@ -276,7 +276,7 @@ class PfeController extends Controller
         $profs = $request->profs;
         foreach($profs as $prof){
             $validationPfe = new ValidationPfe();
-            $validationPfe->idPfe = $request->idPfe;
+            $validationPfe->idProp = $request->idProp;
             $validationPfe->idProf = $prof;
             $validationPfe->save();
         }
