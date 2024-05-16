@@ -32,6 +32,13 @@ class PropositionController extends Controller
     }
 
 
+    public function mesProposition(){
+        $propositions = Proposition::where('idUser',Auth::user()->id)->get();
+        return response()->json($propositions);
+
+    }
+
+
 
 
     /**
