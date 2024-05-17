@@ -91,7 +91,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Pfes
     Route::get('/pfes', [PfeController::class, 'index']); // DISPLAY ALL
 
-    Route::get('/pfes/{pfe}', [PfeController::class, 'index']); // DISPLAY ALL
+    Route::get('/pfes/{pfe}', [PfeController::class, 'show']); // DISPLAY ALL
 
     Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
 
