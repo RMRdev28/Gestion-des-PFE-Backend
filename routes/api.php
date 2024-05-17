@@ -139,8 +139,11 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::put('/pfes/{pfe}', [CategoryController::class, 'edit']); // EDIT
     Route::delete('/pfes/{pfe}', [CategoryController::class, 'destroy']); //DELETE
 
-    Route::post('/pfes/validators', [ValidationPfeController::class, 'store']); // ADD
-    Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']); // ADD
+    Route::post('/pfes/validators', [ValidationPfeController::class, 'store']);
+    Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']);
+
+
+    Route::get('/pfes/validators/pfes', [ValidationPfeController::class, 'pfeShouldValidatedByProf']); // ADD
 
 
 

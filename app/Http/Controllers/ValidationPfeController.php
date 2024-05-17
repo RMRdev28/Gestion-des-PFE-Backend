@@ -122,6 +122,17 @@ class ValidationPfeController extends Controller
         $chat->save();
 
     }
+
+    public function pfeShouldValidatedByProf(){
+        $validator = ValidationPfe::where('decision',0)->where('idProf',$this->user()->profDetail->id)->get();
+        $pfeToValidate = [];
+        foreach ($validator as $v){
+            $pfe = Pfe::find($v->idPfe);
+                $pfeToValidate[] = $pfe;
+        }
+        return response()->json($pfeToValidate);
+
+    }
     public function askForValidators(Pfe $pfe){
         $categories = DB::table('pves_categories')->where('idPfe',$pfe->id)->get();
 
