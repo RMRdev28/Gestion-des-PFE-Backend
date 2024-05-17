@@ -63,50 +63,22 @@ class ValidationPfeController extends Controller
         $pfe = Pfe::find($request->pfe);
         $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->count();
         if ($pfe->status == "pasencore") {
-            if ($nbrValidator < 1) {
-                $validationPfe = new ValidationPfe();
-                $validationPfe->idPfe = $pfe->id;
-                $validationPfe->idProf = $this->user()->profDetail->id;
+                $validationPfe = ValidationPfe::where('idProf',$this->user()->profDetail->id)->where('idPfe',$pfe->id)->first();
                 $validationPfe->decision = $request->decision;
                 $validationPfe->comment = $request->comment;
                 $validationPfe->save();
-            } elseif ($nbrValidator < 2) {
-                $firstValidator = ValidationPfe::where('idPfe', $pfe->id)->first();
-                if ($firstValidator->decision == 1) {
-                    if ($request->decision == 1) {
-                        $pfe->status = "valide";
-                        $this->createAChat($pfe->id);
-                        ValidationPfe::where('idPfe', $pfe->id)->delete();
-                    } else {
-                        $pfe->status = "revu";
-                    }
-                } elseif ($firstValidator->decision == 0) {
-                    $pfe->status = "revu";
-                } else {
-                    if ($request->decision == 1) {
-                        $pfe->status = "revu";
-                    } else {
-                        $pfe->status = "rejeter";
-                    }
-                }
-                $pfe->save();
-            }
-
-
-            $pfe->save();
-        } elseif ($pfe->status == "revu") {
-            $validationPfe = ValidationPfe::where('idProf', $this->user()->profDetail->id)->where('idPfe', $pfe->id)->first();
-            $validationPfe->decision = $request->decision;
-            if (ValidationPfe::where('decision', 1)->where('idPfe', $pfe->id)->count() > 1) {
-                $pfe->status = "valide";
-                $pfe->save();
-                $this->createAChat($pfe->id);
-                ValidationPfe::where('idPfe', $pfe->id)->delete();
-                $message = "The pfe is valide Now";
-            }
-        } else {
-            $message = "already have Desccision";
-            $status = "good";
+        }
+        $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->where('decision',0)->count();
+        if($nbrValidator > 0){
+            $pfe->status = "revu";
+        }
+        $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->where('decision',1)->count();
+        if($nbrValidator == 2){
+            $pfe->status = "valide";
+        }
+        if($pfe->save()){
+            $message = "you choose";
+            $status  = "good";
         }
 
         return response()->json([
