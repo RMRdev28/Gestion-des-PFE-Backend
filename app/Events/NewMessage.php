@@ -19,9 +19,11 @@ class NewMessage implements ShouldBroadcast
      */
 
     public $message;
-    public function __construct($message)
+    public $idPfe;
+    public function __construct($message,$idPfe)
     {
         $this->message = $message;
+        $this->idPfe = $idPfe;
     }
 
     /**
@@ -36,6 +38,7 @@ class NewMessage implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'message';
+        $message = "message".$this->idPfe;
+        return $message;
     }
 }

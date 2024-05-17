@@ -43,7 +43,7 @@ class ChatController extends Controller
         $message->typeMessage = "1";
         $message->content = $request->content;
         if($message->save()){
-            event(new NewMessage($message));
+            event(new NewMessage($message, $request->idPfe));
             $status = "good";
 
         }
