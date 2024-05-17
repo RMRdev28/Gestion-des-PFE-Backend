@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessage;
 use App\Models\Chat;
 use App\Models\Message;
 use App\Models\Pfe;
@@ -42,6 +43,7 @@ class ChatController extends Controller
         $message->typeMessage = "1";
         $message->content = $request->content;
         if($message->save()){
+            event(new NewMessage($message));
             $status = "good";
 
         }
