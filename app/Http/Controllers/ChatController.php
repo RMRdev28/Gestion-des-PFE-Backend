@@ -31,10 +31,13 @@ class ChatController extends Controller
         return response()->json($chats);
     }
 
+
+
     public function sendMessage(Request $request){
         $status = "bad";
         $message = new Message();
-        $message->idChat = $request->idChat;
+        $chat = Chat::where('idPfe',$request->idPfe)->first();
+        $message->idChat = $chat->id;
         $message->idSender = Auth::user()->id;
         $message->typeMessage = "1";
         $message->content = $request->content;

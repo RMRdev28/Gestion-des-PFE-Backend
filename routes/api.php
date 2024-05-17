@@ -38,7 +38,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
-    Route::get('/chats/{chat}', [ChatController::class, 'show']); //DISPLAY ALL
+    Route::get('/chats/{chat}', [ChatController::class, 'show']);
+    Route::post('/chats', [ChatController::class, 'sendMessage']);
 
     Route::post('/rdvs', [SuiviPfeController::class, 'askForRdv']);
     Route::get('/rdvs', [SuiviPfeController::class, 'getAllRdv']);
