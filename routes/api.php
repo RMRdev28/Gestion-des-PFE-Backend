@@ -106,7 +106,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/demandes/decision/', [DemmandeController::class, 'acceptOrRejectDemande']);
 
-
+    Route::get('/pfes/validators/pfes', [ValidationPfeController::class, 'pfeShouldValidatedByProf']); // ADD
 
 
 
@@ -143,7 +143,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/pfes/validators/profs', [ValidationPfeController::class, 'index']);
 
 
-    Route::get('/pfes/validators/pfes', [ValidationPfeController::class, 'pfeShouldValidatedByProf']); // ADD
+
 
 
 
