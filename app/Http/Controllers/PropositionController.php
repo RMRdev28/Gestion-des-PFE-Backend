@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachement;
+use App\Models\Category;
+use App\Models\Demmande;
 use App\Models\Proposition;
 use App\Models\propositionCategory;
 use App\Traits\UploadTrait;
@@ -21,13 +23,21 @@ class PropositionController extends Controller
         if($id == null){
             return Proposition::with(['demmandes','categories','details'])->get();
         }else{
+
             return Proposition::where('id',$id)->with(['demmandes','categories','details','demmandes.binom','demmandes.binom.student1','demmandes.binom.student2','demmandes.binom.student1.user','demmandes.binom.student2.user'])->first();
         }
      }
 
     public function index()
     {
-        $propositions = $this->getProposition();
+        $propositions = Proposition::all();
+        foreach($propositions as $prop){
+            $nbrDeamnde = Demmande::where('idProp',$prop->id)->count();
+            $categoryIds = propositionCategory::where('idProp',$prop->id)->pluck('idCategory');
+            $categories = Category::whereIn('id',$categoryIds)->get();
+            $prop->categories = $categories;
+            $prop->nbrDemande = $nbrDeamnde;
+        }
         return response()->json($propositions);
     }
 
