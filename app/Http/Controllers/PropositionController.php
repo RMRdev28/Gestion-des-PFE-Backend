@@ -118,6 +118,9 @@ class PropositionController extends Controller
         }else{
             $proposition->ens = "Admin";
         }
+        $categoryIds = propositionCategory::where('idProp',$proposition->id)->pluck('idCategory');
+        $categories = Category::whereIn('id',$categoryIds)->get();
+        $proposition->categories = $categories;
         return response()->json($proposition);
     }
 
