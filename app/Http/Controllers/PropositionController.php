@@ -45,6 +45,13 @@ class PropositionController extends Controller
 
     public function mesProposition(){
         $propositions = Proposition::where('idUser',Auth::user()->id)->get();
+        foreach($propositions as $prop){
+            $nbrDeamnde = Demmande::where('idProp',$prop->id)->count();
+            $categoryIds = propositionCategory::where('idProp',$prop->id)->pluck('idCategory');
+            $categories = Category::whereIn('id',$categoryIds)->get();
+            $prop->categories = $categories;
+            $prop->nbrDemande = $nbrDeamnde;
+        }
         return response()->json($propositions);
 
     }
