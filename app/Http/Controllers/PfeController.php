@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Binom;
 use App\Models\Pfe;
 use App\Models\Prof;
+use App\Models\Student;
 use App\Models\User;
 use App\Models\ValidationPfe;
 use App\Traits\GetUserTrait;
@@ -194,6 +196,17 @@ class PfeController extends Controller
         $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
         $pfe->validator1 = null;
         $pfe->validator2 = null;
+        $binom = Binom::find($pfe->idBinom);
+        $student1 = Student::find($binom->idEtu1);
+        $student2 = Student::find($binom->idEtu2);
+        $st1Detail = User::find($student1->idUser);
+        $st2Detail = User::find($student2->idUser);
+        $pfe->binom1 = $st1Detail->lname." ".$st1Detail->fname;
+        $pfe->binom2 = $st2Detail->lname." ".$st2Detail->fname;
+        $prof = Prof::find($pfe->idEns);
+        $profDetail = User::find($prof->idUser);
+        $pfe->ens = $profDetail->lname." ".$profDetail->fname;
+
         if (count($validationPfe) > 0) {
 
 
