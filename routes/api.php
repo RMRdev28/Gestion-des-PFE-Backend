@@ -36,6 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/annonces', [AnnonceController::class, 'index']); //DISPLAY ALL
     Route::get('/annonces/{annonce}', [AnnonceController::class, 'show']);// DISPLAY SINGLE
 
+    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
+
 
     Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
     Route::get('/chats/{id}', [ChatController::class, 'show']);
@@ -93,7 +95,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/{pfe}', [PfeController::class, 'show']); // DISPLAY ALL
 
-    Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
+
 
     Route::post('/pfes/validate', [ValidationPfeController::class, 'validatePfe']);
 
