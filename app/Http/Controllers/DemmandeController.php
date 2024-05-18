@@ -80,7 +80,7 @@ class DemmandeController extends Controller
         $status = "bad";
         $demmande = Demmande::where('id', $request->idDemmande)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
-        $propositionCategories = propositionCategory::where('idProp',$proposition->id)->select('idCategory')->get();
+        $propositionCategories = propositionCategory::where('idProp',$proposition->id)->pluck('idCategory');
         $user = User::find($proposition->idUser);
         $prof = Prof::where('idUser', $user->id)->first();
         $student1 = $demmande->binom->student1->user;
