@@ -40,6 +40,7 @@ trait GetUserTrait{
                     $pfe = Pfe::where('idBinom',$binom->id)->first();
                     if($pfe){
                         $user->pfeTitle = $pfe->title;
+                        $user->idPfe = $pfe->id;
                         $prof = Prof::find($pfe->idEns)->first();
                         $profUser = User::find($prof->idUser);
                         $user->encadreurFname = $profUser->fname;
