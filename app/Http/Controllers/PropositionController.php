@@ -50,9 +50,9 @@ class PropositionController extends Controller
         $status = "bad";
         $typePrposition = "";
         if(Auth::user()->typeUser == 0){
-            $typePrposition = "student";
+            $typePrposition = "interne";
         }elseif(Auth::user()->typeUser == 1){
-            $typePrposition = "prof";
+            $typePrposition = "interne";
         }else{
             $typePrposition = "externe";
         }
