@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Demmande;
 use App\Models\Proposition;
 use App\Models\propositionCategory;
+use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -108,7 +109,15 @@ class PropositionController extends Controller
      */
     public function show($id)
     {
-        $proposition = $this->getProposition($id);
+        $proposition = Proposition::find($id);
+        $created_by = User::find($proposition->idUser);
+        if($created_by->typeUser == 0){
+            $proposition->ens = "Student";
+        }elseif($created_by->typeUser == 1){
+            $proposition->ens = "Prof";
+        }else{
+            $proposition->ens = "Admin";
+        }
         return response()->json($proposition);
     }
 
