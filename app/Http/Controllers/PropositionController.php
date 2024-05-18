@@ -54,7 +54,7 @@ class PropositionController extends Controller
         }elseif(Auth::user()->typeUser == 1){
             $typePrposition = "prof";
         }else{
-            $typePrposition = "entreprise";
+            $typePrposition = "externe";
         }
         $request->request->add(['type'=> $typePrposition]);
         $request->request->add(['idUser'=> Auth::user()->id]);

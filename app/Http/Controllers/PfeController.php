@@ -206,7 +206,6 @@ class PfeController extends Controller
         $prof = Prof::find($pfe->idEns);
         $profDetail = User::find($prof->idUser);
         $pfe->ens = $profDetail->lname." ".$profDetail->fname;
-
         if (count($validationPfe) > 0) {
 
 
@@ -221,6 +220,7 @@ class PfeController extends Controller
             }
 
         }
+
         return response()->json($pfe);
     }
 
