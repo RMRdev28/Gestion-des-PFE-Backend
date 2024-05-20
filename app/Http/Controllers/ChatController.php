@@ -37,8 +37,7 @@ class ChatController extends Controller
     public function sendMessage(Request $request){
         $status = "bad";
         $message = new Message();
-        $chat = Chat::where('idPfe',$request->idPfe)->first();
-        $message->idChat = $chat->id;
+        $message->idChat = $request->idPfe;
         $message->idSender = Auth::user()->id;
         $message->typeMessage = "1";
         $message->content = $request->content;
