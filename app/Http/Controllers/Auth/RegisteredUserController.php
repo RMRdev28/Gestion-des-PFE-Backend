@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Cookie;
@@ -56,10 +57,13 @@ class RegisteredUserController extends Controller
             ]);
         }else{
             if($user->typeUser == 1){
-                Prof::create([
+                $prof = Prof::create([
                     'idUser' => $user->id,
                     'isValidator' => $request->isValidator
                 ]);
+                foreach($request->categories as $category){
+                     DB::insert('insert into prof_categories (idProf, idCategory) values (?, ?)', [$prof->id, $category]);
+                }
             }else{
                 Admin::create([
                     'idUser' => $user->id,
