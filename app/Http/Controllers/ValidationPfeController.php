@@ -61,7 +61,6 @@ class ValidationPfeController extends Controller
         $message = "";
         $status = "";
         $pfe = Pfe::find($request->pfe);
-        $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->count();
         if ($pfe->status == "pasencore") {
                 $validationPfe = ValidationPfe::where('idProf',$this->user()->profDetail->id)->where('idPfe',$pfe->id)->first();
                 $validationPfe->decision = $request->decision;
