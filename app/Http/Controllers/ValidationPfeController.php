@@ -68,12 +68,14 @@ class ValidationPfeController extends Controller
                 $validationPfe->comment = $request->comment;
                 $validationPfe->save();
         }
-        $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->where('decision',0)->count();
-        if($nbrValidator > 0){
+        $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->where('decision',1)->count();
+        $nbrValidatorRef = ValidationPfe::where('idPfe', $pfe->id)->where('decision',-1)->count();
+        if($nbrValidator == 1 || $nbrValidatorRef > 0){
             $pfe->status = "revu";
         }
         $nbrValidator = ValidationPfe::where('idPfe', $pfe->id)->where('decision',1)->count();
         if($nbrValidator == 2){
+            $this->createAChat($pfe->id);
             $pfe->status = "valide";
         }
         if($pfe->save()){
