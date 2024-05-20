@@ -59,8 +59,7 @@ class ChatController extends Controller
      */
     public function show($id)
     {
-        $chat = Chat::where('idPfe',$id)->first();
-        $messages = Message::where('idChat',$chat->id)->get();
+        $messages = Message::where('idChat',$id)->get();
         return response()->json($messages);
     }
 
