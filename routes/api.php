@@ -63,7 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/binoms/request/accref', [BinomController::class, 'acceptOrRefuseBinomRequest']); // ACCEPT OR REFUSE DEMMADNE
     Route::get('/binoms/demmande', [BinomController::class, 'allBinomDemmande']);//DISPLAY ALL DEMMANDE
     Route::post('/binoms', [BinomController::class, 'choseBinom']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
-    Route::post('/binoms/add', [BinomController::class, 'addmySelf']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
+    Route::post('/binoms/add', [BinomController::class, 'addMySelf']); // CHOSE BINOM FOR PERSON WHO HAVE CODE
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
