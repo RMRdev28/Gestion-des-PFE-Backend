@@ -61,7 +61,7 @@ class ValidationPfeController extends Controller
         $message = "";
         $status = "";
         $pfe = Pfe::find($request->pfe);
-        if ($pfe->status == "pasencore") {
+        if ($pfe->status == "pasencore" || $pfe->status == "revu") {
                 $validationPfe = ValidationPfe::where('idProf',$this->user()->profDetail->id)->where('idPfe',$pfe->id)->first();
                 $validationPfe->decision = $request->decision;
                 $validationPfe->comment = $request->comment;
