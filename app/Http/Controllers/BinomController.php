@@ -54,7 +54,7 @@ class BinomController extends Controller
             $status = "good";
         }
         $binom = new Binom();
-        $binom->idEtu1 = Auth::user()->userDetail->id;
+        $binom->idEtu1 = $this->user()->studentDetail->id;
         $binom->idEtu2 = $userBinom->id;
         $binom->save();
         return response()->json([
