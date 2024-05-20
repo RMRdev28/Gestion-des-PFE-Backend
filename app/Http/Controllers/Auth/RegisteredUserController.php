@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -51,6 +52,7 @@ class RegisteredUserController extends Controller
                 'specialite' => $request->specialite,
                 'level' => $request->level,
                 'section' => $request->section,
+                'uniqueCode' => Str::random(10),
             ]);
         }else{
             if($user->typeUser == 1){
