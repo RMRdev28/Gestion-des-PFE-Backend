@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewNotification;
 use App\Mail\BinomRequestAccepted;
 use App\Mail\BinomRequestCancled;
 use App\Mail\BinomRequestRejected;
@@ -56,7 +57,21 @@ class BinomController extends Controller
         $binom = new Binom();
         $binom->idEtu1 = $this->user()->studentDetail->id;
         $binom->idEtu2 = $userBinom->id;
-        $binom->save();
+        $binom->type = "valid";
+        if($binom->save()){
+            $student1 = Student::find($binom->idEtu1);
+            $student1->haveBinom = 1;
+            $student1->save();
+            $user= User::find($student1->idUser);
+            $name = $user->lname." ".$user->fname;
+            $student2 = Student::find($binom->idEtu2);
+            $student2->haveBinom = 1;
+            $student2->save();
+
+           $this->notify($student2->idUser,"You have Binom Now","$name is entred your unique code and you are binom");
+
+
+        }
         return response()->json([
             'status' => $status,
             'message' => $message,
@@ -153,9 +168,10 @@ class BinomController extends Controller
                 if (true ) {
                     $message = "The request is rejected";
                     $status = "good";
-                } else {
-                    $message = "Error sending Email";
                 }
+                // } else {
+                //     $message = "Error sending Email";
+                // }
             } else {
                 $message = "Error reject the requester";
             }
@@ -177,10 +193,10 @@ class BinomController extends Controller
                     } else {
                         $message = "Error delting other requests";
                     }
-
-                } else {
-                    $message = "Problem sending email";
                 }
+                // } else {
+                //     $message = "Problem sending email";
+                // }
             } else {
                 $message = "Error saving request";
             }
