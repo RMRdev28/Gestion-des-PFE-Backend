@@ -31,6 +31,16 @@ class BinomController extends Controller
         return response()->json($users);
     }
 
+    public function addMySelf(){
+        $student = Student::where('idUser',Auth::user()->id)->first();
+        $student->haveBinom = -1;
+        $student->save();
+        return response()->json([
+            'message' => "You are added to binom list",
+            'status' => "good"
+        ]);
+    }
+
     public function choseBinom(Request $request)
     {
         $code = $request->code;
