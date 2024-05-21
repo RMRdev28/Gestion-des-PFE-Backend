@@ -37,14 +37,19 @@ class ChatController extends Controller
     public function sendMessage(Request $request){
         $status = "bad";
         $message = new Message();
-        $message->idChat = $request->idPfe;
+        if(Auth::user()->typeUser == 0){
+            $chat  = Chat::where('idPfe',$request->idPfe)->first();
+            $id = $chat->id;
+        }else{
+            $id =$request->idPfe;
+        }
+        $message->idChat =$id;
         $message->idSender = Auth::user()->id;
         $message->typeMessage = "1";
         $message->content = $request->content;
         if($message->save()){
             event(new NewMessage($message, $request->idPfe));
             $status = "good";
-
         }
         return response()->json([
             'status' => $status,
@@ -58,6 +63,10 @@ class ChatController extends Controller
      */
     public function show($id)
     {
+        if(Auth::user()->typeUser == 0){
+            $chat  = Chat::where('idPfe',$id)->first();
+            $id = $chat->id;
+        }
         $messages = Message::where('idChat',$id)->get();
         return response()->json($messages);
     }
