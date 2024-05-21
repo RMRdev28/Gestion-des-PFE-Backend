@@ -25,8 +25,11 @@ class ChatController extends Controller
             // dd($pfes);
             foreach ($pfes as $pfe) {
                 $chat = Chat::where('idPfe',$pfe->id)->first();
-                $chat->title = $pfe->title;
+                if($chat){
+                    $chat->title = $pfe->title;
                 $chats[] = $chat;
+                }
+
             }
         }
         return response()->json($chats);
