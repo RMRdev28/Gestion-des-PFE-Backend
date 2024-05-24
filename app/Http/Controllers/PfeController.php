@@ -187,7 +187,7 @@ class PfeController extends Controller
     {
         $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
         $profIds = DB::table('prof_categories')->whereIn('idCategory', $categoryIds)->pluck('idProf');
-        $prof = Prof::whereIn('id', $profIds)->join('users', 'users.id', '=', 'profs.idUser')->select("users.fname", "users.lname", "profs.*")->get();
+        $prof = Prof::whereIn('profs.id', $profIds)->join('users', 'users.id', '=', 'profs.idUser')->select("users.fname", "users.lname", "profs.*")->get();
         return response()->json($prof);
     }
 
