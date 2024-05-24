@@ -191,6 +191,24 @@ class PfeController extends Controller
         return response()->json($prof);
     }
 
+
+
+    public function assignJuryToPfe(Request $request){
+        $pfe = Pfe::find($request->idPfe);
+        $pfe->jury1 = $request->jury1;
+        $pfe->jury2 = $request->jury2;
+        if($pfe->save())
+            return response()->json([
+                'message' => "The jury is assigned secssfully",
+                'status' => "good"
+            ]);
+
+        return response()->json([
+            'message'=> 'error',
+            'status' => "bad"
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */
