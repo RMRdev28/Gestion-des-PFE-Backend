@@ -104,6 +104,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/pfes/choose/validators', [PfeController::class, 'chooseValidatorsManually']);
 
+    Route::post('/pfes/choose/jurys', [PfeController::class, 'assignJuryToPfe']);
+
+
+
 
     Route::get('/pfes/recommande/validators/{pfe}', [PfeController::class, 'getRecomandedProf']); // STATUS
 
