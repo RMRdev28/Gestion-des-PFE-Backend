@@ -186,7 +186,7 @@ class PfeController extends Controller
     public function getRecomandedProf(Pfe $pfe)
     {
         $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
-        $profIds = DB::table('proposition_categories')->whereIn('idCategory', $categoryIds)->pluck('idProf');
+        $profIds = DB::table('prof_categories')->whereIn('idCategory', $categoryIds)->pluck('idProf');
         $prof = Prof::whereIn('id', $profIds)->join('users', 'users.id', '=', 'profs.idUser')->select("users.fname", "users.lname", "profs.*")->get();
         return response()->json($prof);
     }
