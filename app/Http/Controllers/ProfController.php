@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prof;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProfController extends Controller
 {
@@ -17,6 +18,26 @@ class ProfController extends Controller
         $profs = User::where('typeUser',1)->with(['profDetail','profDetail.pfeEncadre'])->get();
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->profDetail->pfeEncadre);
+            $categories = [];
+            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            foreach ($cat as $c) {
+                $categories[] = DB::table('categories')->where('id',$c)->first();
+            }
+            $prof->categories = $categories;
+        }
+        return response()->json($profs);
+    }
+
+    public function getValidators(){
+        $profs = Prof::where('isValidator',1)->with(['user','pfeEncadre'])->get();
+        foreach ($profs as $prof) {
+            $prof->nbrPfeEncadre = count($prof->pfeEncadre);
+            $categories = [];
+            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            foreach ($cat as $c) {
+                $categories[] = DB::table('categories')->where('id',$c)->first();
+            }
+            $prof->categories = $categories;
         }
         return response()->json($profs);
     }
@@ -42,8 +63,17 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        $prof= User::where('id',$prof->idUser)->with(['profDetail'])->get();
-        return response()->json($prof);
+        $profs = Prof::where('id',$prof->id)->with(['user','pfeEncadre'])->first();
+        foreach ($profs as $prof) {
+            $prof->nbrPfeEncadre = count($prof->pfeEncadre);
+            $categories = [];
+            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            foreach ($cat as $c) {
+                $categories[] = DB::table('categories')->where('id',$c)->first();
+            }
+            $prof->categories = $categories;
+        }
+        return response()->json($profs);
     }
 
     /**
