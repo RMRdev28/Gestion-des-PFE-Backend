@@ -46,6 +46,7 @@ class PfeController extends Controller
     {
         $pfes = Pfe::where('status', $type)->get();
         $pfesD = [];
+        $nbrValidateur = 2;
         if ($type == "valide") {
             foreach ($pfes as $pfe) {
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
@@ -60,7 +61,7 @@ class PfeController extends Controller
                         $prof = ValidationPfe::where('idPfe',$pfe->id)->first();
                         $pfe->idValidator = $prof->id;
                     }
-                    $pfe->nbrVallidator = ValidationPfe::where('idPfe', $pfe->id)->count();
+                    $pfe->nbrVallidator =$nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
                     $pfesD[] = $pfe;
                 }
             }
