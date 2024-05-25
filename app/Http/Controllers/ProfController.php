@@ -15,11 +15,11 @@ class ProfController extends Controller
 
     public function index()
     {
-        $profs = User::where('typeUser',1)->with(['profDetail','profDetail.pfeEncadre'])->get();
+        $profs = Prof::with(['user','pfeEncadre'])->get();
         foreach ($profs as $prof) {
-            $prof->nbrPfeEncadre = count($prof->profDetail->pfeEncadre);
+            $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
             foreach ($cat as $c) {
                 $categories[] = DB::table('categories')->where('id',$c)->first();
             }
