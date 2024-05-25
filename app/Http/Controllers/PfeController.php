@@ -76,7 +76,7 @@ class PfeController extends Controller
             $pfe = Pfe::find($pfe);
             if (ValidationPfe::where('idPfe')->count() < 2) {
                 $validationPfe = new ValidationPfe();
-                $validationPfe->idPfe = $request->idPfe;
+                $validationPfe->idPfe = $pfe->idPfe;
                 $validationPfe->idProf = $prof;
                 $validationPfe->save();
             }else{
