@@ -41,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pfes/filtre/{type}', [PfeController::class, 'pfeByType']);
 
 
+
+
     Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
     Route::get('/chats/{id}', [ChatController::class, 'show']);
     Route::post('/chats', [ChatController::class, 'sendMessage']);
@@ -101,6 +103,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::post('/pfes/validate', [ValidationPfeController::class, 'validatePfe']);
+
+    Route::post('/pfes/validate/profs', [PfeController::class, 'assignPfeToValidator']);
 
     Route::get('/pfes/mes', [PfeController::class, 'mesPfes']);
 

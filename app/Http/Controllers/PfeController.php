@@ -68,6 +68,9 @@ class PfeController extends Controller
 
     public function assignPfeToValidator(Request $request)
     {
+        $message = "The pfe is assigned to the validator secssfully";
+        $status  = "good";
+        $error = [];
         $prof = $request->idProf;
         foreach ($request->pfes as $pfe) {
             $pfe = Pfe::find($pfe);
@@ -76,8 +79,18 @@ class PfeController extends Controller
                 $validationPfe->idPfe = $request->idPfe;
                 $validationPfe->idProf = $prof;
                 $validationPfe->save();
+            }else{
+                $reponse = "The pfe $pfe->title have 2 validators";
+                $error[] = $reponse;
+                $status = "not";
+
             }
         }
+        return response()->json([
+            'message' => $message,
+            'status' => $status,
+            'errors' => $error
+        ]);
     }
 
 
