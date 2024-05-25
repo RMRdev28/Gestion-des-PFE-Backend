@@ -62,7 +62,7 @@ class PfeController extends Controller
             }
         }
 
-        return response()->json($pfes);
+        return response()->json($pfesD);
     }
 
 
