@@ -56,6 +56,10 @@ class PfeController extends Controller
             foreach ($pfes as $pfe) {
 
                 if (ValidationPfe::where('idPfe', $pfe->id)->count() < 2) {
+                    if(ValidationPfe::where('idPfe', $pfe->id)->count() == 1){
+                        $prof = ValidationPfe::where('idPfe',$pfe->id)->first();
+                        $pfe->idValidator = $prof->id;
+                    }
                     $pfe->nbrVallidator = ValidationPfe::where('idPfe', $pfe->id)->count();
                     $pfesD[] = $pfe;
                 }
