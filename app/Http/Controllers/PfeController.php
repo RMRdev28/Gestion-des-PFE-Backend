@@ -42,6 +42,14 @@ class PfeController extends Controller
         }
         return response()->json($pfes);
     }
+
+    public function sayYes(){
+        return response(['message'=>"yes"]);
+    }
+    public function sayNo(){
+        return response(['message'=>"No"]);
+    }
+
     public function pfeByType($type)
     {
         $pfes = Pfe::where('status', $type)->get();
