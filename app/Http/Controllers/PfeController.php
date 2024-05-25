@@ -44,31 +44,48 @@ class PfeController extends Controller
     }
     public function pfeByType($type)
     {
-        $pfes = Pfe::where('status',$type)->get();
-        foreach ($pfes as $pfe) {
-            $pfe->validator1 = null;
-            $pfe->validator2 = null;
-            $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
-            if (count($validationPfe) >= 1) {
-                $prof = Prof::find($validationPfe[0]->idProf);
-                $profUser = User::find($prof->idUser);
-                $pfe->validator1 = $profUser;
-                if (count($validationPfe) > 1) {
-                    $prof = Prof::find($validationPfe[1]->idProf);
-                    $profUser = User::find($prof->idUser);
-                    $pfe->validator2 = $profUser;
+        $pfes = Pfe::where('status', $type)->get();
+        $pfesD = [];
+        if ($type == "valide") {
+            foreach ($pfes as $pfe) {
+                if ($pfe->jury1 == null || $pfe->jury2 == null) {
+                    $pfesD[] = $pfe;
+                }
+            }
+        } else {
+            foreach ($pfes as $pfe) {
+
+                if (ValidationPfe::where('idPfe', $pfe->id)->count() < 2) {
+                    $pfe->nbrVallidator = ValidationPfe::where('idPfe', $pfe->id)->count();
+                    $pfesD[] = $pfe;
                 }
             }
         }
+
         return response()->json($pfes);
+    }
+
+
+    public function assignPfeToValidator(Request $request)
+    {
+        $prof = $request->idProf;
+        foreach ($request->pfes as $pfe) {
+            $pfe = Pfe::find($pfe);
+            if (ValidationPfe::where('idPfe')->count() < 2) {
+                $validationPfe = new ValidationPfe();
+                $validationPfe->idPfe = $request->idPfe;
+                $validationPfe->idProf = $prof;
+                $validationPfe->save();
+            }
+        }
     }
 
 
 
 
-
-    public function mesPfes(){
-        $pfes =Pfe::where('idEns',$this->user()->profDetail->id)->get();
+    public function mesPfes()
+    {
+        $pfes = Pfe::where('idEns', $this->user()->profDetail->id)->get();
         return response()->json($pfes);
     }
 
@@ -213,18 +230,19 @@ class PfeController extends Controller
 
 
 
-    public function assignJuryToPfe(Request $request){
+    public function assignJuryToPfe(Request $request)
+    {
         $pfe = Pfe::find($request->idPfe);
         $pfe->jury1 = $request->jury1;
         $pfe->jury2 = $request->jury2;
-        if($pfe->save())
+        if ($pfe->save())
             return response()->json([
                 'message' => "The jury is assigned secssfully",
                 'status' => "good"
             ]);
 
         return response()->json([
-            'message'=> 'error',
+            'message' => 'error',
             'status' => "bad"
         ]);
     }
@@ -242,11 +260,11 @@ class PfeController extends Controller
         $student2 = Student::find($binom->idEtu2);
         $st1Detail = User::find($student1->idUser);
         $st2Detail = User::find($student2->idUser);
-        $pfe->binom1 = $st1Detail->lname." ".$st1Detail->fname;
-        $pfe->binom2 = $st2Detail->lname." ".$st2Detail->fname;
+        $pfe->binom1 = $st1Detail->lname . " " . $st1Detail->fname;
+        $pfe->binom2 = $st2Detail->lname . " " . $st2Detail->fname;
         $prof = Prof::find($pfe->idEns);
         $profDetail = User::find($prof->idUser);
-        $pfe->ens = $profDetail->lname." ".$profDetail->fname;
+        $pfe->ens = $profDetail->lname . " " . $profDetail->fname;
         if (count($validationPfe) > 0) {
 
 
@@ -328,7 +346,7 @@ class PfeController extends Controller
     public function chooseValidatorsManually(Request $request)
     {
         $profs = $request->profs;
-        foreach($profs as $prof){
+        foreach ($profs as $prof) {
             $validationPfe = new ValidationPfe();
             $validationPfe->idPfe = $request->idPfe;
             $validationPfe->idProf = $prof;
