@@ -50,6 +50,11 @@ class PfeController extends Controller
         if ($type == "valide") {
             foreach ($pfes as $pfe) {
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
+
+                    if (($pfe->jury1 == null && $pfe->jury2 != null) || ($pfe->jury1 != null && $pfe->jury2 == null)) {
+                        $nbrValidateur--;
+                    }
+                    $pfe->nbrVallidator = $nbrValidateur;
                     $pfesD[] = $pfe;
                 }
             }
@@ -57,11 +62,11 @@ class PfeController extends Controller
             foreach ($pfes as $pfe) {
 
                 if (ValidationPfe::where('idPfe', $pfe->id)->count() < 2) {
-                    if(ValidationPfe::where('idPfe', $pfe->id)->count() == 1){
-                        $prof = ValidationPfe::where('idPfe',$pfe->id)->first();
+                    if (ValidationPfe::where('idPfe', $pfe->id)->count() == 1) {
+                        $prof = ValidationPfe::where('idPfe', $pfe->id)->first();
                         $pfe->idValidator = $prof->idProf;
                     }
-                    $pfe->nbrVallidator =$nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
+                    $pfe->nbrVallidator = $nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
                     $pfesD[] = $pfe;
                 }
             }
@@ -74,7 +79,7 @@ class PfeController extends Controller
     public function assignPfeToValidator(Request $request)
     {
         $message = "The pfe is assigned to the validator secssfully";
-        $status  = "good";
+        $status = "good";
         $error = [];
         $prof = $request->idProf;
         foreach ($request->pfes as $pfe) {
@@ -84,7 +89,7 @@ class PfeController extends Controller
                 $validationPfe->idPfe = $pfe->id;
                 $validationPfe->idProf = $prof;
                 $validationPfe->save();
-            }else{
+            } else {
                 $reponse = "The pfe $pfe->title have 2 validators";
                 $error[] = $reponse;
                 $status = "not";
