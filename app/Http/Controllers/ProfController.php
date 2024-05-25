@@ -33,7 +33,7 @@ class ProfController extends Controller
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
             foreach ($cat as $c) {
                 $categories[] = DB::table('categories')->where('id',$c)->first();
             }
@@ -67,7 +67,7 @@ class ProfController extends Controller
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->profDetail->id)->pluck('idCategory');
+            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
             foreach ($cat as $c) {
                 $categories[] = DB::table('categories')->where('id',$c)->first();
             }
