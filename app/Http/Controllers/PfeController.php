@@ -44,10 +44,10 @@ class PfeController extends Controller
     }
 
     public function sayYes(){
-        return response(['message'=>"yes"]);
+        return response()->json(['message'=>"yes"]);
     }
     public function sayNo(){
-        return response(['message'=>"No"]);
+        return response()->json(['message'=>"No"]);
     }
 
     public function pfeByType($type)
