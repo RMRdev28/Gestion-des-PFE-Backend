@@ -61,7 +61,7 @@ class ProfController extends Controller
     /**
      * Display the specified resource.
      */
-    getProfByType    public function show(Prof $prof)
+    public function show(Prof $prof)
     {
         $profs = Prof::where('id',$prof->id)->with(['user','pfeEncadre'])->first();
         foreach ($profs as $prof) {
