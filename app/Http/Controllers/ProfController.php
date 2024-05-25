@@ -15,27 +15,28 @@ class ProfController extends Controller
 
     public function index()
     {
-        $profs = Prof::with(['user','pfeEncadre'])->get();
+        $profs = Prof::with(['user', 'pfeEncadre'])->get();
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
+            $cat = DB::table('prof_categories')->where('idProf', $prof->id)->pluck('idCategory');
             foreach ($cat as $c) {
-                $categories[] = DB::table('categories')->where('id',$c)->first();
+                $categories[] = DB::table('categories')->where('id', $c)->first();
             }
             $prof->categories = $categories;
         }
         return response()->json($profs);
     }
 
-    public function getProfByType($type){
-        $profs = Prof::where('isValidator',$type)->with(['user','pfeEncadre'])->get();
+    public function getProfByType($type)
+    {
+        $profs = Prof::where('isValidator', $type)->with(['user', 'pfeEncadre'])->get();
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
+            $cat = DB::table('prof_categories')->where('idProf', $prof->id)->pluck('idCategory');
             foreach ($cat as $c) {
-                $categories[] = DB::table('categories')->where('id',$c)->first();
+                $categories[] = DB::table('categories')->where('id', $c)->first();
             }
             $prof->categories = $categories;
         }
@@ -63,17 +64,16 @@ class ProfController extends Controller
      */
     public function show(Prof $prof)
     {
-        $profs = Prof::where('id',$prof->id)->with(['user','pfeEncadre'])->first();
-        foreach ($profs as $prof) {
-            $prof->nbrPfeEncadre = count($prof->pfeEncadre);
-            $categories = [];
-            $cat = DB::table('prof_categories')->where('idProf',$prof->id)->pluck('idCategory');
-            foreach ($cat as $c) {
-                $categories[] = DB::table('categories')->where('id',$c)->first();
-            }
-            $prof->categories = $categories;
+        $prof = Prof::where('id', $prof->id)->with(['user', 'pfeEncadre'])->first();
+        $prof->nbrPfeEncadre = count($prof->pfeEncadre);
+        $categories = [];
+        $cat = DB::table('prof_categories')->where('idProf', $prof->id)->pluck('idCategory');
+        foreach ($cat as $c) {
+            $categories[] = DB::table('categories')->where('id', $c)->first();
         }
-        return response()->json($profs);
+        $prof->categories = $categories;
+
+        return response()->json($prof);
     }
 
     /**
