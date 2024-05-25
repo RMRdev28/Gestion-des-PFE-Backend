@@ -168,6 +168,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/users/profs', [ProfController::class, 'index']);
     Route::get('/users/profs/{prof}', [ProfController::class, 'show']);
 
+    Route::get('/users/profs/filtre/{type}', [ProfController::class, 'getProfByType']);
+
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT
 

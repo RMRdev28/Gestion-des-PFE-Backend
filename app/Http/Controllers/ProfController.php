@@ -28,8 +28,8 @@ class ProfController extends Controller
         return response()->json($profs);
     }
 
-    public function getValidators(){
-        $profs = Prof::where('isValidator',1)->with(['user','pfeEncadre'])->get();
+    public function getProfByType($type){
+        $profs = Prof::where('isValidator',$type)->with(['user','pfeEncadre'])->get();
         foreach ($profs as $prof) {
             $prof->nbrPfeEncadre = count($prof->pfeEncadre);
             $categories = [];
@@ -61,7 +61,7 @@ class ProfController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Prof $prof)
+    getProfByType    public function show(Prof $prof)
     {
         $profs = Prof::where('id',$prof->id)->with(['user','pfeEncadre'])->first();
         foreach ($profs as $prof) {
