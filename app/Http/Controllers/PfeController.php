@@ -42,6 +42,26 @@ class PfeController extends Controller
         }
         return response()->json($pfes);
     }
+    public function pfeByType($type)
+    {
+        $pfes = Pfe::where('status',$type)->get();
+        foreach ($pfes as $pfe) {
+            $pfe->validator1 = null;
+            $pfe->validator2 = null;
+            $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
+            if (count($validationPfe) >= 1) {
+                $prof = Prof::find($validationPfe[0]->idProf);
+                $profUser = User::find($prof->idUser);
+                $pfe->validator1 = $profUser;
+                if (count($validationPfe) > 1) {
+                    $prof = Prof::find($validationPfe[1]->idProf);
+                    $profUser = User::find($prof->idUser);
+                    $pfe->validator2 = $profUser;
+                }
+            }
+        }
+        return response()->json($pfes);
+    }
 
 
 

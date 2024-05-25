@@ -38,6 +38,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/status', [PfeController::class, 'pfeStatus']);
 
+    Route::get('/pfes/filtre/{type}', [PfeController::class, 'pfeByType']);
+
 
     Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
     Route::get('/chats/{id}', [ChatController::class, 'show']);
