@@ -103,7 +103,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::post('/pfes/suivi', [SuiviPfeController::class, 'store']);
-    Route::get('/pfes/suivi', [SuiviPfeController::class, 'mesSuivis']);
+    Route::get('/pfes/suivi/mes', [SuiviPfeController::class, 'mesSuivis']);
 
 
 
