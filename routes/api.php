@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/filtre/{type}', [PfeController::class, 'pfeByType']);
 
+    Route::post('/suivis/note', [SuiviPfeController::class, 'noteEssaie']); // ADD NOTE
 
 
 
@@ -200,7 +201,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::middleware(['auth:sanctum', 'prof'])->group(function () {
     //Suivis PFE
     Route::get('/suivis', [SuiviPfeController::class, 'mesSuivis']); // DISPLAY ALL
-    Route::post('/suivis/note', [SuiviPfeController::class, 'noteEssaie']); // ADD NOTE
+
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']); // DISPLAY SINGL
 
     Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']); // ADD
