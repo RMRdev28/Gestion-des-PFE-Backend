@@ -43,12 +43,17 @@ class PfeController extends Controller
         return response()->json($pfes);
     }
 
-    public function sayYes(){
-        return response()->json(['message'=>"yes"]);
+    public function allowBinomToSendProject(Request $request){
+        $pfe = Pfe::find($request->idPfe);
+        $pfe->canSend = 1;
+        $pfe->save();
+        return response()->json([
+            'message'=>"Le Binome il peux uploader la memoire au jury maintenant",
+            'status'=>'good',
+        ]);
     }
-    public function sayNo(){
-        return response()->json(['message'=>"No"]);
-    }
+
+
 
     public function pfeByType($type)
     {

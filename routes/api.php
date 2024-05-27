@@ -100,6 +100,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/{pfe}', [PfeController::class, 'show']); // DISPLAY ALL
 
+    Route::post('/pfes/cansend', [PfeController::class, 'allowBinomToSendProject']);
+
+
+
 
 
     Route::post('/pfes/suivi', [SuiviPfeController::class, 'store']);

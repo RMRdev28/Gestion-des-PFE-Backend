@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::create('pfes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idBinom');
+            $table->tinyInteger('canSend')->default(0);
             $table->unsignedBigInteger('idEns');
             $table->unsignedBigInteger('jury1')->nullable();
             $table->unsignedBigInteger('jury2')->nullable();
