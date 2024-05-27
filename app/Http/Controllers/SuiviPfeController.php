@@ -52,7 +52,7 @@ class SuiviPfeController extends Controller
         $pfeS = new SuiviPfe();
             $pfeS->idPfe = $this->user()->idPfe;
             $file = $request->essaie;
-            $base64File = 'data:' . $file->getClientMimeType() . ';base64,' . base64_encode(file_get_contents($file));
+            $base64File = 'data:application/pdf;base64,' . $file;
             $fileUploaded = $this->upload($base64File,'essaie');
             if($fileUploaded){
                 $pfeS->pathPfeEssaie = $fileUploaded['filePath'];
