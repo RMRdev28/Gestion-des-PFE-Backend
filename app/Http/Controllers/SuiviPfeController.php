@@ -27,7 +27,7 @@ class SuiviPfeController extends Controller
     public function noteEssaie(Request $request){
         $message = "";
         $status = "bad";
-        $pfeS = SuiviPfe::find($request->idSuivis)->first();
+        $pfeS = SuiviPfe::find($request->idSuivis);
         $pfeS->note = $request->note;
         $pfeS->observation = $request->observation;
         if($pfeS->save()){
