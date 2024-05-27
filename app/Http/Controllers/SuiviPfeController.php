@@ -85,12 +85,7 @@ class SuiviPfeController extends Controller
         if($user->typeUser == 0){
             $pfeS = SuiviPfe::where('idPfe',$this->user()->idPfe)->get();
         }else{
-            $idBinomEncadre = $user->binomsEncadre();
-            $ids = [];
-            foreach ($idBinomEncadre as $id) {
-                $ids[] = $id->idBinom;
-            }
-            $pfeS = SuiviPfe::whereIn('idBinom',$ids)->get();
+            $pfeS = SuiviPfe::whereIn('idBinom',$this->user()->pfeEncadre)->get();
         }
 
         return response()->json([
@@ -149,6 +144,8 @@ class SuiviPfeController extends Controller
             'demande' => $demandes
         ]);
     }
+
+
 
     public function getAllRdvProf(){
 
