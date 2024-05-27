@@ -83,7 +83,7 @@ class SuiviPfeController extends Controller
         $user = Auth::user();
         $pfeS = null;
         if($user->typeUser == 0){
-            $pfeS = SuiviPfe::where('idBinom',$user->binom->id)->get();
+            $pfeS = SuiviPfe::where('idPfe',$this->user()->idPfe)->get();
         }else{
             $idBinomEncadre = $user->binomsEncadre();
             $ids = [];
