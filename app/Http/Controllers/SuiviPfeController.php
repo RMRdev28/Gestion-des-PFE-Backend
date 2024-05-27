@@ -51,7 +51,9 @@ class SuiviPfeController extends Controller
         $status = "bad";
         $pfeS = new SuiviPfe();
             $pfeS->idPfe = $this->user()->idPfe;
-            $fileUploaded = $this->upload($request->essaie,'essaie');
+            $file = $request->essaie;
+            $base64File = 'data:' . $file->getClientMimeType() . ';base64,' . base64_encode(file_get_contents($file));
+            $fileUploaded = $this->upload($base64File,'essaie');
             if($fileUploaded){
                 $pfeS->pathPfeEssaie = $fileUploaded['filePath'];
                 $pfeS->save();
