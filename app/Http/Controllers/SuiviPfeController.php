@@ -91,7 +91,7 @@ class SuiviPfeController extends Controller
             ]);
 
         }else{
-            $pfeS = SuiviPfe::whereIn('idBinom',$this->user()->pfeEncadre)->get();
+            $pfeS = SuiviPfe::whereIn('idPfe',$this->user()->pfeEncadre)->get();
             foreach($pfeS as $s){
                 $pfe = Pfe::find($s->idPfe);
                 $s->pfe = $pfe->title;
