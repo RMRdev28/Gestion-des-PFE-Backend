@@ -84,15 +84,25 @@ class SuiviPfeController extends Controller
         $pfeS = null;
         if($user->typeUser == 0){
             $pfeS = SuiviPfe::where('idPfe',$this->user()->idPfe)->get();
+            return response()->json([
+                'message' => $message,
+                'status' => $status,
+                'pfeS' => $pfeS
+            ]);
+
         }else{
             $pfeS = SuiviPfe::whereIn('idBinom',$this->user()->pfeEncadre)->get();
+            foreach($pfeS as $s){
+                $pfe = Pfe::find($s->idPfe);
+                $s->pfe = $pfe->title;
+            }
+            return response()->json([
+                'message' => $message,
+                'status' => $status,
+                'demande' => $pfeS
+            ]);
         }
 
-        return response()->json([
-            'message' => $message,
-            'status' => $status,
-            'pfeS' => $pfeS
-        ]);
 
     }
 
