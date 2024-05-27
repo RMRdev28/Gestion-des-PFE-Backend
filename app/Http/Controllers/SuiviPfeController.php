@@ -49,18 +49,16 @@ class SuiviPfeController extends Controller
     {
         $message ="";
         $status = "bad";
-        $pfeS = SuiviPfe::create();
-        if($pfeS){
+        $pfeS = new SuiviPfe();
+            $pfeS->idPfe = $this->user()->idPfe;
             $fileUploaded = $this->upload($request->essaie,'essaie');
             if($fileUploaded){
-                $pfeS->pathPfeEssaie = $fileUploaded['originalName'];
+                $pfeS->pathPfeEssaie = $fileUploaded['filePath'];
                 $pfeS->save();
             }
             $message = "The draft is added secssfully";
             $status = "Good";
-        }else{
-            $message = "Error adding draft";
-        }
+
         return response()->json([
             'message'=>$message,
             'status'=>$status
