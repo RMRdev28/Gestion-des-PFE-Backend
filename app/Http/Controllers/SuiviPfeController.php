@@ -142,9 +142,11 @@ class SuiviPfeController extends Controller
     public function getAllRdv(Request $request){
         $rdv = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',2)->get();
         $nextRdv = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',1)->first();
+        $demandes = RendezVous::where('idBinom',$this->user()->binom->id)->where('status',0)->count();
         return response()->json([
             'rdv' => $rdv,
-            'next' => $nextRdv
+            'next' => $nextRdv,
+            'demande' => $demandes
         ]);
     }
 
