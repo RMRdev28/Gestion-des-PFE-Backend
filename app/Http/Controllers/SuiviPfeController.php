@@ -27,10 +27,12 @@ class SuiviPfeController extends Controller
     public function noteEssaie(Request $request){
         $message = "";
         $status = "bad";
-        $pfeS = SuiviPfe::where($request->idSuivis)->first();
+        $pfeS = SuiviPfe::find($request->idSuivis)->first();
         $pfeS->note = $request->note;
         $pfeS->observation = $request->observation;
         if($pfeS->save()){
+            $pfe = Pfe::find($pfeS->idPfe);
+            $this->notifyBinom($pfe->idBinom,"Suivi Pfe","Votre encadrent a vu votre brouillent");
             $message = "The note is added secssfully";
             $status = "good";
         }else{
