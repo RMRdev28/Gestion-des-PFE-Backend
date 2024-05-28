@@ -107,6 +107,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/pfes/dateSoutn', [SoutnanceController::class, 'store']);
 
+    Route::get('/pfes/dateSoutn', [SoutnanceController::class, 'index']);
+
     Route::post('/pfes/note', [PfeController::class, 'addNotePfe']);
 
 
