@@ -25,7 +25,6 @@ return new class extends Migration
             $table->enum('branch',['isil','acad','gtr']);
             $table->text('description');
             $table->integer('year');
-            $table->datetime('date_st')->nullable();
             $table->double('note');
             $table->foreign('idBinom')->references('id')->on('binoms');
             $table->foreign('jury1')->references('id')->on('profs');
