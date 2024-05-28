@@ -7,6 +7,7 @@ use App\Models\Pfe;
 use App\Models\Prof;
 use App\Models\Student;
 use App\Models\User;
+use App\Models\DetailNote;
 use App\Models\ValidationPfe;
 use App\Traits\GetUserTrait;
 use App\Traits\UploadTrait;
@@ -340,6 +341,34 @@ class PfeController extends Controller
             'message'=>"La date de soutenance est ajouté avec successe",
             'status'=>"good"
         ]);
+    }
+
+    public function addNotePfe(Request $request){
+        $pfe = Pfe::find($request->idPfe);
+        // jury1
+        $detailNote = new DetailNote();
+        $detailNote->idPfe = $pfe->id;
+        $detailNote->idJury = $pfe->jury1;
+        $detailNote->note1 = $pfe->note1J1;
+        $detailNote->note2 = $pfe->note2J1;
+        $detailNote->note3 = $pfe->note3J1;
+        $detailNote->note4 = $pfe->note4J1;
+        $detailNote->note5 = 0;
+        $detailNote->save();
+        $detailNote = new DetailNote();
+        $detailNote->idPfe = $pfe->id;
+        $detailNote->idJury = $pfe->jury2;
+        $detailNote->note1 = $pfe->note1J2;
+        $detailNote->note2 = $pfe->note2J2;
+        $detailNote->note3 = $pfe->note3J2;
+        $detailNote->note4 = $pfe->note4J2;
+        $detailNote->note5 = 0;
+        $detailNote->save();
+        return response()->json([
+            'message'=>"Les notes sont ajouté avec successe",
+            'status'=>'good'
+        ]);
+
     }
 
     /**
