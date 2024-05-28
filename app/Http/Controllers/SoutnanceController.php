@@ -24,8 +24,8 @@ class SoutnanceController extends Controller
             $userJ2 = User::find($jury2->idUser);
             $jury1Name = $userJ1->lname." ".$userJ1->fname;
             $jury2Name = $userJ2->lname." ".$userJ2->fname;
-            $pfe->$jury1Name = $jury1Name;
-            $pfe->$jury2Name = $jury2Name;
+            $pfe->jury1Name = $jury1Name;
+            $pfe->jury2Name = $jury2Name;
             $st->pfe = $pfe;
 
         }
