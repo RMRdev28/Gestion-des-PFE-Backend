@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pfe;
+use App\Models\Prof;
+use App\Models\User;
 use App\Models\Soutnance;
 use Illuminate\Http\Request;
 
@@ -12,7 +15,20 @@ class SoutnanceController extends Controller
      */
     public function index()
     {
-        //
+        $soutnances = Soutnance::all();
+        foreach($soutnances as $st){
+            $pfe = Pfe::find($st->idPfe);
+            $jury1 = Prof::find($pfe->jury1);
+            $jury2 = Prof::find($pfe->jury2);
+            $userJ1 = User::find($jury1->idUser);
+            $userJ2 = User::find($jury2->idUser);
+            $jury1Name = $userJ1->lname." ".$userJ1->fname;
+            $jury2Name = $userJ2->lname." ".$userJ2->fname;
+            $pfe->$jury1Name = $jury1Name;
+            $pfe->$jury2Name = $jury2Name;
+            $st->pfe = $pfe;
+        }
+        return response()->json($soutnances);
     }
 
     /**
