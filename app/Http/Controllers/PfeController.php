@@ -29,9 +29,11 @@ class PfeController extends Controller
         $pfes = Pfe::all();
         foreach ($pfes as $pfe) {
             $pfe->date_st = null;
+            $pfe->salle_st = null;
             $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
             if($soutnance !=  null){
                 $pfe->date_st = $soutnance->date;
+                $pfe->salle_st =  $soutnance->salle;
             }
             $profC= Prof::find($pfe->idEns);
             $created_by = User::find($profC->idUser);
@@ -75,9 +77,11 @@ class PfeController extends Controller
 
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
                     $pfe->date_st = null;
+                    $pfe->salle_st = null;
                     $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
                     if($soutnance !=  null){
                         $pfe->date_st = $soutnance->date;
+                        $pfe->salle_st =  $soutnance->salle;
                     }
                     $profC= Prof::find($pfe->idEns);
                     $created_by = User::find($profC->idUser);
@@ -98,9 +102,11 @@ class PfeController extends Controller
                         $pfe->idValidator = $prof->idProf;
                     }
                     $pfe->date_st = null;
+                    $pfe->salle_st = null;
                     $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
                     if($soutnance !=  null){
                         $pfe->date_st = $soutnance->date;
+                        $pfe->salle_st =  $soutnance->salle;
                     }
                     $profC= Prof::find($pfe->idEns);
                     $created_by = User::find($profC->idUser);
