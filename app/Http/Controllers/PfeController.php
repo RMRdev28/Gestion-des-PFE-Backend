@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Binom;
 use App\Models\Pfe;
 use App\Models\Prof;
+use App\Models\Soutnance;
 use App\Models\Student;
 use App\Models\User;
 
@@ -27,6 +28,11 @@ class PfeController extends Controller
     {
         $pfes = Pfe::all();
         foreach ($pfes as $pfe) {
+            $pfe->date_st = null;
+            $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
+            if($soutnance !=  null){
+                $pfe->date_st = $soutnance->date;
+            }
             $profC= Prof::find($pfe->idEns);
             $created_by = User::find($profC->idUser);
             $pfe->created_by = $created_by->lname. " " .$created_by->fname;
@@ -68,6 +74,11 @@ class PfeController extends Controller
             foreach ($pfes as $pfe) {
 
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
+                    $pfe->date_st = null;
+                    $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
+                    if($soutnance !=  null){
+                        $pfe->date_st = $soutnance->date;
+                    }
                     $profC= Prof::find($pfe->idEns);
                     $created_by = User::find($profC->idUser);
                     $pfe->created_by = $created_by->lname. " " .$created_by->fname;
@@ -85,6 +96,11 @@ class PfeController extends Controller
                     if (ValidationPfe::where('idPfe', $pfe->id)->count() == 1) {
                         $prof = ValidationPfe::where('idPfe', $pfe->id)->first();
                         $pfe->idValidator = $prof->idProf;
+                    }
+                    $pfe->date_st = null;
+                    $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
+                    if($soutnance !=  null){
+                        $pfe->date_st = $soutnance->date;
                     }
                     $profC= Prof::find($pfe->idEns);
                     $created_by = User::find($profC->idUser);
@@ -342,16 +358,7 @@ class PfeController extends Controller
     }
 
 
-    public function addDateStn(Request $request){
-        $pfe = Pfe::find($request->idPfe);
 
-        $pfe->date_st = $request->dateStn;
-        $pfe->save();
-        return response()->json([
-            'message'=>"La date de soutenance est ajouté avec successe",
-            'status'=>"good"
-        ]);
-    }
 
     public function addNotePfe(Request $request){
         $pfe = Pfe::find($request->idPfe);

@@ -12,6 +12,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PfeController;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\PropositionController;
+use App\Http\Controllers\SoutnanceController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SuiviPfeController;
 use App\Http\Controllers\UserController;
@@ -104,7 +105,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/pfes/cansend', [PfeController::class, 'allowBinomToSendProject']);
 
 
-    Route::post('/pfes/dateSoutn', [PfeController::class, 'addDateStn']);
+    Route::post('/pfes/dateSoutn', [SoutnanceController::class, 'store']);
 
     Route::post('/pfes/note', [PfeController::class, 'addNotePfe']);
 

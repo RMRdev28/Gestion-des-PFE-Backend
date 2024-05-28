@@ -28,7 +28,16 @@ class SoutnanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            $soutnance = new Soutnance();
+            $soutnance->idPfe =$request->idPfe;
+            $soutnance->date = $request->dateStn;
+            $soutnance->salle = $request->salleStn;
+            $soutnance->save();
+            return response()->json([
+                'message'=>"La date de soutenance est ajouté avec successe",
+                'status'=>"good"
+            ]);
+
     }
 
     /**
