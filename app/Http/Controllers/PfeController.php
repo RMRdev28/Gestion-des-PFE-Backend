@@ -27,6 +27,9 @@ class PfeController extends Controller
     {
         $pfes = Pfe::all();
         foreach ($pfes as $pfe) {
+            $profC= Prof::find($pfe->idEns);
+            $created_by = User::find($profC->idUser);
+            $pfe->created_by = $created_by->lname. " " .$created_by->fname;
             $pfe->validator1 = null;
             $pfe->validator2 = null;
             $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
@@ -63,6 +66,9 @@ class PfeController extends Controller
         $nbrValidateur = 2;
         if ($type == "valide") {
             foreach ($pfes as $pfe) {
+                $profC= Prof::find($pfe->idEns);
+                $created_by = User::find($profC->idUser);
+                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
 
                     if (($pfe->jury1 == null && $pfe->jury2 != null) || ($pfe->jury1 != null && $pfe->jury2 == null)) {
@@ -74,7 +80,9 @@ class PfeController extends Controller
             }
         } else {
             foreach ($pfes as $pfe) {
-
+                $profC= Prof::find($pfe->idEns);
+                $created_by = User::find($profC->idUser);
+                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
                 if (ValidationPfe::where('idPfe', $pfe->id)->count() < 2) {
                     if (ValidationPfe::where('idPfe', $pfe->id)->count() == 1) {
                         $prof = ValidationPfe::where('idPfe', $pfe->id)->first();
@@ -335,6 +343,7 @@ class PfeController extends Controller
 
     public function addDateStn(Request $request){
         $pfe = Pfe::find($request->idPfe);
+
         $pfe->date_st = $request->dateStn;
         $pfe->save();
         return response()->json([
@@ -346,13 +355,12 @@ class PfeController extends Controller
     public function addNotePfe(Request $request){
         $pfe = Pfe::find($request->idPfe);
         // jury1
-        $note1 = ($request->note1J1 + $request->note2J1 + $request->note3J1 + $request->note4J1) / 4;
-        $note2 = ($request->note1J2 + $request->note2J2 + $request->note3J2 + $request->note4J2) / 4;
+        $note1 = ($request->note1J1 + $request->note2J1 + $request->note3J1 + $request->note4J1) /4 ;
+        $note2 = ($request->note1J2 + $request->note2J2 + $request->note3J2 + $request->note4J2) /4 ;
         $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury1, $request->note1J1, $request->note2J1, $request->note3J1, $request->note4J1, 0]);
         // jury2
         $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury2, $request->note1J2, $request->note2J2, $request->note3J2, $request->note4J2, 0]);
-        $pfe->note = ($note1+$note2) / 2;
-        $pfe->save();
+        $note = ($note1+$note2) /2;
         return response()->json([
             'message'=>"Les notes sont ajouté avec successe",
             'status'=>'good'

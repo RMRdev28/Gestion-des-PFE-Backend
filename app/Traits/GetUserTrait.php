@@ -67,7 +67,7 @@ trait GetUserTrait{
                     'profDetail',
                 ]);
                 $pfeEncadre = Pfe::where('idEns',$user->profDetail->id)->pluck('id');
-                $user->pfeEncadre = $pfeEncadre;
+            $user->pfeEncadre = $pfeEncadre;
             }else{
                 $user->load([
                     'propositions',

@@ -33,6 +33,8 @@ class PropositionController extends Controller
     {
         $propositions = Proposition::all();
         foreach($propositions as $prop){
+            $created_by= User::find($prop->User);
+            $prop->created_by = $created_by->lname. " " .$created_by->fname;
             $nbrDeamnde = Demmande::where('idProp',$prop->id)->count();
             $categoryIds = propositionCategory::where('idProp',$prop->id)->pluck('idCategory');
             $categories = Category::whereIn('id',$categoryIds)->get();
