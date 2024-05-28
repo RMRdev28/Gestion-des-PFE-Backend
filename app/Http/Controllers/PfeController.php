@@ -291,6 +291,8 @@ class PfeController extends Controller
         $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
         $pfe->validator1 = null;
         $pfe->validator2 = null;
+        $pfe->jury1Name = null;
+        $pfe->jury2Name = null;
         $binom = Binom::find($pfe->idBinom);
         $student1 = Student::find($binom->idEtu1);
         $student2 = Student::find($binom->idEtu2);
@@ -299,6 +301,16 @@ class PfeController extends Controller
         $pfe->binom1 = $st1Detail->lname . " " . $st1Detail->fname;
         $pfe->binom2 = $st2Detail->lname . " " . $st2Detail->fname;
         $prof = Prof::find($pfe->idEns);
+        if($pfe->jury1 != null){
+            $jury1= Prof::find($pfe->jury1);
+            $jury1User = User::find($jury1->idUser);
+            $pfe->jury1Name = $jury1User->lname . " " . $jury1User->fname;
+        }
+        if($pfe->jury2 != null){
+            $jury2= Prof::find($pfe->jury2);
+            $jury2User = User::find($jury2->idUser);
+            $pfe->jury2Name = $jury2User->lname . " " . $jury2User->fname;
+        }
         $profDetail = User::find($prof->idUser);
         $pfe->ens = $profDetail->lname . " " . $profDetail->fname;
         if (count($validationPfe) > 0) {
