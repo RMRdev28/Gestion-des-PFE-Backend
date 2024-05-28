@@ -66,11 +66,11 @@ class PfeController extends Controller
         $nbrValidateur = 2;
         if ($type == "valide") {
             foreach ($pfes as $pfe) {
-                $profC= Prof::find($pfe->idEns);
-                $created_by = User::find($profC->idUser);
-                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
-                if ($pfe->jury1 == null || $pfe->jury2 == null) {
 
+                if ($pfe->jury1 == null || $pfe->jury2 == null) {
+                    $profC= Prof::find($pfe->idEns);
+                    $created_by = User::find($profC->idUser);
+                    $pfe->created_by = $created_by->lname. " " .$created_by->fname;
                     if (($pfe->jury1 == null && $pfe->jury2 != null) || ($pfe->jury1 != null && $pfe->jury2 == null)) {
                         $nbrValidateur--;
                     }
@@ -80,14 +80,15 @@ class PfeController extends Controller
             }
         } else {
             foreach ($pfes as $pfe) {
-                $profC= Prof::find($pfe->idEns);
-                $created_by = User::find($profC->idUser);
-                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+
                 if (ValidationPfe::where('idPfe', $pfe->id)->count() < 2) {
                     if (ValidationPfe::where('idPfe', $pfe->id)->count() == 1) {
                         $prof = ValidationPfe::where('idPfe', $pfe->id)->first();
                         $pfe->idValidator = $prof->idProf;
                     }
+                    $profC= Prof::find($pfe->idEns);
+                    $created_by = User::find($profC->idUser);
+                    $pfe->created_by = $created_by->lname. " " .$created_by->fname;
                     $pfe->nbrVallidator = $nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
                     $pfesD[] = $pfe;
                 }
