@@ -16,6 +16,7 @@ class SoutnanceController extends Controller
     public function index()
     {
         $soutnances = Soutnance::all();
+        dd($soutnances);
         foreach($soutnances as $st){
             $pfe = Pfe::find($st->idPfe);
             $jury1 = Prof::find($pfe->jury1);
