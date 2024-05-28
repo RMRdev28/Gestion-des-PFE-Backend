@@ -320,6 +320,13 @@ class PfeController extends Controller
      */
     public function show(Pfe $pfe)
     {
+        $pfe->date_st = null;
+        $pfe->salle_st = null;
+        $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
+        if($soutnance !=  null){
+            $pfe->date_st = $soutnance->date;
+            $pfe->salle_st =  $soutnance->salle;
+        }
         $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
         $pfe->validator1 = null;
         $pfe->validator2 = null;
