@@ -332,6 +332,16 @@ class PfeController extends Controller
     }
 
 
+    public function addDateStn(Request $request){
+        $pfe = Pfe::find($request->idPfe);
+        $pfe->date_st = $request->dateStn;
+        $pfe->save();
+        return response()->json([
+            'message'=>"La date de soutenance est ajouté avec successe",
+            'status'=>"good"
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */

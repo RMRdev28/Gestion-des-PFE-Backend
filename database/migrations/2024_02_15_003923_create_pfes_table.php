@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('title');
             $table->integer('need_suivis')->default(0);
             $table->enum('level',['l3','m2']);
+            $table->enum('type',['interne','externe'])->default('interne');
             $table->enum('status',['valide','termine','revu','pasencore','rejeter'])->default('pasencore');
             $table->enum('branch',['isil','acad','gtr']);
             $table->text('description');
             $table->integer('year');
+            $table->datetime('date_st')->nullable();
             $table->double('note');
             $table->foreign('idBinom')->references('id')->on('binoms');
             $table->foreign('jury1')->references('id')->on('profs');

@@ -104,6 +104,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/pfes/cansend', [PfeController::class, 'allowBinomToSendProject']);
 
 
+    Route::post('/pfes/dateSoutn', [PfeController::class, 'addDateStn']);
+
+
+
+
 
 
 
