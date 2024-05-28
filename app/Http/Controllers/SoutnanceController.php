@@ -27,6 +27,7 @@ class SoutnanceController extends Controller
             $pfe->$jury1Name = $jury1Name;
             $pfe->$jury2Name = $jury2Name;
             $st->pfe = $pfe;
+            dd($st);
         }
         return response()->json($soutnances);
     }
