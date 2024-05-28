@@ -16,7 +16,6 @@ class SoutnanceController extends Controller
     public function index()
     {
         $soutnances = Soutnance::all();
-        dd($soutnances);
         foreach($soutnances as $st){
             $pfe = Pfe::find($st->idPfe);
             $jury1 = Prof::find($pfe->jury1);
@@ -28,7 +27,7 @@ class SoutnanceController extends Controller
             $pfe->$jury1Name = $jury1Name;
             $pfe->$jury2Name = $jury2Name;
             $st->pfe = $pfe;
-            dd($st);
+
         }
         return response()->json($soutnances);
     }
