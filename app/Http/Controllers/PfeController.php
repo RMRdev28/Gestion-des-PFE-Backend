@@ -346,9 +346,9 @@ class PfeController extends Controller
     public function addNotePfe(Request $request){
         $pfe = Pfe::find($request->idPfe);
         // jury1
-        $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury1, $pfe->note1J1, $pfe->note2J1, $pfe->note3J1, $pfe->note4J1, 0]);
+        $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury1, $request->note1J1, $request->note2J1, $request->note3J1, $request->note4J1, 0]);
         // jury2
-        $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury2, $pfe->note1J2, $pfe->note2J2, $pfe->note3J2, $pfe->note4J2, 0]);
+        $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury2, $request->note1J2, $request->note2J2, $request->note3J2, $request->note4J2, 0]);
         return response()->json([
             'message'=>"Les notes sont ajouté avec successe",
             'status'=>'good'
