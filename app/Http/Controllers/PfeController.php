@@ -65,7 +65,33 @@ class PfeController extends Controller
         ]);
     }
 
-
+    public function pfesNeedCommisionSuivis(){
+        $pfes = Pfe::where('need_suivis',1)->where('idEns',null)->get();
+        foreach ($pfes as $pfe) {
+            $pfe->date_st = null;
+            $pfe->salle_st = null;
+            $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
+            if($soutnance !=  null){
+                $pfe->date_st = $soutnance->date;
+                $pfe->salle_st =  $soutnance->salle;
+            }
+            $pfe->created_by = "Admin";
+            $pfe->validator1 = null;
+            $pfe->validator2 = null;
+            $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
+            if (count($validationPfe) >= 1) {
+                $prof = Prof::find($validationPfe[0]->idProf);
+                $profUser = User::find($prof->idUser);
+                $pfe->validator1 = $profUser;
+                if (count($validationPfe) > 1) {
+                    $prof = Prof::find($validationPfe[1]->idProf);
+                    $profUser = User::find($prof->idUser);
+                    $pfe->validator2 = $profUser;
+                }
+            }
+        }
+        return response()->json($pfes);
+    }
 
     public function pfeByType($type)
     {
