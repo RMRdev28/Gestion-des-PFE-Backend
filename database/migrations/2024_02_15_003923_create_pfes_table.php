@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idBinom');
             $table->tinyInteger('canSend')->default(0);
-            $table->unsignedBigInteger('idEns');
+            $table->unsignedBigInteger('idEns')->nullable();
             $table->unsignedBigInteger('jury1')->nullable();
             $table->unsignedBigInteger('jury2')->nullable();
             $table->string('title');

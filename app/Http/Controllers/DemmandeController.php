@@ -110,8 +110,15 @@ class DemmandeController extends Controller
                 $pfe->need_suivis = 0;
             }
             $pfe->description = $proposition->description;
-            $pfe->year = 2024;
-            $pfe->idEns = $prof->id;
+            $pfe->need_suivis = $proposition->need_suivis;
+            $pfe->year = date('Y');
+            $pfe->type = $proposition->type;
+            if($pfe->type == "externe"){
+                $pfe->idEns = null;
+            }else{
+                $pfe->idEns = $prof->id;
+            }
+
             $pfe->level = $proposition->level;
             $pfe->note = 0;
             $pfe->branch = $demmande->binom->student1->specialite;
