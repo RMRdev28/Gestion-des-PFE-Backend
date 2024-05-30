@@ -23,6 +23,7 @@ class Proposition extends Model
         'type',
         'status',
         'level',
+        'need_suivis'
     ];
 
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idUser');
             $table->string('title');
+            $table->tinyInteger('need_suivis');
             $table->text('description');
             $table->enum('type',['externe','interne']);
             $table->enum('level',['l3','m2']);

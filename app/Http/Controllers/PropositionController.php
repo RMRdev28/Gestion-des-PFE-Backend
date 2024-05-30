@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Attachement;
 use App\Models\Category;
+use App\Models\Criter;
 use App\Models\Demmande;
 use App\Models\Proposition;
 use App\Models\propositionCategory;
+use App\Models\PropsCriter;
 use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -71,13 +73,14 @@ class PropositionController extends Controller
         $typePrposition = "";
         if(Auth::user()->typeUser == 0){
             $typePrposition = "interne";
-        }elseif(Auth::user()->typeUser == 1){
-            $typePrposition = "interne";
+            $needSuivis = 0;
         }else{
-            $typePrposition = "externe";
+            $typeProposition = $request->type;
+            $needSuivis = $request->need_suivi;
         }
         $request->request->add(['type'=> $typePrposition]);
         $request->request->add(['idUser'=> Auth::user()->id]);
+        $request->request->add(['need_suivis'=> $needSuivis]);
         $data = $request->all();
 
         $proposition = Proposition::create($data);
@@ -102,7 +105,17 @@ class PropositionController extends Controller
                 $propCategory->save();
 
             }
-            $message = "Proposition created secssefully";
+            foreach ($request->criters as $name => $value) {
+                $criter = new Criter();
+                $criter->title = $name;
+                $criter->save();
+                $criterProposition = new PropsCriter();
+                $criterProposition->idCriter = $criter->id;
+                $criterProposition->idProp = $proposition->id;
+                $criterProposition->valeur = $value;
+
+            }
+            $message = "Proposition Ajouter avec successe";
             $status = "good";
         }
 
