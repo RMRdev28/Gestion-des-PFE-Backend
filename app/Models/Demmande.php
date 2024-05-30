@@ -14,7 +14,6 @@ class Demmande extends Model
         'idProp',
         'idBinom',
         'releverNote',
-        'idBinom'
     ];
 
 

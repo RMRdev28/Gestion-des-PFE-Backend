@@ -47,7 +47,6 @@ class DemmandeController extends Controller
             $base64File = 'data:application/pdf;base64,' . $file;
             $request->except(['releverNote']);
             $fileUploade = $this->upload($base64File, "relever");
-            return $fileUploade['filePath'];
         }
 
         $request->releverNote = "test";
