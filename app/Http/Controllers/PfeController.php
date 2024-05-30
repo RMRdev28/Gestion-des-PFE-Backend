@@ -109,9 +109,15 @@ class PfeController extends Controller
                         $pfe->date_st = $soutnance->date;
                         $pfe->salle_st =  $soutnance->salle;
                     }
-                    $profC= Prof::find($pfe->idEns);
-                    $created_by = User::find($profC->idUser);
-                    $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+                    if($pfe->idEns){
+                        $profC= Prof::find($pfe->idEns);
+                        $created_by = User::find($profC->idUser);
+                        $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+                    }else{
+                        $pfe->created_by = "admin";
+                    }
+
+
                     if (($pfe->jury1 == null && $pfe->jury2 != null) || ($pfe->jury1 != null && $pfe->jury2 == null)) {
                         $nbrValidateur--;
                     }
@@ -134,9 +140,13 @@ class PfeController extends Controller
                         $pfe->date_st = $soutnance->date;
                         $pfe->salle_st =  $soutnance->salle;
                     }
-                    $profC= Prof::find($pfe->idEns);
-                    $created_by = User::find($profC->idUser);
-                    $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+                    if($pfe->idEns){
+                        $profC= Prof::find($pfe->idEns);
+                        $created_by = User::find($profC->idUser);
+                        $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+                    }else{
+                        $pfe->created_by = "admin";
+                    }
                     $pfe->nbrVallidator = $nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
                     $pfesD[] = $pfe;
                 }
