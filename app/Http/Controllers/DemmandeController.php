@@ -104,19 +104,16 @@ class DemmandeController extends Controller
             $pfe = new Pfe();
             $pfe->title = $proposition->title;
             $pfe->idBinom = $demmande->binom->id;
-            if ($proposition->type == "externe") {
-                $pfe->need_suivis = 1;
-            } else {
-                $pfe->need_suivis = 0;
-            }
+            $pfe->canSend = 0;
             $pfe->description = $proposition->description;
             $pfe->need_suivis = $proposition->need_suivis;
             $pfe->year = date('Y');
             $pfe->type = $proposition->type;
-            if($pfe->type == "externe"){
-                $pfe->idEns = null;
-            }else{
+            if($prof){
                 $pfe->idEns = $prof->id;
+
+            }else{
+                $pfe->idEns = null;
             }
 
             $pfe->level = $proposition->level;
