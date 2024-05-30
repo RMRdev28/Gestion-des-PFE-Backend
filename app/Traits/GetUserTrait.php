@@ -41,7 +41,7 @@ trait GetUserTrait{
                     if($pfe){
                         $user->pfeTitle = $pfe->title;
                         $user->idPfe = $pfe->id;
-                        $prof = Prof::find($pfe->idEns)->first();
+                        $prof = Prof::find($pfe->idEns);
                         $profUser = User::find($prof->idUser);
                         $user->encadreurFname = $profUser->fname;
                         $user->encadreurLname = $profUser->lname;
