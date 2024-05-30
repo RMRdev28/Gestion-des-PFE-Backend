@@ -10,6 +10,7 @@ use App\Models\Prof;
 use App\Models\Proposition;
 use App\Models\propositionCategory;
 use App\Models\User;
+use App\Traits\GetUserTrait;
 use App\Traits\SendEmailTrait;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 
 class DemmandeController extends Controller
 {
-    use UploadTrait, SendEmailTrait;
+    use UploadTrait, SendEmailTrait, GetUserTrait;
     /**
      * Store a newly created resource in storage.
      */
@@ -40,8 +41,7 @@ class DemmandeController extends Controller
         $status = "bad";
 
 
-        $user = User::where('id', Auth::user()->id)->with(['userDetail', 'userDetail.binom'])->first();
-        $request->merge(['idBinom' => $user->studentDetail->binom->id]);
+        $request->merge(['idBinom' => $this->user()->binom->id]);
         $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
