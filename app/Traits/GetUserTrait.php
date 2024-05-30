@@ -41,10 +41,16 @@ trait GetUserTrait{
                     if($pfe){
                         $user->pfeTitle = $pfe->title;
                         $user->idPfe = $pfe->id;
-                        $prof = Prof::find($pfe->idEns);
-                        $profUser = User::find($prof->idUser);
-                        $user->encadreurFname = $profUser->fname;
-                        $user->encadreurLname = $profUser->lname;
+                        if($pfe->idEns != null){
+                            $prof = Prof::find($pfe->idEns);
+                            $profUser = User::find($prof->idUser);
+                            $user->encadreurFname = $profUser->fname;
+                            $user->encadreurLname = $profUser->lname;
+                        }else{
+                            $user->encadreurFname = "Pas de";
+                            $user->encadreurLname = "Encadreur ";
+                        }
+
                     }else{
                         $user->propositionTitle = null;
                     }
