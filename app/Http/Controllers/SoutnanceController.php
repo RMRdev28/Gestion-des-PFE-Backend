@@ -62,7 +62,20 @@ class SoutnanceController extends Controller
      */
     public function show(Soutnance $soutnance)
     {
-        //
+
+            $pfe = Pfe::find($soutnance->idPfe);
+            $jury1 = Prof::find($pfe->jury1);
+            $jury2 = Prof::find($pfe->jury2);
+            $userJ1 = User::find($jury1->idUser);
+            $userJ2 = User::find($jury2->idUser);
+            $jury1Name = $userJ1->lname." ".$userJ1->fname;
+            $jury2Name = $userJ2->lname." ".$userJ2->fname;
+            $pfe->jury1Name = $jury1Name;
+            $pfe->jury2Name = $jury2Name;
+            $soutnance->pfe = $pfe;
+
+
+        return response()->json($soutnance);
     }
 
     /**
