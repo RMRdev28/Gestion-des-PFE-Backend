@@ -147,6 +147,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::get('/pfes/recommande/validators/{pfe}', [PfeController::class, 'getRecomandedProf']); // STATUS
+    Route::get('/pfes/recommande/commission/{pfe}', [ValidationPfeController::class, 'getRecomandedCommissionDeSuivi']); // STATUS
 
 
 
