@@ -142,6 +142,17 @@ class PropositionController extends Controller
             $proposition->ens = "Admin";
         }
         $categoryIds = propositionCategory::where('idProp',$proposition->id)->pluck('idCategory');
+        $critersIds = PropsCriter::where('idProp',$proposition->id)->pluck('idCriter');
+        $criters = Criter::whereIn('id', $critersIds)->get();
+        foreach ($criters as $criter) {
+            $propsCriter = PropsCriter::where('idProp', $proposition->id)
+                ->where('idCriter', $criter->id)
+                ->first();
+            $criter->value = $propsCriter->valeur;
+        }
+        $proposition->criters = $criters;
+
+
         $categories = Category::whereIn('id',$categoryIds)->get();
         $proposition->categories = $categories;
         return response()->json($proposition);
