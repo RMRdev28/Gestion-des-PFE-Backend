@@ -105,14 +105,14 @@ class PropositionController extends Controller
                 $propCategory->save();
 
             }
-            foreach ($request->criters as $name => $value) {
+            foreach ($request->criters as $c) {
                 $criter = new Criter();
-                $criter->title = $name;
+                $criter->title = $c['name'];
                 $criter->save();
                 $criterProposition = new PropsCriter();
                 $criterProposition->idCriter = $criter->id;
                 $criterProposition->idProp = $proposition->id;
-                $criterProposition->valeur = $value;
+                $criterProposition->valeur = $c['value'];
 
             }
             $message = "Proposition Ajouter avec successe";
