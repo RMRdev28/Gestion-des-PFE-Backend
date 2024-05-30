@@ -196,6 +196,12 @@ class PfeController extends Controller
     {
         if($this->user()->profDetail){
             $pfes = Pfe::where('idEns', $this->user()->profDetail->id)->get();
+            foreach($pfes as $pfe){
+                $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
+                $categories =  Category::whereIn('id',$categoryIds)->get();
+                $pfe->categories = $categories;
+
+            }
         }else{
             $pfes = Pfe::where('idEns', null)->get();
             foreach($pfes as $pfe){
