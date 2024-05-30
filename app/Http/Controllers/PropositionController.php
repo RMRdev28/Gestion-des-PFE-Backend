@@ -75,7 +75,7 @@ class PropositionController extends Controller
             $typePrposition = "interne";
             $needSuivis = 0;
         }else{
-            $typeProposition = $request->type;
+            $typePrposition = $request->type;
             $needSuivis = $request->need_suivi;
         }
         $request->request->add(['type'=> $typePrposition]);
