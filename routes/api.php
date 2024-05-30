@@ -44,6 +44,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/suivis/note', [SuiviPfeController::class, 'noteEssaie']); // ADD NOTE
 
 
+    Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
+
+
 
     Route::get('/chats', [ChatController::class, 'index']); //DISPLAY ALL
     Route::get('/chats/{id}', [ChatController::class, 'show']);
@@ -220,7 +223,7 @@ Route::middleware(['auth:sanctum', 'prof'])->group(function () {
 
     Route::get('/suivis/{suiviPfe}', [SuiviPfeController::class, 'show']); // DISPLAY SINGL
 
-    Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']); // ADD
+// ADD
 
 
 
