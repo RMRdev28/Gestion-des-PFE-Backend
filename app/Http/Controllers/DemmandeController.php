@@ -45,8 +45,8 @@ class DemmandeController extends Controller
         $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
-            if ($request->hasFile('releverNote')) {
-                $file = $request->essaie;
+            if ($request->releverNote) {
+                $file = $request->releverNote;
                 $base64File = 'data:application/pdf;base64,' . $file;
                 $fileUploade = $this->upload($base64File, "relever");
                 if ($fileUploade) {
