@@ -42,6 +42,7 @@ class DemmandeController extends Controller
 
 
         $request->merge(['idBinom' => $this->user()->binom->id]);
+        return $this->user()->binom->id;
         if ($request->releverNote) {
             $file = $request->releverNote;
             $base64File = 'data:application/pdf;base64,' . $file;
