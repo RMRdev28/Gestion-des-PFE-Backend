@@ -23,9 +23,7 @@ class ValidationPfeController extends Controller
     }
 
     public function getRecomandedCommissionDeSuivi($pfe){
-
-
-        $categoryIds = DB::get('pfe_categories')->where('idPfe',$pfe)->pluck('idCategory');
+        $categoryIds = DB::table('pfe_categories')->where('idPfe',$pfe)->pluck('idCategory');
         $profIds = DB::table('prof_categories')->whereIn('idCategory', $categoryIds)->pluck('idProf');
         $validateursPfe = Prof::whereIn('id',$profIds)->with(['user'])->get();
         return response()->json($validateursPfe);
