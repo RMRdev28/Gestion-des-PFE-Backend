@@ -124,6 +124,7 @@ class DemmandeController extends Controller
                 foreach ($propositionCategories as $cat) {
                     $query = DB::insert('INSERT INTO pfe_categories (idPfe, idCategory) VALUES (?, ?)', [$pfe->id, $cat]);
                 }
+                $proposition->delete();
                 if ($demmande->delete()) {
                     $mailAbleClass = new AcceptDemande($user, $student1, $proposition);
                     $this->sendEmail($student1->email, $mailAbleClass);
