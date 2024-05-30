@@ -92,10 +92,10 @@ class DemmandeController extends Controller
                 $this->sendEmail($student1->email, $mailAbleClass);
                 $mailAbleClass = new RejectDemande($user, $student2, $proposition);
                 $this->sendEmail($student2->email, $mailAbleClass);
-                $message = "The demmande is rejected";
+                $message = "La demmande a ete rejete";
                 $status = "good";
             } else {
-                $message = "Error rejecting demmande";
+                $message = "Erreur";
             }
             return response()->json([
                 'message' => $message,
@@ -130,10 +130,10 @@ class DemmandeController extends Controller
                     $this->sendEmail($student1->email, $mailAbleClass);
                     $mailAbleClass = new AcceptDemande($user, $student2, $proposition);
                     $this->sendEmail($student2->email, $mailAbleClass);
-                    $message = "The demmande is accepted";
+                    $message = "La demande a ete accepter";
                     $status = "good";
                 } else {
-                    $message = "Error accepting demmande";
+                    $message = "Erreur";
                 }
                 return response()->json([
                     'message' => $message,
