@@ -42,25 +42,30 @@ class DemmandeController extends Controller
 
 
         $request->merge(['idBinom' => $this->user()->binom->id]);
+        if ($request->releverNote) {
+            $file = $request->releverNote;
+            $base64File = 'data:application/pdf;base64,' . $file;
+            $request->except(['releverNote']);
+            $fileUploade = $this->upload($base64File, "relever");
+        }
+
+        $request->releverNote = "test";
+
+
         $data = $request->all();
         $demmande = Demmande::create($data);
         if ($demmande) {
-            if ($request->releverNote) {
-                $file = $request->releverNote;
-                $base64File = 'data:application/pdf;base64,' . $file;
-                $fileUploade = $this->upload($base64File, "relever");
-                if ($fileUploade) {
-                    $demmande->releverNote = $fileUploade['filePath'];
-                    $demmande->save();
-                    $message = "The demmande is saved";
-                    $status = "good";
-                } else {
-                    $message = "Problem uploading file";
-                }
-            } else {
-                $message = "The demmande is saved without file";
+
+
+            if ($fileUploade) {
+                $demmande->releverNote = $fileUploade['filePath'];
+                $demmande->save();
+                $message = "The demmande is saved";
                 $status = "good";
+            } else {
+                $message = "Problem uploading file";
             }
+
 
         } else {
             $message = "Error saving file";
@@ -79,7 +84,7 @@ class DemmandeController extends Controller
         $status = "bad";
         $demmande = Demmande::where('id', $request->idDemmande)->with(['binom', 'binom.student1', 'binom.student2', 'binom.student1.user', 'binom.student2.user'])->first();
         $proposition = Proposition::find($demmande->idProp);
-        $propositionCategories = propositionCategory::where('idProp',$proposition->id)->pluck('idCategory');
+        $propositionCategories = propositionCategory::where('idProp', $proposition->id)->pluck('idCategory');
         $user = User::find($proposition->idUser);
         $prof = Prof::where('idUser', $user->id)->first();
         $student1 = $demmande->binom->student1->user;
@@ -108,10 +113,10 @@ class DemmandeController extends Controller
             $pfe->need_suivis = $proposition->need_suivis;
             $pfe->year = date('Y');
             $pfe->type = $proposition->type;
-            if($prof){
+            if ($prof) {
                 $pfe->idEns = $prof->id;
 
-            }else{
+            } else {
                 $pfe->idEns = null;
             }
 
