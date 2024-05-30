@@ -40,14 +40,14 @@ class DemmandeController extends Controller
         $message = "";
         $status = "bad";
 
-
+        $fileUploade ="";
         $request->merge(['idBinom' => $this->user()->binom->id]);
-        return $this->user()->binom->id;
         if ($request->releverNote) {
             $file = $request->releverNote;
             $base64File = 'data:application/pdf;base64,' . $file;
             $request->except(['releverNote']);
             $fileUploade = $this->upload($base64File, "relever");
+            return $fileUploade['filePath'];
         }
 
         $request->releverNote = "test";
