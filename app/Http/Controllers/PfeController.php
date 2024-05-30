@@ -193,7 +193,7 @@ class PfeController extends Controller
 
     public function mesPfes()
     {
-        if($this->user()->profDetail->id){
+        if($this->user()->profDetail){
             $pfes = Pfe::where('idEns', $this->user()->profDetail->id)->get();
         }else{
             $pfes = Pfe::where('idEns', null)->get();
