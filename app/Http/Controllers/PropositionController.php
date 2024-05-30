@@ -113,6 +113,7 @@ class PropositionController extends Controller
                 $criterProposition->idCriter = $criter->id;
                 $criterProposition->idProp = $proposition->id;
                 $criterProposition->valeur = $c['value'];
+                $criterProposition->save();
 
             }
             $message = "Proposition Ajouter avec successe";
