@@ -50,7 +50,7 @@ class DemmandeController extends Controller
                 $base64File = 'data:application/pdf;base64,' . $file;
                 $fileUploade = $this->upload($base64File, "relever");
                 if ($fileUploade) {
-                    $demmande->releverNote = $fileUploade['fileName'];
+                    $demmande->releverNote = $fileUploade['filePath'];
                     $demmande->save();
                     $message = "The demmande is saved";
                     $status = "good";
