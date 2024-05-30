@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Binom;
+use App\Models\Category;
 use App\Models\Pfe;
 use App\Models\Prof;
 use App\Models\Soutnance;
@@ -197,6 +198,12 @@ class PfeController extends Controller
             $pfes = Pfe::where('idEns', $this->user()->profDetail->id)->get();
         }else{
             $pfes = Pfe::where('idEns', null)->get();
+            foreach($pfes as $pfe){
+                $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
+                $categories =  Category::whereIn('id',$categoryIds)->get();
+                $pfe->categories = $categories;
+
+            }
         }
 
         return response()->json($pfes);
