@@ -35,9 +35,13 @@ class PfeController extends Controller
                 $pfe->date_st = $soutnance->date;
                 $pfe->salle_st =  $soutnance->salle;
             }
-            $profC= Prof::find($pfe->idEns);
-            $created_by = User::find($profC->idUser);
-            $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+            if($pfe->idEns){
+                $profC= Prof::find($pfe->idEns);
+                $created_by = User::find($profC->idUser);
+                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
+            }else{
+                $pfe->created_by = "admin";
+            }
             $pfe->validator1 = null;
             $pfe->validator2 = null;
             $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
@@ -380,7 +384,13 @@ class PfeController extends Controller
         $st2Detail = User::find($student2->idUser);
         $pfe->binom1 = $st1Detail->lname . " " . $st1Detail->fname;
         $pfe->binom2 = $st2Detail->lname . " " . $st2Detail->fname;
-        $prof = Prof::find($pfe->idEns);
+        if($pfe->idEns){
+            $prof= Prof::find($pfe->idEns);
+            $profDetail = User::find($prof->idUser);
+            $pfe->ens = $profDetail->lname . " " . $profDetail->fname;
+        }else{
+            $pfe->ens = "admin";
+        }
         if($pfe->jury1 != null){
             $jury1= Prof::find($pfe->jury1);
             $jury1User = User::find($jury1->idUser);
@@ -391,8 +401,7 @@ class PfeController extends Controller
             $jury2User = User::find($jury2->idUser);
             $pfe->jury2Name = $jury2User->lname . " " . $jury2User->fname;
         }
-        $profDetail = User::find($prof->idUser);
-        $pfe->ens = $profDetail->lname . " " . $profDetail->fname;
+
         if (count($validationPfe) > 0) {
 
 
