@@ -186,8 +186,23 @@ class PropositionController extends Controller
                     }
                 }
             }
+
+
+            if($request->categories){
+                foreach($request->categories as $category)  {
+                    $proposition->categories()->sync($category);
+                }
+            }
+            if($request->criters){
+                foreach($request->criters as $criter)  {
+                    $proposition->catecritersgories()->sync($criter);
+                }
+            }
             $status = "good";
             $message = "Proposition is updated secssfully";
+
+
+
         }else{
             $message = "Error updateing proposition";
         }

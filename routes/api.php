@@ -85,7 +85,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/propositions', [PropositionController::class, 'index']); //DISPLAY ALL
     Route::get('/propositions/{id}', [PropositionController::class, 'show']);// DISPLAY SINGLE
     Route::delete('/propositions/{id}', [PropositionController::class, 'destroy']); // DELETE
-    Route::put('/propositions/{id}', [PropositionController::class, 'edit']); // EDIT
+    Route::post('/propositions//edit/{id}', [PropositionController::class, 'edit']); // EDIT
     Route::post('/propositions/recomandation', [PfeController::class, 'recomandationSjtPfes']); // EDIT
 
 
