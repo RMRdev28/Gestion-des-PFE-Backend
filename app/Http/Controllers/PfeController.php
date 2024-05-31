@@ -358,6 +358,7 @@ class PfeController extends Controller
     public function assignCommissioDeSuivi(Request $request){
         $pfe = Pfe::find($request->idPfe);
         $pfe->idEns = $request->idEns;
+        $pfe->jury1 = $request->idEns;
         $pfe->save();
         // send Email to Ens;
         return response()->json([
