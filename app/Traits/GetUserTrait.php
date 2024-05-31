@@ -41,6 +41,7 @@ trait GetUserTrait{
                     if($pfe){
                         $user->pfeTitle = $pfe->title;
                         $user->idPfe = $pfe->id;
+                        $user->statusPfe = $pfe->status;
                         if($pfe->idEns != null){
                             $prof = Prof::find($pfe->idEns);
                             $profUser = User::find($prof->idUser);
