@@ -193,6 +193,15 @@ class PropositionController extends Controller
             $categories = Category::whereIn('id', $categoryIds)->get();
             $prop->categories = $categories;
             $prop->nbrDemande = $nbrDeamnde;
+            $critersIds = PropsCriter::where('idProp', $prop->id)->pluck('idCriter');
+            $criters = Criter::whereIn('id', $critersIds)->get();
+            foreach ($criters as $criter) {
+                $propsCriter = PropsCriter::where('idProp', $prop->id)
+                    ->where('idCriter', $criter->id)
+                    ->first();
+                $criter->value = $propsCriter->valeur;
+            }
+            $prop->criters = $criters;
         }
         return response()->json($propositions);
 
