@@ -98,24 +98,30 @@ class PropositionController extends Controller
                     }
                 }
             }
-            foreach($request->categories as $category){
-                $propCategory = new propositionCategory();
-                $propCategory->idCategory = $category;
-                $propCategory->idProp = $proposition->id;
-                $propCategory->save();
+            if($request->categories){
+                foreach($request->categories as $category){
+                    $propCategory = new propositionCategory();
+                    $propCategory->idCategory = $category;
+                    $propCategory->idProp = $proposition->id;
+                    $propCategory->save();
 
+                }
             }
-            foreach ($request->criters as $c) {
-                $criter = new Criter();
-                $criter->title = $c['name'];
-                $criter->save();
-                $criterProposition = new PropsCriter();
-                $criterProposition->idCriter = $criter->id;
-                $criterProposition->idProp = $proposition->id;
-                $criterProposition->valeur = $c['value'];
-                $criterProposition->save();
 
+            if($request->criters){
+                foreach ($request->criters as $c) {
+                    $criter = new Criter();
+                    $criter->title = $c['name'];
+                    $criter->save();
+                    $criterProposition = new PropsCriter();
+                    $criterProposition->idCriter = $criter->id;
+                    $criterProposition->idProp = $proposition->id;
+                    $criterProposition->valeur = $c['value'];
+                    $criterProposition->save();
+
+                }
             }
+
             $message = "Proposition Ajouter avec successe";
             $status = "good";
         }
