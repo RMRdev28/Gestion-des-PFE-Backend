@@ -21,25 +21,25 @@ class PropositionController extends Controller
      * Display a listing of the resource.
      */
 
-     public function getProposition($id = null)
-     {
-        if($id == null){
-            return Proposition::with(['demmandes','categories','details'])->get();
-        }else{
+    public function getProposition($id = null)
+    {
+        if ($id == null) {
+            return Proposition::with(['demmandes', 'categories', 'details'])->get();
+        } else {
 
-            return Proposition::where('id',$id)->with(['demmandes','categories','details','demmandes.binom','demmandes.binom.student1','demmandes.binom.student2','demmandes.binom.student1.user','demmandes.binom.student2.user'])->first();
+            return Proposition::where('id', $id)->with(['demmandes', 'categories', 'details', 'demmandes.binom', 'demmandes.binom.student1', 'demmandes.binom.student2', 'demmandes.binom.student1.user', 'demmandes.binom.student2.user'])->first();
         }
-     }
+    }
 
     public function index()
     {
         $propositions = Proposition::all();
-        foreach($propositions as $prop){
-            $created_by= User::find($prop->idUser);
-            $prop->created_by = $created_by->lname. " " .$created_by->fname;
-            $nbrDeamnde = Demmande::where('idProp',$prop->id)->count();
-            $categoryIds = propositionCategory::where('idProp',$prop->id)->pluck('idCategory');
-            $categories = Category::whereIn('id',$categoryIds)->get();
+        foreach ($propositions as $prop) {
+            $created_by = User::find($prop->idUser);
+            $prop->created_by = $created_by->lname . " " . $created_by->fname;
+            $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+            $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+            $categories = Category::whereIn('id', $categoryIds)->get();
             $prop->categories = $categories;
             $prop->nbrDemande = $nbrDeamnde;
         }
@@ -47,12 +47,13 @@ class PropositionController extends Controller
     }
 
 
-    public function mesProposition(){
-        $propositions = Proposition::where('idUser',Auth::user()->id)->get();
-        foreach($propositions as $prop){
-            $nbrDeamnde = Demmande::where('idProp',$prop->id)->count();
-            $categoryIds = propositionCategory::where('idProp',$prop->id)->pluck('idCategory');
-            $categories = Category::whereIn('id',$categoryIds)->get();
+    public function mesProposition()
+    {
+        $propositions = Proposition::where('idUser', Auth::user()->id)->get();
+        foreach ($propositions as $prop) {
+            $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+            $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+            $categories = Category::whereIn('id', $categoryIds)->get();
             $prop->categories = $categories;
             $prop->nbrDemande = $nbrDeamnde;
         }
@@ -71,16 +72,16 @@ class PropositionController extends Controller
         $message = "";
         $status = "bad";
         $typePrposition = "";
-        if(Auth::user()->typeUser == 0){
+        if (Auth::user()->typeUser == 0) {
             $typePrposition = "interne";
             $needSuivis = 0;
-        }else{
+        } else {
             $typePrposition = $request->type;
             $needSuivis = $request->need_suivi;
         }
-        $request->request->add(['type'=> $typePrposition]);
-        $request->request->add(['idUser'=> Auth::user()->id]);
-        $request->request->add(['need_suivis'=> $needSuivis]);
+        $request->request->add(['type' => $typePrposition]);
+        $request->request->add(['idUser' => Auth::user()->id]);
+        $request->request->add(['need_suivis' => $needSuivis]);
         $data = $request->all();
 
         $proposition = Proposition::create($data);
@@ -98,8 +99,8 @@ class PropositionController extends Controller
                     }
                 }
             }
-            if($request->categories){
-                foreach($request->categories as $category){
+            if ($request->categories) {
+                foreach ($request->categories as $category) {
                     $propCategory = new propositionCategory();
                     $propCategory->idCategory = $category;
                     $propCategory->idProp = $proposition->id;
@@ -108,7 +109,7 @@ class PropositionController extends Controller
                 }
             }
 
-            if($request->criters){
+            if ($request->criters) {
                 foreach ($request->criters as $c) {
                     $criter = new Criter();
                     $criter->title = $c['name'];
@@ -140,15 +141,15 @@ class PropositionController extends Controller
     {
         $proposition = Proposition::find($id);
         $created_by = User::find($proposition->idUser);
-        if($created_by->typeUser == 0){
+        if ($created_by->typeUser == 0) {
             $proposition->ens = "Student";
-        }elseif($created_by->typeUser == 1){
+        } elseif ($created_by->typeUser == 1) {
             $proposition->ens = "Prof";
-        }else{
+        } else {
             $proposition->ens = "Admin";
         }
-        $categoryIds = propositionCategory::where('idProp',$proposition->id)->pluck('idCategory');
-        $critersIds = PropsCriter::where('idProp',$proposition->id)->pluck('idCriter');
+        $categoryIds = propositionCategory::where('idProp', $proposition->id)->pluck('idCategory');
+        $critersIds = PropsCriter::where('idProp', $proposition->id)->pluck('idCriter');
         $criters = Criter::whereIn('id', $critersIds)->get();
         foreach ($criters as $criter) {
             $propsCriter = PropsCriter::where('idProp', $proposition->id)
@@ -159,7 +160,7 @@ class PropositionController extends Controller
         $proposition->criters = $criters;
 
 
-        $categories = Category::whereIn('id',$categoryIds)->get();
+        $categories = Category::whereIn('id', $categoryIds)->get();
         $proposition->categories = $categories;
         return response()->json($proposition);
     }
@@ -172,7 +173,10 @@ class PropositionController extends Controller
         $message = "";
         $status = "bad";
         $data = $request->all();
-        if($proposition->update($data)){
+        $proposition->title = $request->title;
+        $proposition->description = $request->description;
+
+        if ($proposition->save()) {
             if ($request->hasFile('files')) {
                 foreach ($request->files as $file) {
                     $fileUploaded = $this->upload($file, "proposition");
@@ -188,13 +192,13 @@ class PropositionController extends Controller
             }
 
 
-            if($request->categories){
-                foreach($request->categories as $category)  {
+            if ($request->categories) {
+                foreach ($request->categories as $category) {
                     $proposition->categories()->sync($category);
                 }
             }
-            if($request->criters){
-                foreach($request->criters as $criter)  {
+            if ($request->criters) {
+                foreach ($request->criters as $criter) {
                     $proposition->catecritersgories()->sync($criter);
                 }
             }
@@ -203,34 +207,35 @@ class PropositionController extends Controller
 
 
 
-        }else{
+        } else {
             $message = "Error updateing proposition";
         }
         return response()->json([
-            'message'=> $message,
+            'message' => $message,
             'status' => $status,
         ]);
 
     }
 
 
-    public function removeFile($fileId){
+    public function removeFile($fileId)
+    {
         $message = "";
         $status = "bad";
         $attachemnt = Attachement::find($fileId);
-        if($this->deleteFileFromStorage($attachemnt->path,'proposition')){
-            if($attachemnt->delete()){
+        if ($this->deleteFileFromStorage($attachemnt->path, 'proposition')) {
+            if ($attachemnt->delete()) {
                 $message = "The file is delted seccssfully";
                 $status = "good";
-            }else{
+            } else {
                 $message = "The file is not delted from database";
             }
-        }else{
+        } else {
             $message = "The file is not exisit";
         }
         return response()->json([
             'message' => $message,
-            'status'=> $status
+            'status' => $status
         ]);
     }
 
@@ -241,14 +246,14 @@ class PropositionController extends Controller
     {
         $message = "Error deliting proposition";
         $status = "bad";
-        $attachments = Attachement::where('idPropo',$proposition->id)->get();
+        $attachments = Attachement::where('idPropo', $proposition->id)->get();
         foreach ($attachments as $at) {
-            $fileDeleted = $this->deleteFileFromStorage($at->path,'proposition');
-            if($fileDeleted){
+            $fileDeleted = $this->deleteFileFromStorage($at->path, 'proposition');
+            if ($fileDeleted) {
                 $at->delete();
             }
         }
-        if($proposition->delete()){
+        if ($proposition->delete()) {
             $message = "The proposition is deleted seccessfully";
             $status = "good";
         }
