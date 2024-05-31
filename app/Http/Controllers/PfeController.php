@@ -31,16 +31,16 @@ class PfeController extends Controller
         foreach ($pfes as $pfe) {
             $pfe->date_st = null;
             $pfe->salle_st = null;
-            $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
-            if($soutnance !=  null){
+            $soutnance = Soutnance::where('idPfe', $pfe->id)->first();
+            if ($soutnance != null) {
                 $pfe->date_st = $soutnance->date;
-                $pfe->salle_st =  $soutnance->salle;
+                $pfe->salle_st = $soutnance->salle;
             }
-            if($pfe->idEns){
-                $profC= Prof::find($pfe->idEns);
+            if ($pfe->idEns) {
+                $profC = Prof::find($pfe->idEns);
                 $created_by = User::find($profC->idUser);
-                $pfe->created_by = $created_by->lname. " " .$created_by->fname;
-            }else{
+                $pfe->created_by = $created_by->lname . " " . $created_by->fname;
+            } else {
                 $pfe->created_by = "admin";
             }
             $pfe->validator1 = null;
@@ -60,25 +60,27 @@ class PfeController extends Controller
         return response()->json($pfes);
     }
 
-    public function allowBinomToSendProject(Request $request){
+    public function allowBinomToSendProject(Request $request)
+    {
         $pfe = Pfe::find($request->idPfe);
         $pfe->canSend = 1;
         $pfe->save();
         return response()->json([
-            'message'=>"Le Binome il peux uploader la memoire au jury maintenant",
-            'status'=>'good',
+            'message' => "Le Binome il peux uploader la memoire au jury maintenant",
+            'status' => 'good',
         ]);
     }
 
-    public function pfesNeedCommisionSuivis(){
-        $pfes = Pfe::where('need_suivis',1)->where('idEns',null)->get();
+    public function pfesNeedCommisionSuivis()
+    {
+        $pfes = Pfe::where('need_suivis', 1)->where('idEns', null)->get();
         foreach ($pfes as $pfe) {
             $pfe->date_st = null;
             $pfe->salle_st = null;
-            $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
-            if($soutnance !=  null){
+            $soutnance = Soutnance::where('idPfe', $pfe->id)->first();
+            if ($soutnance != null) {
                 $pfe->date_st = $soutnance->date;
-                $pfe->salle_st =  $soutnance->salle;
+                $pfe->salle_st = $soutnance->salle;
             }
             $pfe->created_by = "Admin";
             $pfe->validator1 = null;
@@ -109,16 +111,16 @@ class PfeController extends Controller
                 if ($pfe->jury1 == null || $pfe->jury2 == null) {
                     $pfe->date_st = null;
                     $pfe->salle_st = null;
-                    $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
-                    if($soutnance !=  null){
+                    $soutnance = Soutnance::where('idPfe', $pfe->id)->first();
+                    if ($soutnance != null) {
                         $pfe->date_st = $soutnance->date;
-                        $pfe->salle_st =  $soutnance->salle;
+                        $pfe->salle_st = $soutnance->salle;
                     }
-                    if($pfe->idEns){
-                        $profC= Prof::find($pfe->idEns);
+                    if ($pfe->idEns) {
+                        $profC = Prof::find($pfe->idEns);
                         $created_by = User::find($profC->idUser);
-                        $pfe->created_by = $created_by->lname. " " .$created_by->fname;
-                    }else{
+                        $pfe->created_by = $created_by->lname . " " . $created_by->fname;
+                    } else {
                         $pfe->created_by = "admin";
                     }
 
@@ -140,16 +142,16 @@ class PfeController extends Controller
                     }
                     $pfe->date_st = null;
                     $pfe->salle_st = null;
-                    $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
-                    if($soutnance !=  null){
+                    $soutnance = Soutnance::where('idPfe', $pfe->id)->first();
+                    if ($soutnance != null) {
                         $pfe->date_st = $soutnance->date;
-                        $pfe->salle_st =  $soutnance->salle;
+                        $pfe->salle_st = $soutnance->salle;
                     }
-                    if($pfe->idEns){
-                        $profC= Prof::find($pfe->idEns);
+                    if ($pfe->idEns) {
+                        $profC = Prof::find($pfe->idEns);
                         $created_by = User::find($profC->idUser);
-                        $pfe->created_by = $created_by->lname. " " .$created_by->fname;
-                    }else{
+                        $pfe->created_by = $created_by->lname . " " . $created_by->fname;
+                    } else {
                         $pfe->created_by = "admin";
                     }
                     $pfe->nbrVallidator = $nbrValidateur - ValidationPfe::where('idPfe', $pfe->id)->count();
@@ -194,19 +196,19 @@ class PfeController extends Controller
 
     public function mesPfes()
     {
-        if($this->user()->profDetail){
+        if ($this->user()->profDetail) {
             $pfes = Pfe::where('idEns', $this->user()->profDetail->id)->get();
-            foreach($pfes as $pfe){
+            foreach ($pfes as $pfe) {
                 $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
-                $categories =  Category::whereIn('id',$categoryIds)->get();
+                $categories = Category::whereIn('id', $categoryIds)->get();
                 $pfe->categories = $categories;
 
             }
-        }else{
+        } else {
             $pfes = Pfe::where('idEns', null)->get();
-            foreach($pfes as $pfe){
+            foreach ($pfes as $pfe) {
                 $categoryIds = DB::table('pfe_categories')->where('idPfe', $pfe->id)->pluck('idCategory');
-                $categories =  Category::whereIn('id',$categoryIds)->get();
+                $categories = Category::whereIn('id', $categoryIds)->get();
                 $pfe->categories = $categories;
 
             }
@@ -355,14 +357,34 @@ class PfeController extends Controller
     }
 
 
-    public function assignCommissioDeSuivi(Request $request){
+    public function getStatisticPfe()
+    {
+        $pfeByBranch = Pfe::select('branch', DB::raw('count(*) as total'))
+            ->groupBy('branch')
+            ->get();
+
+        $pfeByStatus = Pfe::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get();
+
+        return response()->json([
+            'pfeByBranch' => $pfeByBranch,
+            'pfeByStatus' => $pfeByStatus
+        ]);
+
+    }
+
+
+    public function assignCommissioDeSuivi(Request $request)
+    {
         $pfe = Pfe::find($request->idPfe);
         $pfe->idEns = $request->idEns;
         $pfe->jury1 = $request->idEns;
         $pfe->save();
         // send Email to Ens;
         return response()->json([
-            'message'=> "L'ensignant a ete selectione avec successe",'status'=> 'good'
+            'message' => "L'ensignant a ete selectione avec successe",
+            'status' => 'good'
         ]);
     }
 
@@ -392,10 +414,10 @@ class PfeController extends Controller
     {
         $pfe->date_st = null;
         $pfe->salle_st = null;
-        $soutnance  = Soutnance::where('idPfe', $pfe->id)->first();
-        if($soutnance !=  null){
+        $soutnance = Soutnance::where('idPfe', $pfe->id)->first();
+        if ($soutnance != null) {
             $pfe->date_st = $soutnance->date;
-            $pfe->salle_st =  $soutnance->salle;
+            $pfe->salle_st = $soutnance->salle;
         }
         $validationPfe = ValidationPfe::where('idPfe', $pfe->id)->get();
         $pfe->validator1 = null;
@@ -409,20 +431,20 @@ class PfeController extends Controller
         $st2Detail = User::find($student2->idUser);
         $pfe->binom1 = $st1Detail->lname . " " . $st1Detail->fname;
         $pfe->binom2 = $st2Detail->lname . " " . $st2Detail->fname;
-        if($pfe->idEns){
-            $prof= Prof::find($pfe->idEns);
+        if ($pfe->idEns) {
+            $prof = Prof::find($pfe->idEns);
             $profDetail = User::find($prof->idUser);
             $pfe->ens = $profDetail->lname . " " . $profDetail->fname;
-        }else{
+        } else {
             $pfe->ens = "admin";
         }
-        if($pfe->jury1 != null){
-            $jury1= Prof::find($pfe->jury1);
+        if ($pfe->jury1 != null) {
+            $jury1 = Prof::find($pfe->jury1);
             $jury1User = User::find($jury1->idUser);
             $pfe->jury1Name = $jury1User->lname . " " . $jury1User->fname;
         }
-        if($pfe->jury2 != null){
-            $jury2= Prof::find($pfe->jury2);
+        if ($pfe->jury2 != null) {
+            $jury2 = Prof::find($pfe->jury2);
             $jury2User = User::find($jury2->idUser);
             $pfe->jury2Name = $jury2User->lname . " " . $jury2User->fname;
         }
@@ -448,18 +470,19 @@ class PfeController extends Controller
 
 
 
-    public function addNotePfe(Request $request){
+    public function addNotePfe(Request $request)
+    {
         $pfe = Pfe::find($request->idPfe);
         // jury1
-        $note1 = ($request->note1J1 + $request->note2J1 + $request->note3J1 + $request->note4J1) /4 ;
-        $note2 = ($request->note1J2 + $request->note2J2 + $request->note3J2 + $request->note4J2) /4 ;
+        $note1 = ($request->note1J1 + $request->note2J1 + $request->note3J1 + $request->note4J1) / 4;
+        $note2 = ($request->note1J2 + $request->note2J2 + $request->note3J2 + $request->note4J2) / 4;
         $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury1, $request->note1J1, $request->note2J1, $request->note3J1, $request->note4J1, 0]);
         // jury2
         $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury2, $request->note1J2, $request->note2J2, $request->note3J2, $request->note4J2, 0]);
-        $note = ($note1+$note2) /2;
+        $note = ($note1 + $note2) / 2;
         return response()->json([
-            'message'=>"Les notes sont ajouté avec successe",
-            'status'=>'good'
+            'message' => "Les notes sont ajouté avec successe",
+            'status' => 'good'
         ]);
 
     }

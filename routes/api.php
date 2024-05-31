@@ -41,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/pfes/filtre/{type}', [PfeController::class, 'pfeByType']);
 
+    Route::get('/pfes/statistic', [PfeController::class, 'getStatisticPfe']);
+
     Route::post('/suivis/note', [SuiviPfeController::class, 'noteEssaie']); // ADD NOTE
 
 
