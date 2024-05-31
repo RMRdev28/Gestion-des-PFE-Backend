@@ -328,7 +328,10 @@ class PropositionController extends Controller
         $data = $request->all();
         $proposition->title = $request->title;
         $proposition->description = $request->description;
-
+        if(Auth::user()->typeUser != 0){
+            $proposition->type = $request->type;
+            $proposition->need_suivis = $request->need_suivi;
+        }
         if ($proposition->save()) {
             if ($request->hasFile('files')) {
                 foreach ($request->files as $file) {
@@ -351,8 +354,22 @@ class PropositionController extends Controller
             }
 
             if ($request->criters) {
-
-                $proposition->catecritersgories()->sync($request->criters);
+                $criterDejaExiste = [];
+                foreach($request->criters as $c){
+                    if($c['id'] != null){
+                        $criterDejaExiste[]=$c;
+                    }else{
+                        $criter = new Criter();
+                        $criter->title = $c['name'];
+                        $criter->save();
+                        $criterProposition = new PropsCriter();
+                        $criterProposition->idCriter = $criter->id;
+                        $criterProposition->idProp = $proposition->id;
+                        $criterProposition->valeur = $c['value'];
+                        $criterProposition->save();
+                    }
+                }
+                $proposition->criters()->sync($criterDejaExiste);
 
             }
             $status = "good";
