@@ -53,7 +53,7 @@ class PropositionController extends Controller
                 }
 
             }
-        }elseif(Auth::user()->typeUser == 1){
+        } elseif (Auth::user()->typeUser == 1) {
 
             foreach ($propositions as $prop) {
                 $user = User::find($prop->idUser);
@@ -68,21 +68,41 @@ class PropositionController extends Controller
                     $props[] = $prop;
                 }
             }
-        }else{
+        } else {
             foreach ($propositions as $prop) {
-                    $created_by = User::find($prop->idUser);
-                    $prop->created_by = $created_by->lname . " " . $created_by->fname;
-                    $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
-                    $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
-                    $categories = Category::whereIn('id', $categoryIds)->get();
-                    $prop->categories = $categories;
-                    $prop->nbrDemande = $nbrDeamnde;
-                    $props[] = $prop;
-                }
+                $created_by = User::find($prop->idUser);
+                $prop->created_by = $created_by->lname . " " . $created_by->fname;
+                $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+                $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+                $categories = Category::whereIn('id', $categoryIds)->get();
+                $prop->categories = $categories;
+                $prop->nbrDemande = $nbrDeamnde;
+                $props[] = $prop;
+            }
 
 
         }
 
+        return response()->json($props);
+    }
+
+    public function propositionEtudients()
+    {
+        $propositions = Proposition::all();
+        $props = [];
+        foreach ($propositions as $prop) {
+            $created_by = User::find($prop->idUser);
+            if($created_by->typeUser == 0){
+                $prop->created_by = $created_by->lname . " " . $created_by->fname;
+                $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+                $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+                $categories = Category::whereIn('id', $categoryIds)->get();
+                $prop->categories = $categories;
+                $prop->nbrDemande = $nbrDeamnde;
+                $props[] = $prop;
+            }
+
+        }
         return response()->json($props);
     }
 
