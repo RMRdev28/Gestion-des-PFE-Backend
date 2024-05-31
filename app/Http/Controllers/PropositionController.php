@@ -31,19 +31,59 @@ class PropositionController extends Controller
         }
     }
 
+
+
     public function index()
     {
+        $props = [];
         $propositions = Proposition::all();
-        foreach ($propositions as $prop) {
-            $created_by = User::find($prop->idUser);
-            $prop->created_by = $created_by->lname . " " . $created_by->fname;
-            $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
-            $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
-            $categories = Category::whereIn('id', $categoryIds)->get();
-            $prop->categories = $categories;
-            $prop->nbrDemande = $nbrDeamnde;
+        if (Auth::user()->typeUser == 0) {
+
+            foreach ($propositions as $prop) {
+                $user = User::find($prop->idUser);
+                if ($user->typeUser != 0) {
+                    $created_by = User::find($prop->idUser);
+                    $prop->created_by = $created_by->lname . " " . $created_by->fname;
+                    $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+                    $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+                    $categories = Category::whereIn('id', $categoryIds)->get();
+                    $prop->categories = $categories;
+                    $prop->nbrDemande = $nbrDeamnde;
+                    $props[] = $prop;
+                }
+
+            }
+        }elseif(Auth::user()->typeUser == 1){
+
+            foreach ($propositions as $prop) {
+                $user = User::find($prop->idUser);
+                if ($user->typeUser == 0) {
+                    $created_by = User::find($prop->idUser);
+                    $prop->created_by = $created_by->lname . " " . $created_by->fname;
+                    $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+                    $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+                    $categories = Category::whereIn('id', $categoryIds)->get();
+                    $prop->categories = $categories;
+                    $prop->nbrDemande = $nbrDeamnde;
+                    $props[] = $prop;
+                }
+            }
+        }else{
+            foreach ($propositions as $prop) {
+                    $created_by = User::find($prop->idUser);
+                    $prop->created_by = $created_by->lname . " " . $created_by->fname;
+                    $nbrDeamnde = Demmande::where('idProp', $prop->id)->count();
+                    $categoryIds = propositionCategory::where('idProp', $prop->id)->pluck('idCategory');
+                    $categories = Category::whereIn('id', $categoryIds)->get();
+                    $prop->categories = $categories;
+                    $prop->nbrDemande = $nbrDeamnde;
+                    $props[] = $prop;
+                }
+
+
         }
-        return response()->json($propositions);
+
+        return response()->json($props);
     }
 
 
@@ -193,13 +233,13 @@ class PropositionController extends Controller
 
 
 
-                if ($request->categories) {
-                    $proposition->categories()->sync($request->categories);
-                }
+            if ($request->categories) {
+                $proposition->categories()->sync($request->categories);
+            }
 
             if ($request->criters) {
 
-                    $proposition->catecritersgories()->sync($request->criters);
+                $proposition->catecritersgories()->sync($request->criters);
 
             }
             $status = "good";
