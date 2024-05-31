@@ -357,7 +357,7 @@ class PropositionController extends Controller
                 $criterDejaExiste = [];
                 foreach($request->criters as $c){
                     if($c['id'] != null){
-                        $criterDejaExiste[]=$c;
+                        $criterDejaExiste[]=$c['id'];
                     }else{
                         $criter = new Criter();
                         $criter->title = $c['name'];
@@ -367,6 +367,7 @@ class PropositionController extends Controller
                         $criterProposition->idProp = $proposition->id;
                         $criterProposition->valeur = $c['value'];
                         $criterProposition->save();
+                        $criterDejaExiste[]=$criter->id;
                     }
                 }
                 $proposition->criters()->sync($criterDejaExiste);
