@@ -128,8 +128,10 @@ class DemmandeController extends Controller
                 if ($demmande->delete()) {
                     $mailAbleClass = new AcceptDemande($user, $student1, $proposition);
                     $this->sendEmail($student1->email, $mailAbleClass);
+                    $propositions = Proposition::where('idUser',$student1->id)->delete();
                     $mailAbleClass = new AcceptDemande($user, $student2, $proposition);
                     $this->sendEmail($student2->email, $mailAbleClass);
+                    $propositions = Proposition::where('idUser',$student2->id)->delete();
                     $message = "La demande a ete accepter";
                     $status = "good";
                 } else {

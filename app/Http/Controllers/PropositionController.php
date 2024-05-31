@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachement;
+use App\Models\Binom;
 use App\Models\Category;
 use App\Models\Criter;
 use App\Models\Demmande;
+use App\Models\Pfe;
+use App\Models\Prof;
 use App\Models\Proposition;
 use App\Models\propositionCategory;
 use App\Models\PropsCriter;
+use App\Models\Student;
 use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PropositionController extends Controller
 {
@@ -105,6 +110,51 @@ class PropositionController extends Controller
         }
         return response()->json($props);
     }
+
+    public function takeProposition(Request $request)
+    {
+        $proposition = Proposition::find($request->idProp);
+        $prof = Prof::where('idUser', Auth::user()->id)->first();
+        $student = Student::where('idUser', $proposition->idUser)->first();
+        $binom = Binom::where('idEtu1',$student->id)->orWhere('idEtu2',$student->id)->first();
+        $propositionCategories = propositionCategory::where('idProp', $proposition->id)->pluck('idCategory');
+        $pfe = new Pfe();
+            $pfe->title = $proposition->title;
+            $pfe->idBinom = $binom->id;
+            $pfe->canSend = 0;
+            $pfe->description = $proposition->description;
+            $pfe->need_suivis = $proposition->need_suivis;
+            $pfe->year = date('Y');
+            $pfe->type = $proposition->type;
+            $pfe->idEns = $prof->id;
+
+
+            $pfe->level = $proposition->level;
+            $pfe->note = 0;
+            $pfe->branch = $student->specialite;
+            if ($pfe->save()) {
+                foreach ($propositionCategories as $cat) {
+                    $query = DB::insert('INSERT INTO pfe_categories (idPfe, idCategory) VALUES (?, ?)', [$pfe->id, $cat]);
+                }
+                $proposition->delete();
+                    $st = Student::find($binom->idEtu1);
+                    $user= User::find($st->idUser);
+                    $propositions = Proposition::where('idUser',$user->id)->delete();
+                    $st = Student::find($binom->idEtu2);
+                    $user= User::find($st->idUser);
+                    $propositions = Proposition::where('idUser',$user->id)->delete();
+                    $message = "La proposition a ete accepter";
+                    $status = "good";
+                } else {
+                    $message = "Erreur";
+                }
+                return response()->json([
+                    'message' => $message,
+                    'status' => $status
+                ]);
+            }
+
+
 
 
     public function mesProposition()
