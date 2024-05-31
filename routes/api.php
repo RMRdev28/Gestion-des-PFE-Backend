@@ -82,6 +82,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Propositions
     Route::post('/propositions', [PropositionController::class, 'store']); //ADD
     Route::get('/propositions/mes', [PropositionController::class, 'mesProposition']); //ADD
+
+    Route::post('/propositions/take', [PropositionController::class, 'takeProposition']); //ADD
     Route::get('/proposition/etudients', [PropositionController::class, 'propositionEtudients']); //ADD
     Route::get('/propositions', [PropositionController::class, 'index']); //DISPLAY ALL
     Route::get('/propositions/{id}', [PropositionController::class, 'show']);// DISPLAY SINGLE
