@@ -172,7 +172,7 @@ class PropositionController extends Controller
         $message = "";
         $status = "bad";
         $data = $request->all();
-        if($proposition->update()){
+        if($proposition->update($data)){
             if ($request->hasFile('files')) {
                 foreach ($request->files as $file) {
                     $fileUploaded = $this->upload($file, "proposition");
