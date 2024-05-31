@@ -182,6 +182,13 @@ class PropositionController extends Controller
             }
 
 
+    public function deleteCriter($idCriter){
+        Criter::where('id',$idCriter)->delete();
+        return response()->json([
+            'message'=>"Le criter a ete supprimer avec success",
+            "status" => "good"
+        ]);
+    }
 
 
     public function mesProposition()
