@@ -246,7 +246,7 @@ class PropositionController extends Controller
     {
         $message = "Error deliting proposition";
         $status = "bad";
-        $attachments = Attachement::where('idPropo', $proposition->id)->get();
+        $attachments = Attachement::where('idProp', $proposition->id)->get();
         foreach ($attachments as $at) {
             $fileDeleted = $this->deleteFileFromStorage($at->path, 'proposition');
             if ($fileDeleted) {
