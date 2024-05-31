@@ -192,15 +192,15 @@ class PropositionController extends Controller
             }
 
 
-            if ($request->categories) {
-                foreach ($request->categories as $category) {
-                    $proposition->categories()->sync($category);
+
+                if ($request->categories) {
+                    $proposition->categories()->sync($request->categories);
                 }
-            }
+
             if ($request->criters) {
-                foreach ($request->criters as $criter) {
-                    $proposition->catecritersgories()->sync($criter);
-                }
+
+                    $proposition->catecritersgories()->sync($request->criters);
+
             }
             $status = "good";
             $message = "Proposition is updated secssfully";
