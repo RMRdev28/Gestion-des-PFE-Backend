@@ -480,6 +480,8 @@ class PfeController extends Controller
         // jury2
         $detailNote = DB::insert('insert into detail_note_pfe (idPfe, idJury, note1, note2, note3, note4, note5) values (?, ?, ?, ?, ?, ?, ?)', [$pfe->id, $pfe->jury2, $request->note1J2, $request->note2J2, $request->note3J2, $request->note4J2, 0]);
         $note = ($note1 + $note2) / 2;
+        $pfe->note = $note;
+        $pfe->status = "termine";
         return response()->json([
             'message' => "Les notes sont ajouté avec successe",
             'status' => 'good'
