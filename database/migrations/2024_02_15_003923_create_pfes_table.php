@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('status',['valide','termine','revu','pasencore','rejeter'])->default('pasencore');
             $table->enum('branch',['isil','acad','gtr']);
             $table->text('description');
+            $table->string('file');
             $table->integer('year');
             $table->double('note');
             $table->foreign('idBinom')->references('id')->on('binoms');

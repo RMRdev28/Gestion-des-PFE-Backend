@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMemoire;
 use App\Models\Binom;
 use App\Models\Category;
 use App\Models\Pfe;
@@ -17,11 +18,13 @@ use App\Traits\SemanticSearchTrait;
 use Gemini;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 
 class PfeController extends Controller
 {
     use UploadTrait, GetUserTrait, SemanticSearchTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -489,6 +492,41 @@ class PfeController extends Controller
         ]);
 
     }
+
+
+    public function sendMemoireToJurys(Request $request)
+    {
+        $pfe = Pfe::find($this->user()->idPfe);
+        $file = $request->essaie;
+        $base64File = 'data:application/pdf;base64,' . $file;
+        $fileUploaded = $this->upload($base64File, 'pfe');
+
+        if ($fileUploaded) {
+            $jurys = [$pfe->jury1, $pfe->jury2];
+            $fileUrl = $fileUploaded['filePath'];
+            $pfe->file = $fileUrl;
+            $fileUrl = "https://pfe.rmrdevdz.com/public/storage/".$fileUrl;
+            $pfe->save();
+            foreach ($jurys as $juryId) {
+                $jury = Prof::find($juryId);
+                $user = User::find($jury->idUser);
+                $juryEmail = $user->email;
+
+                Mail::to($juryEmail)->send(new SendMemoire($user,$fileUrl,$pfe));
+            }
+
+            return response()->json([
+                'status' => 'good',
+                'message' => 'File sent to jurys successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'bad',
+                'message' => 'Error uploading file',
+            ]);
+        }
+    }
+
 
     /**
      * Update the specified resource in storage.
