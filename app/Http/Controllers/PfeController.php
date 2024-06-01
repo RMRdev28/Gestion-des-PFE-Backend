@@ -482,6 +482,7 @@ class PfeController extends Controller
         $note = ($note1 + $note2) / 2;
         $pfe->note = $note;
         $pfe->status = "termine";
+        $pfe->save();
         return response()->json([
             'message' => "Les notes sont ajouté avec successe",
             'status' => 'good'
