@@ -68,7 +68,7 @@ class PfeController extends Controller
     {
         $pfe = Pfe::find($request->idPfe);
         $pfe->canSend = 1;
-        $this->notifyBinom($pfe->idBinom,"You can send memoire to jurys","your encadrent is accet your memoire and you can send it to jurys now")
+        $this->notifyBinom($pfe->idBinom,"You can send memoire to jurys","your encadrent is accet your memoire and you can send it to jurys now");
         $pfe->save();
         return response()->json([
             'message' => "Le Binome il peux uploader la memoire au jury maintenant",
