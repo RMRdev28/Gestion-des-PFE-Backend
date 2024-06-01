@@ -221,7 +221,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/annonces/{annonce}', [AnnonceController::class, 'destroy']); // DELETE
     Route::put('/annonces/{annonce}', [AnnonceController::class, 'update']); // EDIT
 
-    Route::get('/demandes/proposition/{idProposition}', [DemmandeController::class, 'getDemandeProp']);
 
 
 
